@@ -1,92 +1,94 @@
 // src/stores/task.store.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { TaskStoreModel } from "@/models/task.model";
+import { Task } from "@/types/task.type";
 import { indexedDBStorage } from "@/lib/storage/indexedDBStorage";
 
-type PersistedTaskStore = Omit<
-  TaskStoreModel,
-  | "addTask"
-  | "updateTask"
-  | "deleteTask"
-  | "clearAll"
-  | "setLoading"
-  | "setError"
-  | "setSuccess"
-  | "clearState"
-  | "resetState"
-  | "setState"
->;
+interface TaskStoreState {
+  tasks: Task[];
+  isLoading: boolean;
+  error: string | null;
+  success: string | null;
+  _hasHydrated: boolean; // Track hydration status explicitly
+}
 
-const useTaskStore = create<TaskStoreModel>()(
+interface TaskStoreActions {
+  addTask: (task: Task) => void;
+  updateTask: (task: Task) => void;
+  deleteTask: (id: string) => void;
+  clearAll: () => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+  setSuccess: (success: string | null) => void;
+  clearState: () => void;
+  _setHasHydrated: (state: boolean) => void; // Hydration control
+}
+
+type TaskStore = TaskStoreState & TaskStoreActions;
+
+const useTaskStore = create<TaskStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       tasks: [],
       isLoading: false,
       error: null,
       success: null,
+      _hasHydrated: false, // Initial state
 
-      // Add task
-      addTask: (task) => {
-        set((state) => ({ 
-          tasks: [task, ...state.tasks],
-          success: "Task added successfully"
-        }));
-      },
+      // Actions
+      addTask: (task) => set((state) => ({ 
+        tasks: [task, ...state.tasks],
+        success: "Task added successfully"
+      })),
 
-      // Update task
-      updateTask: (updated) => {
-        set((state) => ({
-          tasks: state.tasks.map((t) => (t.id === updated.id ? updated : t)),
-          success: "Task updated successfully"
-        }));
-      },
+      updateTask: (updated) => set((state) => ({
+        tasks: state.tasks.map((t) => (t.id === updated.id ? updated : t)),
+        success: "Task updated successfully"
+      })),
 
-      // Delete task
-      deleteTask: (id) => {
-        set((state) => ({
-          tasks: state.tasks.filter((t) => t.id !== id),
-          success: "Task deleted successfully"
-        }));
-      },
+      deleteTask: (id) => set((state) => ({
+        tasks: state.tasks.filter((t) => t.id !== id),
+        success: "Task deleted successfully"
+      })),
 
-      // Clear all tasks
-      clearAll: () => {
-        set({ tasks: [], success: "All tasks cleared" });
-      },
+      clearAll: () => set({ 
+        tasks: [],
+        success: "All tasks cleared"
+      }),
 
-      // State management methods
       setLoading: (loading) => set({ isLoading: loading }),
       setError: (error) => set({ error }),
       setSuccess: (success) => set({ success }),
       clearState: () => set({ error: null, success: null }),
-      resetState: () => set({ 
-        isLoading: false, 
-        error: null, 
-        success: null 
-      }),
-      setState: (state) => set(state),
+      _setHasHydrated: (state) => set({ _hasHydrated: state }),
     }),
     {
       name: "task-storage",
       storage: {
         getItem: async (name) => {
-          const data = await indexedDBStorage.getItem<PersistedTaskStore>(name);
-          return data ? { state: data } : null;
+          try {
+            const data = await indexedDBStorage.getItem<TaskStoreState>(name);
+            return data ? { state: data } : null;
+          } catch (error) {
+            console.error("IndexedDB access error:", error);
+            return null;
+          }
         },
-        setItem: (name, value) => indexedDBStorage.setItem(name, value.state),
+        setItem: (name, value) => {
+          return indexedDBStorage.setItem(name, value.state);
+        },
         removeItem: (name) => indexedDBStorage.removeItem(name),
       },
       partialize: (state) => ({
         tasks: state.tasks,
-        error: state.error,
         isLoading: state.isLoading,
+        error: state.error,
         success: state.success,
+        _hasHydrated: state._hasHydrated,
       }),
-      version: 1, // Important for future migrations
-      migrate: (persistedState, version) => {
-        // Add migration logic if you change the store structure in future
-        return persistedState as PersistedTaskStore;
+      onRehydrateStorage: () => (state) => {
+        // This will be called when rehydration starts
+        state?._setHasHydrated(true);
       },
     }
   )
