@@ -15,7 +15,8 @@ export const useTaskActions = () => {
         createdAt: new Date().toISOString(),
       };
       addTask(newTask);
-    } catch (err) {
+    } catch (_err) {
+      console.log(_err);
       setError("Failed to add task");
     } finally {
       setLoading(false);
@@ -26,7 +27,8 @@ export const useTaskActions = () => {
     try {
       setLoading(true);
       updateTask(task);
-    } catch (err) {
+    } catch (_err) {
+      console.log(_err);
       setError("Failed to update task");
     } finally {
       setLoading(false);
@@ -37,7 +39,9 @@ export const useTaskActions = () => {
     try {
       setLoading(true);
       deleteTask(id);
-    } catch (err) {
+    } catch (_err) {
+      console.log(_err);
+      
       setError("Failed to delete task");
     } finally {
       setLoading(false);
@@ -48,7 +52,8 @@ export const useTaskActions = () => {
     try {
       setLoading(true);
       clearAll();
-    } catch (err) {
+    } catch (_err) {
+      console.log(_err);
       setError("Failed to clear tasks");
     } finally {
       setLoading(false);
