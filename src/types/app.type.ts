@@ -1,0 +1,1 @@
+export type themeStatus = "light" | "dark" | "system";

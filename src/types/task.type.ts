@@ -7,5 +7,18 @@ export type Task = {
   createdAt: string;
   dueDate?: string;
 };
-export type TaskStatus = "PENDING" | "IN_PROGRESS" | "COMPLETED";
+
+export type TaskStatusName =
+  | "PENDING"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "ARCHIVED";
+
+export type TaskStatus = {
+  id: string;
+  name: string | TaskStatusName;
+  color: string;
+  icon: string;
+};
+
 export type TaskType = "PERSONAL" | "WORK" | "SHOPPING" | "HEALTH";

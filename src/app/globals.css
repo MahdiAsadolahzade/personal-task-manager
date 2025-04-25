@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light theme colors */
+  --color-primary: #2563eb;
+  --color-secondary: #64748b;
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-muted: #f1f5f9;
+  --color-accent: #10b981;
+
+  --color-error: #dc2626;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+
+  /* Typography */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Base styles */
+  --base-font-family: Arial, Helvetica, sans-serif;
+}
+
+[data-theme="dark"] {
+  /* Dark theme overrides */
+  --color-primary: #3b82f6;
+  --color-secondary: #94a3b8;
+  --color-background: #0f172a;
+  --color-foreground: #f8fafc;
+  --color-muted: #1e293b;
+  --color-accent: #34d399;
+
+  --color-error: #ef4444;
+  --color-success: #22c55e;
+  --color-warning: #fbbf24;
+  --color-info: #3b82f6;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-muted: var(--color-muted);
+  --color-accent: var(--color-accent);
+
+  --color-error: var(--color-error);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-info: var(--color-info);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+}
+
+@layer components {
+  .btn {
+    @apply font-bold py-2 px-4 rounded cursor-pointer;
+  }
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+  .btn:focus {
+    @apply scale-95 transform transition duration-200;
+  }
+  .btn:active {
+    @apply bg-transparent/80;
+  }
+  .btn:hover {
+    @apply scale-105 transform transition duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-foreground;
+  }
+  .btn-secondary {
+    @apply bg-secondary text-foreground;
+  }
+  .btn-accent {
+    @apply bg-accent text-foreground;
+  }
+  .btn-muted {
+    @apply bg-muted text-foreground;
+  }
+  .btn-outline {
+    @apply border border-secondary text-secondary;
+  }
+
+  .btn-error {
+    @apply bg-error text-foreground;
+  }
+  .btn-success {
+    @apply bg-success text-foreground;
+  }
+  .btn-warning {
+    @apply bg-warning text-foreground;
+  }
+  .btn-info {
+    @apply bg-info text-foreground;
+  }
+
+
 }
