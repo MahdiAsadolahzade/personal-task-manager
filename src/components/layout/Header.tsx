@@ -1,0 +1,96 @@
+"use client";
+
+import { FC } from "react";
+import { IconType } from "react-icons";
+import { CiSettings, CiHome, CiPen } from "react-icons/ci";
+import { usePathname } from "next/navigation";
+import { useAppStore } from "@/stores/app.store";
+import { motion } from "framer-motion"; // Correct import: framer-motion not motion/react
+import Link from "next/link";
+
+interface HeaderProps {}
+
+interface NavItem {
+  name: string;
+  Icon?: IconType;
+  href: string;
+  isDisabled?: boolean;
+  onClick?: () => void;
+}
+
+const navItems: NavItem[] = [
+  { name: "Home", href: "/", Icon: CiHome },
+  { name: "Tasks", href: "/tasks", Icon: CiPen },
+  { name: "Settings", href: "/settings", Icon: CiSettings },
+];
+
+const Header: FC<HeaderProps> = () => {
+  const pathname = usePathname();
+  const isActive = (href: string) => pathname === href;
+  const { isDesktop, isMobile } = useAppStore();
+
+  return (
+    <motion.nav
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 70 }}
+      className="bg-base1 shadow-md"
+    >
+      <div className="container mx-auto flex justify-between items-center p-4">
+        <h1 className="text-2xl font-bold text-primary">Task Manager</h1>
+
+        {/* Desktop / Tablet Menu */}
+        {!isMobile && (
+          <ul className="flex space-x-6">
+            {navItems.map((item) => (
+              <motion.li
+                key={item.name}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href={item.href}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
+                    isActive(item.href)
+                      ? "bg-primary/10 text-primary"
+                      : "text-foreground hover:text-primary"
+                  }`}
+                >
+                  {item.Icon && <item.Icon className="w-5 h-5" />}
+                  <span className="font-medium">{item.name}</span>
+                </Link>
+              </motion.li>
+            ))}
+          </ul>
+        )}
+
+        {/* Mobile Menu (Simple version) */}
+        {isMobile && (
+          <div className="flex space-x-4">
+            {navItems.map((item) => (
+              <motion.div
+                key={item.name}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Link href={item.href}>
+                  {item.Icon && (
+                    <item.Icon
+                      className={`w-6 h-6 ${
+                        isActive(item.href)
+                          ? "text-primary"
+                          : "text-foreground hover:text-primary"
+                      }`}
+                    />
+                  )}
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+    </motion.nav>
+  );
+};
+
+export default Header;

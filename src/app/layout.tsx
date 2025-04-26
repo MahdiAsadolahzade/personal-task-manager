@@ -1,6 +1,7 @@
 "use client";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { useScreenSizeDetector } from "@/hooks/useScreenSizeDetector";
 
 
 const geistSans = Geist({
@@ -20,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-
+  useScreenSizeDetector();
   return (
     <html lang="en">
       <head>

@@ -1,5 +1,5 @@
 // src/stores/createPersistedStore.ts
-import { create, StateCreator, StoreApi } from "zustand";
+import { create, StateCreator } from "zustand";
 import { persist, PersistOptions } from "zustand/middleware";
 import { indexedDBStorage } from "@/lib/storage/indexedDBStorage";
 import { WithGlobal, createGlobalSlice } from "@/models/global.model";
@@ -18,34 +18,49 @@ export function createPersistedStore<
   withGlobal: EnableGlobal = true as EnableGlobal
 ) {
   type Combined = EnableGlobal extends true ? T & WithGlobal : T;
+  type WithHydration = Combined & {
+    hydrated: boolean;
+    setHydrated: (value: boolean) => void;
+  };
 
-  const combinedInitializer: StoreInitializer<Combined> = withGlobal
-    ? (((set: (partial: Partial<Combined> | ((state: Combined) => Partial<Combined>)) => void, get: () => Combined, api: StoreApi<Combined>) => {
-        return {
+  const combinedInitializer: StoreInitializer<WithHydration> = (
+    set,
+    get,
+    api
+  ) => {
+    const base = withGlobal
+      ? {
           ...(initializer as StoreInitializer<T>)(set as any, get as any, api as any),
           ...createGlobalSlice(set as any, get as any, api as any),
-        };
-      }) as unknown as StoreInitializer<Combined>)
-    : (initializer as unknown as StoreInitializer<Combined>);
+        }
+      : (initializer as StoreInitializer<T>)(set as any, get as any, api as any);
+
+    return {
+      ...(base as Combined),
+      hydrated: false,
+      setHydrated: (value: boolean) => set({ hydrated: value } as Partial<WithHydration>),
+    } as WithHydration;
+  };
 
   const customStorage = {
     getItem: async (name: string) => {
-      const tempStore = create<Combined>()(combinedInitializer);
-      if (withGlobal) tempStore.setState({ isLoading: true } as unknown as Partial<Combined>);
       const data = await indexedDBStorage.getItem<Combined>(name);
-      if (withGlobal) tempStore.setState({ isLoading: false } as unknown as Partial<Combined>);
       return data ? { state: data } : null;
     },
     setItem: (name: string, value: any) => indexedDBStorage.setItem(name, value.state),
     removeItem: (name: string) => indexedDBStorage.removeItem(name),
   };
 
-  return create<Combined>()(
+  const store = create<WithHydration>()(
     persist(combinedInitializer, {
       name: key,
       storage: customStorage,
       partialize: partialize ?? ((state) => state),
-      
-    } as PersistOptions<Combined>)
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated(true); // ✅ Set hydrated to true once rehydration finishes
+      },
+    } as PersistOptions<WithHydration>)
   );
+
+  return store;
 }

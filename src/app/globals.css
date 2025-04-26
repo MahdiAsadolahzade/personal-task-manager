@@ -8,6 +8,8 @@
   --color-foreground: #0f172a;
   --color-muted: #f1f5f9;
   --color-accent: #10b981;
+  --color-base1: #f8fafc;
+  --color-base2: #e2e8f0;
 
   --color-error: #dc2626;
   --color-success: #16a34a;
@@ -30,6 +32,8 @@
   --color-foreground: #f8fafc;
   --color-muted: #1e293b;
   --color-accent: #34d399;
+  --color-base1: #334155;
+  --color-base2: #475569;
 
   --color-error: #ef4444;
   --color-success: #22c55e;
@@ -44,6 +48,8 @@
   --color-foreground: var(--color-foreground);
   --color-muted: var(--color-muted);
   --color-accent: var(--color-accent);
+  --color-base1: var(--color-base1);
+  --color-base2: var(--color-base2);
 
   --color-error: var(--color-error);
   --color-success: var(--color-success);
@@ -58,9 +64,14 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 @layer base {
+  body {
+    @apply m-0 p-0;
+  }
 }
 
 @layer components {

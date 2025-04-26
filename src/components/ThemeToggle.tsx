@@ -10,7 +10,6 @@ const ThemeToggle = () => {
   };
 
   useEffect(() => {
-
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
