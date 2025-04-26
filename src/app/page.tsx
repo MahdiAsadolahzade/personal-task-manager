@@ -1,8 +1,6 @@
 "use client";
 
 import { useTaskStatusStore } from "@/stores/task_status.store";
-import ThemeToggle from "@/components/ThemeToggle";
-import Header from "@/components/layout/Header";
 import { useAppStore } from "@/stores/app.store";
 
 export default function TaskPage() {
@@ -21,7 +19,7 @@ export default function TaskPage() {
     return (
       <div className="">
         <h1 className="text-2xl font-bold">Task Status Page</h1>
-        <ThemeToggle />
+
         <p className="text-gray-500 text-sm mb-2">
           Loading statuses from DB...
         </p>
@@ -31,15 +29,7 @@ export default function TaskPage() {
 
   return (
     <div className="">
-      <Header />
       <h1 className="text-2xl font-bold">Task Status Page</h1>
-      <ThemeToggle />
-
-      <div>
-        {isMobile && <p>You're on a mobile!</p>}
-        {isTablet && <p>You're on a tablet!</p>}
-        {isDesktop && <p>You're on a desktop!</p>}
-      </div>
 
       <div className="flex gap-2 mb-4">
         <button

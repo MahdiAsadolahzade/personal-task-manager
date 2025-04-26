@@ -2,43 +2,51 @@
 
 :root {
   /* Light theme colors */
-  --color-primary: #2563eb;
-  --color-secondary: #64748b;
-  --color-background: #ffffff;
-  --color-foreground: #0f172a;
-  --color-muted: #f1f5f9;
-  --color-accent: #10b981;
-  --color-base1: #f8fafc;
-  --color-base2: #e2e8f0;
+  --color-primary: #009688;       /* Teal - Primary brand color */
+  --color-primary-light: #4db6ac;  /* Lighter teal for accents */
+  --color-primary-dark: #00796b;   /* Darker teal for contrast */
+  
+  --color-secondary: #607d8b;      /* Blue-grey for secondary elements */
+  --color-background: #fafafa;      /* Very light grey background */
+  --color-foreground: #212121;     /* Near-black for text */
+  --color-muted: #e0e0e0;          /* Light grey for muted elements */
+  --color-accent: #ff9800;         /* Warm orange for accents */
+  
+  --color-base1: #ffffff;          /* Pure white for cards/surfaces */
+  --color-base2: #f5f5f5;          /* Slightly off-white for differentiation */
 
-  --color-error: #dc2626;
-  --color-success: #16a34a;
-  --color-warning: #f59e0b;
-  --color-info: #3b82f6;
+  /* Status colors */
+  --color-error: #f44336;          /* Vibrant red */
+  --color-success: #4caf50;        /* Fresh green */
+  --color-warning: #ffc107;        /* Amber yellow */
+  --color-info: #2196f3;           /* Sky blue */
 
   /* Typography */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-
-  /* Base styles */
   --base-font-family: Arial, Helvetica, sans-serif;
 }
 
 [data-theme="dark"] {
   /* Dark theme overrides */
-  --color-primary: #3b82f6;
-  --color-secondary: #94a3b8;
-  --color-background: #0f172a;
-  --color-foreground: #f8fafc;
-  --color-muted: #1e293b;
-  --color-accent: #34d399;
-  --color-base1: #334155;
-  --color-base2: #475569;
+  --color-primary: #26a69a;        /* Bright teal that pops on dark */
+  --color-primary-light: #80cbc4;  /* Soft teal for highlights */
+  --color-primary-dark: #00897b;   /* Deep teal */
+  
+  --color-secondary: #90a4ae;      /* Lighter blue-grey */
+  --color-background: #121212;     /* Near-black background */
+  --color-foreground: #e0e0e0;     /* Light grey text */
+  --color-muted: #424242;          /* Dark grey for muted elements */
+  --color-accent: #ffab40;        /* Brighter orange for contrast */
+  
+  --color-base1: #1e1e1e;          /* Dark surfaces */
+  --color-base2: #2d2d2d;          /* Slightly lighter dark */
 
-  --color-error: #ef4444;
-  --color-success: #22c55e;
-  --color-warning: #fbbf24;
-  --color-info: #3b82f6;
+  /* Dark theme status colors */
+  --color-error: #ef5350;          /* Softened red */
+  --color-success: #66bb6a;        /* Softer green */
+  --color-warning: #ffca28;        /* Brighter amber */
+  --color-info: #42a5f5;           /* Lighter blue */
 }
 
 @theme inline {
@@ -69,9 +77,9 @@ body {
 }
 
 @layer base {
-  body {
-    @apply m-0 p-0;
-  }
+
+
+
 }
 
 @layer components {

@@ -1,6 +1,8 @@
+"use client";
 import { useAppStore } from "@/stores/app.store";
 import { useEffect } from "react";
 import { CiLight, CiDark } from "react-icons/ci";
+import { motion } from "framer-motion";
 
 const ThemeToggle = () => {
   const { theme, setTheme, toggleTheme } = useAppStore();
@@ -15,9 +17,19 @@ const ThemeToggle = () => {
 
   return (
     <div>
-      <button className="btn btn-outline" onClick={handleToggleTheme}>
-        {theme === "dark" ? <CiLight /> : <CiDark />}
-      </button>
+      <div className="" onClick={handleToggleTheme}>
+        <motion.div
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.1 }}
+          className="flex items-center justify-center w-12 h-12 rounded-full bg-base2 shadow-md cursor-pointer"
+        >
+          {theme === "dark" ? (
+            <CiLight className="w-6 h-6 text-yellow-500" />
+          ) : (
+            <CiDark className="w-6 h-6 text-gray-700" />
+          )}
+        </motion.div>
+      </div>
     </div>
   );
 };

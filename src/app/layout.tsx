@@ -2,7 +2,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { useScreenSizeDetector } from "@/hooks/useScreenSizeDetector";
-
+import Header from "@/components/layout/Header";
+import { useAppStore } from "@/stores/app.store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,18 +15,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   useScreenSizeDetector();
+  const {theme} = useAppStore()
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme}>
       <head>
-      <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/icons/icon-192x192.png" />
         <meta name="theme-color" content="#1e3a8a" />
         <meta
@@ -37,9 +37,10 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen `}
       >
-        {children}
+        <Header />
+        <div className="p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20  ">{children}</div>
       </body>
     </html>
   );
