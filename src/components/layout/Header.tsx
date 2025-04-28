@@ -1,6 +1,5 @@
 "use client";
 
-import { FC } from "react";
 import { IconType } from "react-icons";
 import { CiSettings, CiHome, CiPen, CiDesktop } from "react-icons/ci";
 import { usePathname } from "next/navigation";
@@ -9,7 +8,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Icon from "../utils/Icon";
 
-interface HeaderProps {}
+
 
 interface NavItem {
   name: string;
@@ -26,10 +25,10 @@ const navItems: NavItem[] = [
   { name: "Settings", href: "/settings", Icon: CiSettings },
 ];
 
-const Header: FC<HeaderProps> = () => {
+const Header = () => {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
-  const { isDesktop, isMobile, isTablet } = useAppStore();
+  const {  isMobile, isTablet } = useAppStore();
 
   return (
     <motion.nav

@@ -1,7 +1,6 @@
 "use effect";
 import React from "react";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useAppStore } from "@/stores/app.store";
 import Title from "@/components/typography/Title";
 
 const page = () => {
@@ -9,10 +8,9 @@ const page = () => {
     <div className="screen">
       <Title title="Settings" />
 
-      <div className=" mt-10 container flex justify-between items-center border-[1px] border-accent rounded-lg p-4 shadow-md">
+      <div className=" mt-10  flex justify-between items-center border-[1px] border-accent rounded-lg p-4 shadow-md">
         <h1 className="text-2xl font-bold">Theme</h1>
         <ThemeToggle />
-   
       </div>
     </div>
   );

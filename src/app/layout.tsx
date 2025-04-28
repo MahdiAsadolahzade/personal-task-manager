@@ -1,9 +1,13 @@
 "use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { useScreenSizeDetector } from "@/hooks/useScreenSizeDetector";
 import Header from "@/components/layout/Header";
 import { useAppStore } from "@/stores/app.store";
+import { useEffect } from "react";
+
+import { checkForAppUpdate } from "@/lib/checkForAppUpdate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,9 +25,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   useScreenSizeDetector();
-  const {theme} = useAppStore()
+  const { theme } = useAppStore();
+
+  useEffect(() => {
+    checkForAppUpdate();
+  }, []);
+
   return (
-    <html lang="en" data-theme={theme}>
+    <html
+      lang="en"
+      data-theme={
+        theme
+      }
+    >
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/icons/icon-192x192.png" />
@@ -37,10 +51,11 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
       >
         <Header />
-        <div className="p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20  ">{children}</div>
+
+        <div className="p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20">{children}</div>
       </body>
     </html>
   );

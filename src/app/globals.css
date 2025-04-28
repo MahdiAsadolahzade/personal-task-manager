@@ -83,6 +83,21 @@ body {
 }
 
 @layer components {
+  .card {
+    @apply bg-base1 border-[1px] border-accent shadow-md rounded-lg p-4;
+  }
+  .card-header {
+    @apply font-bold text-lg mb-2;
+  }
+  .card-body {
+    @apply text-sm text-foreground;
+  }
+  .card-footer {
+    @apply mt-4 flex justify-end;
+  }
+}
+
+@layer components {
   .btn {
     @apply font-bold py-2 px-4 rounded cursor-pointer;
   }

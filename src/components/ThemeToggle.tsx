@@ -4,11 +4,15 @@ import { useEffect } from "react";
 import { CiLight, CiDark } from "react-icons/ci";
 import { motion } from "framer-motion";
 
+
 const ThemeToggle = () => {
   const { theme, setTheme, toggleTheme } = useAppStore();
   const handleToggleTheme = () => {
     toggleTheme();
     setTheme(theme === "dark" ? "light" : "dark");
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", theme === "dark" ? "light" : "dark");
+    }
   };
 
   useEffect(() => {

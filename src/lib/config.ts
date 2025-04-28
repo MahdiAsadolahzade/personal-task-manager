@@ -1,0 +1,1 @@
+export const CURRENT_APP_VERSION_BADGE = "1.0.0";

@@ -1,0 +1,3 @@
+import { CURRENT_APP_VERSION_BADGE } from "@/lib/config";
+
+export const CURRENT_APP_VERSION = CURRENT_APP_VERSION_BADGE;

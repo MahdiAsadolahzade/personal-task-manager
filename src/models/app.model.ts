@@ -11,5 +11,4 @@ export interface AppStoreModel {
   setIsDesktop: (isDesktop: boolean) => void;
   isTablet: boolean;
   setIsTablet: (isTablet: boolean) => void;
-  
 }
