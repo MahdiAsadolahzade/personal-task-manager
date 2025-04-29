@@ -9,12 +9,13 @@ interface IconProps {
 
 const Icon: FC<IconProps> = ({alt,src,className}) => {
   return <>
-    <Image
+    <img
       src={src}
       alt={alt}
       className={`w-5 h-5 ${className}`}
       width={20}
       height={20}
+  
     />
    </>
 }
