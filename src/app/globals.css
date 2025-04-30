@@ -115,7 +115,7 @@ body {
   }
 
   .btn-primary {
-    @apply bg-primary text-foreground;
+    @apply bg-primary text-muted;
   }
   .btn-secondary {
     @apply bg-secondary text-foreground;

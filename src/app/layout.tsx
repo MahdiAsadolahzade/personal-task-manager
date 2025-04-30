@@ -8,6 +8,9 @@ import { useAppStore } from "@/stores/app.store";
 import { useEffect } from "react";
 
 import { checkForAppUpdate } from "@/lib/checkForAppUpdate";
+import { useDialogStore } from "@/stores/dialog.store";
+import { Dialog } from "@/components/dialog/Dialog";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,7 +58,9 @@ export default function RootLayout({
       >
         <Header />
 
-        <div className="p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20">{children}</div>
+        <div className="p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20">{children}
+          <Dialog/>
+        </div>
       </body>
     </html>
   );
