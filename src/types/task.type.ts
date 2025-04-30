@@ -19,8 +19,8 @@ export type TaskStatusName =
 export type TaskStatus = {
   id: string;
   name: string | TaskStatusName;
-  color: string;
-  icon: string;
+  color?: string;
+  icon?: string;
 };
 
 export type TaskType = "PERSONAL" | "WORK" | "SHOPPING" | "HEALTH";

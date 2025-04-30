@@ -6,24 +6,24 @@ export const statuses: TaskStatus[] = [
     id: uuid(),
     name: "PENDING",
     color: "#FF5733",
-    icon: "🕒",
+    icon: "/icons/icon-192x192.png",
   },
   {
     id: uuid(),
     name: "IN_PROGRESS",
     color: "#FFC300",
-    icon: "🔄",
+    icon: "/icons/icon-192x192.png",
   },
   {
     id: uuid(),
     name: "COMPLETED",
     color: "#28A745",
-    icon: "✅",
+    icon: "/icons/icon-192x192.png",
   },
   {
     id: uuid(),
     name: "ARCHIVED",
     color: "#6C757D",
-    icon: "📦",
+    icon: "/icons/icon-192x192.png",
   },
 ];
