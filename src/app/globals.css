@@ -205,4 +205,24 @@ body {
   .input[type="date"]::-webkit-clear-button {
     display: none; /* Remove spinner for a cleaner look */
   }
+
+    /* Autocomplete component */
+    .autocomplete {
+      @apply relative;
+    }
+  
+    .suggestions-list {
+      @apply absolute z-10 w-full bg-base1 border border-muted rounded-md mt-1 shadow-lg max-h-32 overflow-auto;
+    }
+  
+    .suggestion-item {
+      @apply px-4 py-2 cursor-pointer hover:bg-base2;
+    }
+  
+    .suggestion-item.selected {
+ @apply border-2 border-primary
+    }
+
+
+
 }

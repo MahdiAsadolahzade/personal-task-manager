@@ -1,16 +1,21 @@
 // src/app/config/page.tsx
 "use client";
+import Card from "@/components/card/Card";
+import AutoComplete from "@/components/inputs/AutoComplete";
+import FileUploadField from "@/components/inputs/FileUploadField";
 import TextField from "@/components/inputs/TextField";
 import Title from "@/components/typography/Title";
 import Icon from "@/components/utils/Icon";
 import { useDialogStore } from "@/stores/dialog.store";
+import { useIconStore } from "@/stores/icons.store";
 import { useTaskStatusStore } from "@/stores/task_status.store";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const ConfigPage = () => {
   const { openDialog } = useDialogStore();
-  const { addStatus, statuses, hydrated, updateStatus } = useTaskStatusStore();
+  const { addStatus, statuses, hydrated, updateStatus ,deleteStatus } = useTaskStatusStore();
+  const { icons } = useIconStore();
   const [selectedStatus, setSelectedStatus] = useState<any>();
 
   const handleAddOpenDialog = () => {
@@ -29,6 +34,19 @@ const ConfigPage = () => {
           Component: TextField,
           type: "color",
         },
+        {
+          name:'icon',
+          label:"Icon",
+          Component:AutoComplete,
+          suggestions:[{id:1,name:'test'},{id:2,name:'test 2'},{id:3,name:'test 3'}]
+        }
+        ,
+        {
+          name:'test',
+          label:"Test",
+          Component:FileUploadField,
+     
+        }
       ],
       actions: {
         Add: addStatus,
@@ -59,52 +77,36 @@ const ConfigPage = () => {
       defaultValues: selectedStatus,
     });
   };
-  console.log(selectedStatus);
+
+  const handleDeleteOpenDialog = () => {
+    openDialog({
+      title: `Delete Dialog`,
+      kind: "Delete",
+     
+      actions: {
+        Delete: deleteStatus,
+      },
+      defaultValues: selectedStatus,
+      message: `Are you sure you want to delete ${selectedStatus?.name} ?`,
+    });
+  };
 
   return (
     <div>
       <Title title="Configuration" />
 
-      <button className="btn btn-primary m-10" onClick={handleAddOpenDialog}>
-        Open Add
-      </button>
+      <Card
+        title="Statuses"
+        data={statuses}
+        actions={{ Add: handleAddOpenDialog, Edit: handleEditOpenDialog ,Delete:handleDeleteOpenDialog }}
+        setSelectedValue={setSelectedStatus}
+        selectedValue={selectedStatus}
+        laoding={!hydrated}
+      />
 
-      <button
-        className="btn btn-primary m-10"
-        onClick={handleEditOpenDialog}
-        disabled={!selectedStatus}
-      >
-        Open Edit
-      </button>
 
-      <div>
-        {hydrated &&
-          statuses.map((status) => (
-            <div
-              className="hover:bg-base1 cursor-pointer"
-              onClick={() => {
-                setSelectedStatus(status);
-              }}
-              key={`${status.id}/${status.name}`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <span className={`text-2xl ${status.color}`}>
-                    
-                    <Icon alt="" src={status.icon?? "/icons/icon-192x192.png"} />
-                  </span>
-                  <span>{status.name}</span>
-                </div>
-                <span
-                  style={{ color: status.color ?? "var(--color-foreground)" }}
-                  className="border-2 border-muted"
-                >
-                  {status.color ?? "default"}
-                </span>
-              </div>
-            </div>
-          ))}
-      </div>
+      <Icon alt="" src={icons?.[0]?.src ?? "/icons/icon-192x192.png"} />
+   
     </div>
   );
 };

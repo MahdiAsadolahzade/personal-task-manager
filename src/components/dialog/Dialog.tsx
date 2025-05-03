@@ -19,22 +19,30 @@ export const Dialog = () => {
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    let finalData = content?.kind==='Add' ? {...data , id:uuid()} :data
-    content?.actions?.[content?.kind || "Custom"]?.(finalData)
+
+    let finalData =
+      content?.kind === "Add"
+        ? { ...data, id: uuid() }
+        : content?.kind === "Edit"
+        ? data
+        : data?.id;
+    // content?.actions?.[content?.kind]?.(finalData);
+    console.log(finalData);
     closeDialog();
   };
 
   useEffect(() => {
     if (isOpen) {
-      if(content?.kind==='Add'){
-          reset({}, { keepValues: false });
-      }else {
+      if (content?.kind === "Add") {
+        console.log('add values reseted');
+        
+        reset({});
+      } else {
+        console.log('edit/delete values reseted');
         reset(content?.defaultValues || {}, { keepValues: false });
       }
-    
     }
-  }, [isOpen, reset]);
+  }, [isOpen, reset,content?.actions, content?.defaultValues, content?.kind]);
 
   if (!isOpen) return null;
 
@@ -48,15 +56,20 @@ export const Dialog = () => {
               <h2 className="text-xl font-semibold ">{content?.title}</h2>
             </div>
 
-            <div className="btn">
+            <div className="btn btn-ghost p-0">
               <TiDelete
-                className="text-3xl text-error "
+                className="text-3xl text-muted "
                 onClick={closeDialog}
               />
             </div>
           </div>
           <hr className="text-muted" />
           <div className=" content mb-4">
+            {!!content?.message && (
+              <div>
+                <p>{content?.message}</p>
+              </div>
+            )}
             {!!content?.array &&
               content.array?.map((item, index) => (
                 <item.Component
@@ -65,17 +78,20 @@ export const Dialog = () => {
                   type={item?.type}
                   register={register}
                   errors={errors}
+                  control={control}
+                  suggestions ={item?.suggestions}
+                 
                   key={`${item.name}/${index}`}
                 />
               ))}
           </div>
           <div className="mt-4 flex justify-end space-x-2">
-            <button onClick={closeDialog} className="btn btn-secondary">
+            <button onClick={closeDialog} className="btn btn-secondary ">
               Close
             </button>
 
             <button type="submit" className="btn btn-primary">
-              Save
+              {content?.kind}
             </button>
           </div>
         </form>
