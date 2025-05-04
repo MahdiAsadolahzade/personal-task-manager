@@ -1,4 +1,3 @@
-// src/app/config/page.tsx
 "use client";
 import Card from "@/components/card/Card";
 import AutoComplete from "@/components/inputs/AutoComplete";
@@ -10,85 +9,86 @@ import { useDialogStore } from "@/stores/dialog.store";
 import { useIconStore } from "@/stores/icons.store";
 import { useTaskStatusStore } from "@/stores/task_status.store";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
 
 const ConfigPage = () => {
   const { openDialog } = useDialogStore();
-  const { addStatus, statuses, hydrated, updateStatus ,deleteStatus } = useTaskStatusStore();
-  const { icons } = useIconStore();
+  const { addStatus, statuses, updateStatus, deleteStatus } =
+    useTaskStatusStore();
+  const { icons ,addIcon } = useIconStore();
   const [selectedStatus, setSelectedStatus] = useState<any>();
+  const [selectedIcon, setSelectedIcon] = useState<any>();
 
-  const handleAddOpenDialog = () => {
-    openDialog({
-      title: `Add Dialog`,
-      kind: "Add",
-      array: [
-        {
-          name: "name",
-          label: "Name",
-          Component: TextField,
-        },
-        {
-          name: "color",
-          label: "Color",
-          Component: TextField,
-          type: "color",
-        },
-        {
-          name:'icon',
-          label:"Icon",
-          Component:AutoComplete,
-          suggestions:[{id:1,name:'test'},{id:2,name:'test 2'},{id:3,name:'test 3'}]
-        }
-        ,
-        {
-          name:'test',
-          label:"Test",
-          Component:FileUploadField,
-     
-        }
-      ],
-      actions: {
-        Add: addStatus,
+
+  const dialogConfig: TDialogConfig = {
+    status: {
+      Add: {
+        title: "Add Status",
+        array: [
+          { name: "name", label: "Name", Component: TextField },
+          {
+            name: "color",
+            label: "Color",
+            Component: TextField,
+            type: "color",
+          },
+          {
+            name: "icon",
+            label: "Icon",
+            Component: AutoComplete,
+            suggestions: icons?.map((icon) => ({ id: icon.id, name: icon.name??'' }))
+          },
+        ],
+        actions: { Add: addStatus },
+        kind: "Add",
       },
-    });
+      Edit: {
+        title: "Edit Status",
+        array: [
+          { name: "name", label: "Name", Component: TextField },
+          {
+            name: "color",
+            label: "Color",
+            Component: TextField,
+            type: "color",
+          },
+        ],
+        actions: { Edit: updateStatus },
+        defaultValues: selectedStatus,
+        kind: "Edit",
+      },
+      Delete: {
+        title: "Delete Status",
+        message: `Are you sure you want to delete ${selectedStatus?.name} ?`,
+        actions: { Delete: deleteStatus },
+        defaultValues: selectedStatus,
+        kind: "Delete",
+      },
+    },
+
+    icon:{
+      Add:{
+        title: "Add Icon",
+        array: [
+          { name: "name", label: "Name", Component: TextField },
+          {
+            name: "src",
+            label: "Icon Source",
+            Component: FileUploadField,
+          },
+        ],
+        actions: { Add: addIcon }, 
+        kind: "Add",
+      }
+    }
   };
 
-  const handleEditOpenDialog = () => {
-    openDialog({
-      title: `Edit Dialog`,
-      kind: "Edit",
-      array: [
-        {
-          name: "name",
-          label: "Name",
-          Component: TextField,
-        },
-        {
-          name: "color",
-          label: "Color",
-          Component: TextField,
-          type: "color",
-        },
-      ],
-      actions: {
-        Edit: updateStatus,
-      },
-      defaultValues: selectedStatus,
-    });
-  };
-
-  const handleDeleteOpenDialog = () => {
-    openDialog({
-      title: `Delete Dialog`,
-      kind: "Delete",
-     
-      actions: {
-        Delete: deleteStatus,
-      },
-      defaultValues: selectedStatus,
-      message: `Are you sure you want to delete ${selectedStatus?.name} ?`,
-    });
+  const handleOpenDialog = (url: `${TDialogKind}/${string}`) => {
+    const [kind, entity] = url.split("/") as [TDialogKind, string];
+    const config = dialogConfig[entity][kind];
+    if (config) {
+      openDialog(config);
+    }
   };
 
   return (
@@ -98,15 +98,32 @@ const ConfigPage = () => {
       <Card
         title="Statuses"
         data={statuses}
-        actions={{ Add: handleAddOpenDialog, Edit: handleEditOpenDialog ,Delete:handleDeleteOpenDialog }}
+        actions={{
+          Add: () => handleOpenDialog("Add/status"),
+          Edit: () => handleOpenDialog("Edit/status"),
+          Delete: () => handleOpenDialog("Delete/status"),
+        }}
         setSelectedValue={setSelectedStatus}
         selectedValue={selectedStatus}
-        laoding={!hydrated}
+        laoding={!useTaskStatusStore().hydrated}
+        configuration={{showIcon:false ,showColor:true}}
       />
 
+      <Card
+        title="Icons"
+        data={icons}
+        actions={{
+          Add: () => handleOpenDialog("Add/icon"),
+          Edit: () => handleOpenDialog("Edit/status"),
+          Delete: () => handleOpenDialog("Delete/status"),
+        }}
+        setSelectedValue={setSelectedIcon}
+        selectedValue={selectedIcon}
+        laoding={!useIconStore().hydrated}
+        configuration={{showIcon:true ,iconKey:'src' ,showColor:false}}
+      />
 
-      <Icon alt="" src={icons?.[0]?.src ?? "/icons/icon-192x192.png"} />
-   
+      {/* <Icon alt="" src={icons?.[0]?.src ?? "/icons/icon-192x192.png"} /> */}
     </div>
   );
 };

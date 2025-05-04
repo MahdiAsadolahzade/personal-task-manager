@@ -26,3 +26,5 @@ message?:string
   defaultValues?:any
 };
 export type TDialogActions = Partial<Record<TDialogKind, Function>>;
+
+export type TDialogConfig ={  [key in string]: Partial<{ [key in TDialogKind]: TDialogContent }>}

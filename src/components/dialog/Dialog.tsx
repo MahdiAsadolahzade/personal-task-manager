@@ -26,7 +26,7 @@ export const Dialog = () => {
         : content?.kind === "Edit"
         ? data
         : data?.id;
-    // content?.actions?.[content?.kind]?.(finalData);
+    content?.actions?.[content?.kind]?.(finalData);
     console.log(finalData);
     closeDialog();
   };

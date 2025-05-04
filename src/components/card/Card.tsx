@@ -11,7 +11,12 @@ interface CardProps {
   data: any[];
   selectedValue: any;
   setSelectedValue: Function;
-  laoding?:boolean
+  laoding?: boolean;
+  configuration?: {
+    showColor?: boolean;
+    showIcon?: boolean;
+    iconKey?: string;
+  };
 }
 
 const Card: FC<CardProps> = ({
@@ -20,16 +25,16 @@ const Card: FC<CardProps> = ({
   actions,
   setSelectedValue,
   selectedValue,
-  laoding
+  laoding,
+  configuration = {
+    showColor: true,
+    showIcon: true,
+    iconKey: "src",
+  },
 }) => {
-
-    if (laoding) {
-        return (
-        <div className="card animate-pulse w-full h-64">
-          
-        </div>
-        );
-    }
+  if (laoding) {
+    return <div className="card animate-pulse w-full h-64"></div>;
+  }
   return (
     <div className="card">
       <h2 className="card-header flex justify-between items-center">
@@ -75,20 +80,30 @@ const Card: FC<CardProps> = ({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <span className={`text-2xl ${item.color}`}>
-                      <Icon
-                        alt=""
-                        src={item.icon ?? "/icons/icon-192x192.png"}
-                      />
-                    </span>
+                    {configuration.showIcon &&
+                       (
+                        <span className={`text-2xl ${item.color}`}>
+                          <Icon
+                            alt=""
+                            src={
+                              item[configuration?.iconKey ?? "src"] ??
+                              "/icons/icon-192x192.png"
+                            }
+                          />
+                        </span>
+                      )}
+
                     <span>{item.name}</span>
                   </div>
-                  <span
-                    style={{ backgroundColor: item.color ?? "var(--color-foreground)" }}
-                    className="w-5 h-5 rounded-full border-2 border-muted"
-                  >
-                   
-                  </span>
+                  {!!item?.color && configuration.showColor && (
+                    <span
+                      style={{
+                        backgroundColor:
+                          item?.color ?? "var(--color-foreground)",
+                      }}
+                      className="w-5 h-5 rounded-full border-2 border-muted"
+                    ></span>
+                  )}
                 </div>
               </div>
             );

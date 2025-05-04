@@ -1,5 +1,4 @@
 "use client";
-
 import { IconType } from "react-icons";
 import { CiSettings, CiHome, CiPen, CiDesktop } from "react-icons/ci";
 import { usePathname } from "next/navigation";
@@ -7,6 +6,7 @@ import { useAppStore } from "@/stores/app.store";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Icon from "../utils/Icon";
+import NavLink from "../NavLink";
 
 
 
@@ -55,7 +55,7 @@ const Header = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Link
+                  <NavLink 
                     href={item.href}
                     className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${
                       isActive(item.href)
@@ -65,7 +65,7 @@ const Header = () => {
                   >
                     {item.Icon && <item.Icon className="w-5 h-5" />}
                     <span className="font-medium">{item.name}</span>
-                  </Link>
+                  </NavLink>
                 </motion.li>
               ))}
             </ul>
@@ -83,7 +83,7 @@ const Header = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <Link href={item.href}>
+                  <NavLink href={item.href}>
                     {item.Icon && (
                       <item.Icon
                         className={`w-6 h-6 ${
@@ -93,7 +93,7 @@ const Header = () => {
                         }`}
                       />
                     )}
-                  </Link>
+                  </NavLink>
                 </motion.div>
               ))}
             </div>
