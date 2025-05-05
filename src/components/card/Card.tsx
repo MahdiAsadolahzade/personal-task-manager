@@ -1,10 +1,12 @@
+"use client";
 import { TDialogActions, TDialogKind } from "@/types/dialog.type";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useEffect } from "react";
 import { FC } from "react";
 import { CardHeaderIcon } from "@/constants/card/cardData";
 import { v4 as uuid } from "uuid";
 import Icon from "../utils/Icon";
-
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 interface CardProps {
   title: string;
   actions?: Partial<Record<TDialogKind, MouseEventHandler<HTMLButtonElement>>>;
@@ -32,9 +34,22 @@ const Card: FC<CardProps> = ({
     iconKey: "src",
   },
 }) => {
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   const url = new URL(window.location.href);
+  //   const ID = url.searchParams.get("item");
+  //   console.log(ID);
+  //   if(!selectedValue){
+  //      setSelectedValue(data?.find((item) => item?.id === +ID!));
+  //   }
+   
+  // }, [router, data ,selectedValue ,setSelectedValue]);
+
   if (laoding) {
     return <div className="card animate-pulse w-full h-64"></div>;
   }
+
   return (
     <div className="card">
       <h2 className="card-header flex justify-between items-center">
@@ -75,23 +90,25 @@ const Card: FC<CardProps> = ({
                 }`}
                 onClick={() => {
                   !!setSelectedValue && setSelectedValue(item);
+                  const url = new URL(window.location.href);
+                  url.searchParams.set("item", item?.id);
+                  router.push(url.toString());
                 }}
                 key={`${uuid()}`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    {configuration.showIcon &&
-                       (
-                        <span className={`text-2xl ${item.color}`}>
-                          <Icon
-                            alt=""
-                            src={
-                              item[configuration?.iconKey ?? "src"] ??
-                              "/icons/icon-192x192.png"
-                            }
-                          />
-                        </span>
-                      )}
+                    {configuration.showIcon && (
+                      <span className={`text-2xl ${item.color}`}>
+                        <Icon
+                          alt=""
+                          src={
+                            item[configuration?.iconKey ?? "src"] ??
+                            "/icons/icon-192x192.png"
+                          }
+                        />
+                      </span>
+                    )}
 
                     <span>{item.name}</span>
                   </div>

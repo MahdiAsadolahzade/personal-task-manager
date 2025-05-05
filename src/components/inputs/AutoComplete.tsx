@@ -7,6 +7,7 @@ import type {
 import { Controller, useWatch } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import Icon from "../utils/Icon";
 
 const AutoComplete: FC<AutoCompleteProps> = ({
   label,
@@ -15,7 +16,8 @@ const AutoComplete: FC<AutoCompleteProps> = ({
   suggestions,
   setValue,
   errors,
-  multiSelect = false, // Default to single-select
+  multiSelect = false, 
+  suggestKey = 'id'
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [selectedItems, setSelectedItems] = useState<AutoCompleteOption[]>([]);
@@ -25,7 +27,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
   const [isSuggestionsVisible, setIsSuggestionsVisible] = useState(false);
   const inputUniqueID = useId();
   const watchedValue = useWatch({ name, control });
-  
+
   useEffect(() => {
     setFilteredSuggestions(
       suggestions?.filter((suggestion) =>
@@ -44,7 +46,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
       setInputValue(matchedSuggestion?.name || "");
     }
   }, [watchedValue, suggestions, multiSelect]);
-  
+
   const handleSuggestionClick = (
     suggestion: AutoCompleteOption,
     onChange: (value: any) => void
@@ -57,11 +59,11 @@ const AutoComplete: FC<AutoCompleteProps> = ({
         ? selectedItems?.filter((item) => item?.id !== suggestion?.id)
         : [...selectedItems, suggestion];
       setSelectedItems(newSelectedItems);
-      onChange(newSelectedItems.map((item) => item?.id));
+      onChange(newSelectedItems.map((item) => item?.[suggestKey as keyof AutoCompleteOption]));
     } else {
       setSelectedItems([suggestion]);
       setInputValue(suggestion.name);
-      onChange(suggestion.id);
+      onChange(suggestion?.[suggestKey as keyof AutoCompleteOption]);
       setIsSuggestionsVisible(false);
     }
   };
@@ -91,10 +93,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
       <Controller
         name={name}
         control={control}
-
         render={({ field: { onChange, value } }) => {
-
-
           return (
             <>
               <div className="relative">
@@ -137,7 +136,13 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                           : ""
                       }`}
                     >
-                      {suggestion.name}
+                      <div className="flex justify-start space-x-2 items-center">
+                        {!!suggestion?.src && (
+                          <Icon alt={suggestion?.name} src={suggestion?.src} />
+                        )}
+                        <p> {suggestion.name}</p>
+                      </div>
+
                       {multiSelect &&
                         selectedItems?.some(
                           (item) => item?.id === suggestion?.id

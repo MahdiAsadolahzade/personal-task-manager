@@ -31,8 +31,9 @@ export interface TextFieldProps {
 
 
 export interface AutoCompleteOption {
-  id: number;
+  id: string;
   name: string;
+  src?:string
 }
 
 export interface AutoCompleteProps {
@@ -45,6 +46,7 @@ export interface AutoCompleteProps {
   suggestions: AutoCompleteOption[];
   control: Control;
   multiSelect?: boolean;
+  suggestKey?:string
 }
 
 export interface FileUploadProps {

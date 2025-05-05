@@ -8,18 +8,19 @@ import Icon from "@/components/utils/Icon";
 import { useDialogStore } from "@/stores/dialog.store";
 import { useIconStore } from "@/stores/icons.store";
 import { useTaskStatusStore } from "@/stores/task_status.store";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
 
 const ConfigPage = () => {
   const { openDialog } = useDialogStore();
   const { addStatus, statuses, updateStatus, deleteStatus } =
     useTaskStatusStore();
-  const { icons ,addIcon } = useIconStore();
+  const { icons, addIcon } = useIconStore();
   const [selectedStatus, setSelectedStatus] = useState<any>();
   const [selectedIcon, setSelectedIcon] = useState<any>();
 
 
+  
   const dialogConfig: TDialogConfig = {
     status: {
       Add: {
@@ -36,7 +37,12 @@ const ConfigPage = () => {
             name: "icon",
             label: "Icon",
             Component: AutoComplete,
-            suggestions: icons?.map((icon) => ({ id: icon.id, name: icon.name??'' }))
+            suggestions: icons?.map((icon) => ({
+              id: icon.id,
+              name: icon.name ?? "",
+              src: icon?.src,
+            })),
+            suggestionKey: "src",
           },
         ],
         actions: { Add: addStatus },
@@ -52,6 +58,17 @@ const ConfigPage = () => {
             Component: TextField,
             type: "color",
           },
+          {
+            name: "icon",
+            label: "Icon",
+            Component: AutoComplete,
+            suggestions: icons?.map((icon) => ({
+              id: icon.id,
+              name: icon.name ?? "",
+              src: icon?.src,
+            })),
+            suggestionKey: "src",
+          },
         ],
         actions: { Edit: updateStatus },
         defaultValues: selectedStatus,
@@ -66,8 +83,8 @@ const ConfigPage = () => {
       },
     },
 
-    icon:{
-      Add:{
+    icon: {
+      Add: {
         title: "Add Icon",
         array: [
           { name: "name", label: "Name", Component: TextField },
@@ -77,19 +94,22 @@ const ConfigPage = () => {
             Component: FileUploadField,
           },
         ],
-        actions: { Add: addIcon }, 
+        actions: { Add: addIcon },
         kind: "Add",
-      }
-    }
+      },
+    },
   };
 
-  const handleOpenDialog = (url: `${TDialogKind}/${string}`) => {
-    const [kind, entity] = url.split("/") as [TDialogKind, string];
-    const config = dialogConfig[entity][kind];
-    if (config) {
-      openDialog(config);
-    }
-  };
+  const handleOpenDialog = useCallback(
+    (url: `${TDialogKind}/${string}`) => {
+      const [kind, entity] = url.split("/") as [TDialogKind, string];
+      const config = dialogConfig[entity][kind];
+      if (config) {
+        openDialog(config);
+      }
+    },
+    [dialogConfig, openDialog ,statuses]
+  );
 
   return (
     <div>
@@ -106,7 +126,7 @@ const ConfigPage = () => {
         setSelectedValue={setSelectedStatus}
         selectedValue={selectedStatus}
         laoding={!useTaskStatusStore().hydrated}
-        configuration={{showIcon:false ,showColor:true}}
+        configuration={{ showIcon: false, showColor: true }}
       />
 
       <Card
@@ -120,7 +140,7 @@ const ConfigPage = () => {
         setSelectedValue={setSelectedIcon}
         selectedValue={selectedIcon}
         laoding={!useIconStore().hydrated}
-        configuration={{showIcon:true ,iconKey:'src' ,showColor:false}}
+        configuration={{ showIcon: true, iconKey: "src", showColor: false }}
       />
 
       {/* <Icon alt="" src={icons?.[0]?.src ?? "/icons/icon-192x192.png"} /> */}

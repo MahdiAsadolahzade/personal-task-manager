@@ -19,7 +19,6 @@ export const Dialog = () => {
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
   const onSubmit = (data: any) => {
-
     let finalData =
       content?.kind === "Add"
         ? { ...data, id: uuid() }
@@ -27,28 +26,27 @@ export const Dialog = () => {
         ? data
         : data?.id;
     content?.actions?.[content?.kind]?.(finalData);
-    console.log(finalData);
+
     closeDialog();
   };
 
   useEffect(() => {
     if (isOpen) {
       if (content?.kind === "Add") {
-        console.log('add values reseted');
-        
-        reset({});
+        reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
-        console.log('edit/delete values reseted');
         reset(content?.defaultValues || {}, { keepValues: false });
       }
+    } else {
+      reset({}, { keepValues: false, keepDirtyValues: false });
     }
-  }, [isOpen, reset,content?.actions, content?.defaultValues, content?.kind]);
+  }, [isOpen, content?.defaultValues, content?.kind, content]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-muted/80 bg-opacity-50">
-      <div className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3 xl:w-1/4 2xl:w-1/2 max-h-[90vh] overflow-y-auto">
+    <div className="fixed  inset-0 z-50 flex items-center justify-center bg-muted/80 ">
+      <div className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3  max-h-[90vh] h-fit ">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" flex justify-between items-center">
             <div className="flex items-center justify-center space-x-1">
@@ -79,8 +77,8 @@ export const Dialog = () => {
                   register={register}
                   errors={errors}
                   control={control}
-                  suggestions ={item?.suggestions}
-                 
+                  suggestions={item?.suggestions}
+                  suggestionKey={item?.suggestionKey}
                   key={`${item.name}/${index}`}
                 />
               ))}

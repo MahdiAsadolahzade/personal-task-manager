@@ -21,6 +21,7 @@ message?:string
     Component: ComponentType<any>;
     type?: HTMLInputTypeAttribute
     suggestions?:AutoCompleteOption[]
+    suggestionKey?:keyof AutoCompleteOption
   }[];
   actions?: TDialogActions;
   defaultValues?:any
