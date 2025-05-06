@@ -53,11 +53,11 @@ const FileUpload: FC<FileUploadProps> = ({
           useEffect(() => {
             if (!watchedValue) return;
 
-            if (kind === "Add") {
-              setFileName("");
-              setFilePreview(null);
-              onChange(null);
-            }
+            // if (kind === "Add") {
+            //   setFileName("");
+            //   setFilePreview(null);
+            //   onChange(null);
+            // }
 
             if (typeof watchedValue === "string") {
               setFileName("existing_file");
