@@ -50,7 +50,6 @@ const FileUpload: FC<FileUploadProps> = ({
             onChange(null);
           };
 
-
           useEffect(() => {
             if (!watchedValue) return;
 
@@ -59,9 +58,9 @@ const FileUpload: FC<FileUploadProps> = ({
               setFilePreview(null);
               onChange(null);
             }
-          
+
             if (typeof watchedValue === "string") {
-              setFileName("existing_file"); 
+              setFileName("existing_file");
               setFilePreview(watchedValue);
             }
           }, [watchedValue, kind]);
@@ -96,6 +95,7 @@ const FileUpload: FC<FileUploadProps> = ({
                 )}
                 <input
                   id={inputId}
+                  autoComplete="off"
                   type="file"
                   accept={accept}
                   ref={fileInputRef}

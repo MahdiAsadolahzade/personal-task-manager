@@ -16,8 +16,8 @@ const AutoComplete: FC<AutoCompleteProps> = ({
   suggestions,
   setValue,
   errors,
-  multiSelect = false, 
-  suggestKey = 'id'
+  multiSelect = false,
+  suggestKey = "id",
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [selectedItems, setSelectedItems] = useState<AutoCompleteOption[]>([]);
@@ -59,7 +59,11 @@ const AutoComplete: FC<AutoCompleteProps> = ({
         ? selectedItems?.filter((item) => item?.id !== suggestion?.id)
         : [...selectedItems, suggestion];
       setSelectedItems(newSelectedItems);
-      onChange(newSelectedItems.map((item) => item?.[suggestKey as keyof AutoCompleteOption]));
+      onChange(
+        newSelectedItems.map(
+          (item) => item?.[suggestKey as keyof AutoCompleteOption]
+        )
+      );
     } else {
       setSelectedItems([suggestion]);
       setInputValue(suggestion.name);
@@ -98,6 +102,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
             <>
               <div className="relative">
                 <input
+                   autoComplete="off"
                   id={inputUniqueID}
                   type="text"
                   value={
@@ -138,7 +143,12 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                     >
                       <div className="flex justify-start space-x-2 items-center">
                         {!!suggestion?.src && (
-                          <Icon alt={suggestion?.name} src={suggestion?.src} />
+                          <div className="p-1 rounded-full bg-foreground/50">
+                            <Icon
+                              alt={suggestion?.name}
+                              src={suggestion?.src}
+                            />
+                          </div>
                         )}
                         <p> {suggestion.name}</p>
                       </div>

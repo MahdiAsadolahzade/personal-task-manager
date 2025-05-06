@@ -36,6 +36,8 @@ export const Dialog = () => {
       if (content?.kind === "Add") {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
+        console.log(content?.defaultValues);
+        
         reset(content?.defaultValues || {}, { keepValues: false });
       }
     } else {
@@ -73,21 +75,24 @@ export const Dialog = () => {
                 <p>{content?.message}</p>
               </div>
             )}
-            {!!content?.array &&
-              content.array?.map((item, index) => (
-                <item.Component
-                  name={item.name}
-                  label={item?.label}
-                  type={item?.type}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  suggestions={item?.suggestions}
-                  suggestionKey={item?.suggestionKey}
-                  kind={content?.kind}
-                  key={`${item.name}/${index}`}
-                />
-              ))}
+            {!!content?.array && (
+              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-2 `}>
+                {content.array?.map((item, index) => (
+                  <item.Component
+                    name={item.name}
+                    label={item?.label}
+                    type={item?.type}
+                    register={register}
+                    errors={errors}
+                    control={control}
+                    suggestions={item?.suggestions}
+                    suggestionKey={item?.suggestionKey}
+                    kind={content?.kind}
+                    key={`${item.name}/${index}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
           <div className="mt-4 flex justify-end space-x-2">
             <button onClick={closeDialog} className="btn btn-secondary ">

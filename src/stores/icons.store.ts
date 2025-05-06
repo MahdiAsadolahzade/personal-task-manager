@@ -21,3 +21,8 @@ export const useIconStore = createPersistedStore<IconStoreModel>(
   }),
   (state) => ({ icons: state.icons })
 );
+
+export const iconsList = () => {
+  const store = useIconStore.getState();
+  return store.icons;
+};

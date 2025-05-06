@@ -1,6 +1,6 @@
 "use client";
 import { TDialogActions, TDialogKind } from "@/types/dialog.type";
-import { MouseEventHandler, useEffect } from "react";
+import { Component, MouseEventHandler, useEffect } from "react";
 import { FC } from "react";
 import { CardHeaderIcon } from "@/constants/card/cardData";
 import { v4 as uuid } from "uuid";
@@ -17,6 +17,7 @@ interface CardProps {
     showIcon?: boolean;
     iconKey?: string;
   };
+  CustomComponent?: any;
 }
 
 const Card: FC<CardProps> = ({
@@ -31,6 +32,7 @@ const Card: FC<CardProps> = ({
     showIcon: true,
     iconKey: "src",
   },
+  CustomComponent,
 }) => {
   useEffect(() => {
     if (!selectedValue) return;
@@ -77,8 +79,9 @@ const Card: FC<CardProps> = ({
         </div>
       </h2>
 
-      <div className="space-y-2">
+      <div className="space-y-2 max-h-52 overflow-auto">
         {!!data &&
+          !CustomComponent &&
           data.map((item) => {
             const isSelected = selectedValue?.id === item?.id;
 
@@ -95,10 +98,11 @@ const Card: FC<CardProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     {configuration.showIcon && (
-                      <span className={`text-2xl bg-muted p-1 rounded-full  ${item.color}`}>
+                      <span
+                        className={`text-2xl bg-foreground/50 p-1 rounded-full  ${item.color}`}
+                      >
                         <Icon
                           alt=""
-                        
                           src={
                             item[configuration?.iconKey ?? "src"] ??
                             "/icons/icon-192x192.png"
@@ -122,6 +126,14 @@ const Card: FC<CardProps> = ({
               </div>
             );
           })}
+
+        {!!CustomComponent && (
+          <CustomComponent
+            data={data}
+            setSelectedValue={setSelectedValue}
+            selectedValue={selectedValue}
+          />
+        )}
       </div>
     </div>
   );

@@ -20,3 +20,8 @@ export const useTaskStatusStore = createPersistedStore<TaskStatusStoreModel>(
   }),
   (state) => ({ statuses: state.statuses })
 );
+
+export const statusList = () => {
+  const store = useTaskStatusStore.getState();
+  return store.statuses;
+};

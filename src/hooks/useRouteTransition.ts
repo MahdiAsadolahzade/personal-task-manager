@@ -15,7 +15,7 @@ export function useRouteTransition() {
       router.push(href);
       setTimeout(() => {
         setIsNavigating(false);
-      }, 1000); // Fallback timeout in case transition never ends
+      }, 0); 
     });
   };
 

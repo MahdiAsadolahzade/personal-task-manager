@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { FC, useId } from "react";
 import type { TextFieldProps } from "@/types/inputs.type";
 
@@ -15,16 +15,19 @@ const TextField: FC<TextFieldProps> = ({
       <label htmlFor={inputUniqueID} className="label">
         {label}
       </label>
-      <input
-        id={inputUniqueID}
-        {...register(name, {
-          setValueAs: (value) =>
-            type === "number" ? parseFloat(value) : value,
-        })}
-        className="input"
-        type={type}
-        name={name}
-      />
+      <div className="w-full">
+        <input
+          autoComplete="off"
+          id={inputUniqueID}
+          {...register(name, {
+            setValueAs: (value) =>
+              type === "number" ? parseFloat(value) : value,
+          })}
+          className="input"
+          type={type}
+          name={name}
+        />
+      </div>
       {errors && errors[name] && (
         <p className="mt-1 text-sm text-error">
           {errors[name]?.message as string}
