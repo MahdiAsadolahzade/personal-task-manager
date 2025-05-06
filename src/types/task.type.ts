@@ -14,6 +14,8 @@ export type TaskStatusName =
   | "COMPLETED"
   | "ARCHIVED";
 
+export type TaskTypeName = "PERSONAL" | "WORK" | "SHOPPING" | "HEALTH";
+
 export type TaskStatus = {
   id: string;
   name: string | TaskStatusName;
@@ -21,4 +23,9 @@ export type TaskStatus = {
   icon?: string;
 };
 
-export type TaskType = "PERSONAL" | "WORK" | "SHOPPING" | "HEALTH";
+export type TaskType = {
+  id: string;
+  name: string | TaskTypeName;
+  color?: string;
+  icon?: string;
+};

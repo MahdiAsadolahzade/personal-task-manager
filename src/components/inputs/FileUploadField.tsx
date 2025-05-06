@@ -10,19 +10,20 @@ const FileUpload: FC<FileUploadProps> = ({
   name,
   label,
   errors,
-  accept = "*", // default to all types
+  accept = "*",
+  kind,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
-    const watchedValue = useWatch({ name, control });
-
-
+  const watchedValue = useWatch({ name, control });
 
   return (
     <div className="w-full">
-      <label htmlFor={inputId} className="label">{label}</label>
+      <label htmlFor={inputId} className="label">
+        {label}
+      </label>
 
       <Controller
         name={name}
@@ -49,13 +50,21 @@ const FileUpload: FC<FileUploadProps> = ({
             onChange(null);
           };
 
+
           useEffect(() => {
-            if (!watchedValue) {
+            if (!watchedValue) return;
+
+            if (kind === "Add") {
               setFileName("");
               setFilePreview(null);
               onChange(null);
             }
-          }, [watchedValue]);
+          
+            if (typeof watchedValue === "string") {
+              setFileName("existing_file"); 
+              setFilePreview(watchedValue);
+            }
+          }, [watchedValue, kind]);
 
           return (
             <>
@@ -76,7 +85,9 @@ const FileUpload: FC<FileUploadProps> = ({
                         className="w-10 h-10 rounded border"
                       />
                     )}
-                    <span className="text-sm truncate max-w-[150px]">{fileName}</span>
+                    <span className="text-sm truncate max-w-[150px]">
+                      {fileName}
+                    </span>
                     <RxCross2
                       onClick={handleRemove}
                       className="text-red-500 cursor-pointer text-xl"

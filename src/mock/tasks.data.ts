@@ -15,7 +15,6 @@ export const tasks: Task[] = [
     title: "Task 1",
     description: "Description for task 1",
     status: findStatusByName("PENDING"),
-
     createdAt: new Date().toISOString(),
   },
   {

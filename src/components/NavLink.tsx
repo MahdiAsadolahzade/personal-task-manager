@@ -13,15 +13,17 @@ interface NavLinkProps {
 
 export default function NavLink({ href, children, className }: NavLinkProps) {
   const { isNavigating, navigate } = useRouteTransition();
-  const path = usePathname()
+  const path = usePathname();
 
   return (
     <button
-      onClick={() => {path !== href && navigate(href)}}
-      className={className}
+      onClick={() => {
+        (path !== href || isNavigating) && navigate(href);
+      }}
+      className={`${className} cursor-pointer`}
     >
-      {!isNavigating &&children}
-      {isNavigating && <Spinner/>}
+      {!isNavigating && children}
+      {isNavigating && <Spinner />}
     </button>
   );
 }

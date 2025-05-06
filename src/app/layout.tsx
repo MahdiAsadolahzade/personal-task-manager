@@ -6,10 +6,7 @@ import Header from "@/components/layout/Header";
 import { useAppStore } from "@/stores/app.store";
 import { useEffect } from "react";
 import { checkForAppUpdate } from "@/lib/checkForAppUpdate";
-
 import { Dialog } from "@/components/dialog/Dialog";
-import NextNProgress from 'nextjs-progressbar';
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,18 +44,12 @@ export default function RootLayout({
         <title>Personal Task Manager</title>
       </head>
 
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}>
-      <NextNProgress
-  color="#1e3a8a"
-  startPosition={0.3}
-  stopDelayMs={200}
-  height={3}
-  showOnShallow={true}
-/>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
+      >
+
         <Header />
-        <div className="p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20">
-          { children }
-        </div>
+        <div className="p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20">{children}</div>
         <Dialog />
       </body>
     </html>

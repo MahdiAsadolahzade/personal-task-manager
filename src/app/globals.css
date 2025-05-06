@@ -77,7 +77,23 @@ body {
 }
 
 @layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 
+  ::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-muted);
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
 }
 
 @layer components {
@@ -188,10 +204,10 @@ body {
   }
 
   .label {
-    @apply text-foreground ;
+    @apply text-foreground;
   }
 
-  .input[type='color'] {
+  .input[type="color"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -200,13 +216,12 @@ body {
     cursor: pointer;
     height: 40px;
   }
-  .input[type='color']::-webkit-color-swatch {
+  .input[type="color"]::-webkit-color-swatch {
     border: none;
     border-radius: 4px;
     box-shadow: 0 0 0 1px var(--color-muted);
     cursor: pointer;
   }
-
 
   .input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(50%) sepia(30%) saturate(600%) hue-rotate(200deg); /* Adjust color */
@@ -222,23 +237,20 @@ body {
     display: none; /* Remove spinner for a cleaner look */
   }
 
-    /* Autocomplete component */
-    .autocomplete {
-      @apply relative;
-    }
-  
-    .suggestions-list {
-      @apply absolute z-10 w-full bg-base1 border border-muted rounded-md mt-1 shadow-lg max-h-32 overflow-auto;
-    }
-  
-    .suggestion-item {
-      @apply px-4 py-2 cursor-pointer hover:bg-base2;
-    }
-  
-    .suggestion-item.selected {
- @apply border-2 border-primary
-    }
+  /* Autocomplete component */
+  .autocomplete {
+    @apply relative;
+  }
 
+  .suggestions-list {
+    @apply absolute z-10 w-full bg-base1 border border-muted rounded-md mt-1 shadow-lg max-h-32 overflow-auto;
+  }
 
+  .suggestion-item {
+    @apply px-4 py-2 cursor-pointer hover:bg-base2;
+  }
 
+  .suggestion-item.selected {
+    @apply border-2 border-primary;
+  }
 }

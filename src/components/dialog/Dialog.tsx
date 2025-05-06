@@ -26,6 +26,7 @@ export const Dialog = () => {
         ? data
         : data?.id;
     content?.actions?.[content?.kind]?.(finalData);
+    console.log("final Data", finalData);
 
     closeDialog();
   };
@@ -43,6 +44,10 @@ export const Dialog = () => {
   }, [isOpen, content?.defaultValues, content?.kind, content]);
 
   if (!isOpen) return null;
+
+  const dialogLogic = {
+    saveButton: content?.kind !== "Info",
+  };
 
   return (
     <div className="fixed  inset-0 z-50 flex items-center justify-center bg-muted/80 ">
@@ -79,6 +84,7 @@ export const Dialog = () => {
                   control={control}
                   suggestions={item?.suggestions}
                   suggestionKey={item?.suggestionKey}
+                  kind={content?.kind}
                   key={`${item.name}/${index}`}
                 />
               ))}
@@ -88,9 +94,11 @@ export const Dialog = () => {
               Close
             </button>
 
-            <button type="submit" className="btn btn-primary">
-              {content?.kind}
-            </button>
+            {dialogLogic.saveButton && (
+              <button type="submit" className="btn btn-primary">
+                {content?.kind}
+              </button>
+            )}
           </div>
         </form>
       </div>

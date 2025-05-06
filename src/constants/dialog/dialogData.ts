@@ -1,41 +1,39 @@
 import { TDialogKind } from "@/types/dialog.type";
 import { IconBaseProps, IconType } from "react-icons";
 import type { TAppColors } from "@/lib/config";
-import {
-  CgAdd,
-  CgEditFade,
-  CgRemove,
-  CgInfo,
-  CgTikcode,
-  CgSupport,
-} from "react-icons/cg";
+import { IoIosAddCircle } from "react-icons/io";
+import { RiEditCircleFill } from "react-icons/ri";
+import { RiDeleteBin2Fill } from "react-icons/ri";
+import { IoInformationCircle } from "react-icons/io5";
+import { GiConfirmed } from "react-icons/gi";
+import { SiCustomink } from "react-icons/si";
 
 export const dialogHeaderIcon: Record<
   TDialogKind,
   { Icon: IconType; color?: `text-${TAppColors}` }
 > = {
   Add: {
-    Icon: CgAdd,
+    Icon: IoIosAddCircle,
     color: "text-primary",
   },
   Edit: {
-    Icon: CgEditFade,
+    Icon: RiEditCircleFill,
     color:'text-info'
   },
   Delete: {
-    Icon: CgRemove,
+    Icon: RiDeleteBin2Fill,
     color:'text-error'
   },
   Info: {
-    Icon: CgInfo,
+    Icon: IoInformationCircle,
     color:'text-accent'
   },
   Confirm: {
-    Icon: CgTikcode,
+    Icon: GiConfirmed,
     color:'text-secondary'
   },
   Custom: {
-    Icon: CgSupport,
+    Icon: SiCustomink,
     color:'text-primary'
   },
 };

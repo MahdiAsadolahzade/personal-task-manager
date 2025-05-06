@@ -19,6 +19,7 @@ import {
   FieldErrors,
   SetFieldValue,
 } from "react-hook-form";
+import { TDialogKind } from "./dialog.type";
 
 export interface TextFieldProps {
   type?: HTMLInputTypeAttribute;
@@ -55,4 +56,5 @@ export interface FileUploadProps {
   control:Control
   errors:FieldErrors
   accept?:string
+  kind?:TDialogKind
 }

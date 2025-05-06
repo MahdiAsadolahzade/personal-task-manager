@@ -5,8 +5,6 @@ import { FC } from "react";
 import { CardHeaderIcon } from "@/constants/card/cardData";
 import { v4 as uuid } from "uuid";
 import Icon from "../utils/Icon";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
 interface CardProps {
   title: string;
   actions?: Partial<Record<TDialogKind, MouseEventHandler<HTMLButtonElement>>>;
@@ -34,25 +32,26 @@ const Card: FC<CardProps> = ({
     iconKey: "src",
   },
 }) => {
-  const router = useRouter();
+  useEffect(() => {
+    if (!selectedValue) return;
 
-  // useEffect(() => {
-  //   const url = new URL(window.location.href);
-  //   const ID = url.searchParams.get("item");
-  //   console.log(ID);
-  //   if(!selectedValue){
-  //      setSelectedValue(data?.find((item) => item?.id === +ID!));
-  //   }
-   
-  // }, [router, data ,selectedValue ,setSelectedValue]);
+    const freshItem = data.find((item) => item.id === selectedValue.id);
+    if (!freshItem) {
+      // The selected item was deleted
+      setSelectedValue(null);
+    } else if (freshItem !== selectedValue) {
+      // The selected item was updated, replace it with the fresh one
+      setSelectedValue(freshItem);
+    }
+  }, [data, selectedValue, setSelectedValue]);
 
   if (laoding) {
-    return <div className="card animate-pulse w-full h-64"></div>;
+    return <div className="card bg-muted animate-pulse w-full h-64"></div>;
   }
 
   return (
     <div className="card">
-      <h2 className="card-header flex justify-between items-center">
+      <h2 className="card-header flex justify-between items-center mb-4">
         <div>
           <p>{title}</p>
         </div>
@@ -85,23 +84,21 @@ const Card: FC<CardProps> = ({
 
             return (
               <div
-                className={`hover:bg-base2 cursor-pointer ${
-                  isSelected ? "border-[1px] border-primary" : ""
+                className={`hover:bg-base2 hover:rounded-md p-2 cursor-pointer ${
+                  isSelected ? "border-[1px] border-primary rounded-md" : ""
                 }`}
                 onClick={() => {
                   !!setSelectedValue && setSelectedValue(item);
-                  const url = new URL(window.location.href);
-                  url.searchParams.set("item", item?.id);
-                  router.push(url.toString());
                 }}
                 key={`${uuid()}`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     {configuration.showIcon && (
-                      <span className={`text-2xl ${item.color}`}>
+                      <span className={`text-2xl bg-muted p-1 rounded-full  ${item.color}`}>
                         <Icon
                           alt=""
+                        
                           src={
                             item[configuration?.iconKey ?? "src"] ??
                             "/icons/icon-192x192.png"
