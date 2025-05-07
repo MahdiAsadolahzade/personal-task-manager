@@ -15,8 +15,6 @@
     "localforage": "^1.10.0",
     "motion": "^12.9.2",
     "next": "15.3.1",
-    "nextjs-progressbar": "^0.0.16",
-    "nprogress": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.1",
