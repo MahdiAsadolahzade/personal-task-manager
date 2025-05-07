@@ -102,7 +102,8 @@ const AutoComplete: FC<AutoCompleteProps> = ({
             <>
               <div className="relative">
                 <input
-                   autoComplete="off"
+                  autoComplete="off"
+                  placeholder="Type to search . . ."
                   id={inputUniqueID}
                   type="text"
                   value={
@@ -116,7 +117,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                     setTimeout(() => setIsSuggestionsVisible(false), 500)
                   }
                   className="input"
-                  readOnly={multiSelect && selectedItems?.length > 0} // Prevent manual typing in multiSelect
+                  readOnly={multiSelect && selectedItems?.length > 0} 
                 />
                 <span
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -143,12 +144,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                     >
                       <div className="flex justify-start space-x-2 items-center">
                         {!!suggestion?.src && (
-                          <div className="p-1 rounded-full bg-foreground/50">
-                            <Icon
-                              alt={suggestion?.name}
-                              src={suggestion?.src}
-                            />
-                          </div>
+                          <Icon alt={suggestion?.name} src={suggestion?.src} />
                         )}
                         <p> {suggestion.name}</p>
                       </div>

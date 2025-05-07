@@ -7,6 +7,7 @@ import { useAppStore } from "@/stores/app.store";
 import { useEffect } from "react";
 import { checkForAppUpdate } from "@/lib/checkForAppUpdate";
 import { Dialog } from "@/components/dialog/Dialog";
+import clsx from "clsx";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   useScreenSizeDetector();
-  const { theme } = useAppStore();
+  const { theme, isMobile } = useAppStore();
 
   useEffect(() => {
     checkForAppUpdate();
@@ -45,11 +46,35 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
+        className={clsx(
+          geistSans.variable,
+          geistMono.variable,
+          "antialiased relative h-screen overflow-hidden flex flex-col"
+        )}
       >
+        {/* Header for desktop */}
+        {!isMobile && <Header />}
 
-        <Header />
-        <div className="p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20">{children}</div>
+        {/* Main content area */}
+        <main
+          className={clsx(
+            "flex-1 overflow-y-auto",
+            "p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20"
+          )}
+          style={{
+            maxHeight: isMobile ? "calc(100vh - 56px)" : "auto",
+          }}
+        >
+          {children}
+        </main>
+
+        {/* Header for mobile at bottom */}
+        {isMobile && (
+          <div className="fixed bottom-0 w-full z-50">
+            <Header />
+          </div>
+        )}
+
         <Dialog />
       </body>
     </html>

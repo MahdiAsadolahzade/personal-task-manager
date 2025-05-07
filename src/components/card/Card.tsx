@@ -98,17 +98,13 @@ const Card: FC<CardProps> = ({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     {configuration.showIcon && (
-                      <span
-                        className={`text-2xl bg-foreground/50 p-1 rounded-full  ${item.color}`}
-                      >
-                        <Icon
-                          alt=""
-                          src={
-                            item[configuration?.iconKey ?? "src"] ??
-                            "/icons/icon-192x192.png"
-                          }
-                        />
-                      </span>
+                      <Icon
+                        alt=""
+                        src={
+                          item[configuration?.iconKey ?? "src"] ??
+                          "/icons/icon-192x192.png"
+                        }
+                      />
                     )}
 
                     <span>{item.name}</span>
@@ -126,15 +122,15 @@ const Card: FC<CardProps> = ({
               </div>
             );
           })}
-
-        {!!CustomComponent && (
-          <CustomComponent
-            data={data}
-            setSelectedValue={setSelectedValue}
-            selectedValue={selectedValue}
-          />
-        )}
       </div>
+
+      {!!CustomComponent && (
+        <CustomComponent
+          data={data}
+          setSelectedValue={setSelectedValue}
+          selectedValue={selectedValue}
+        />
+      )}
     </div>
   );
 };

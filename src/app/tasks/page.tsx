@@ -2,7 +2,7 @@
 import Card from "@/components/card/Card";
 import AutoComplete from "@/components/inputs/AutoComplete";
 import TextField from "@/components/inputs/TextField";
-import TasksList from "@/components/pages/TasksList";
+import TasksList from "@/components/sections/TasksList";
 import Title from "@/components/typography/Title";
 import { findIcon } from "@/lib/utils/finders";
 import { useDialogStore } from "@/stores/dialog.store";

@@ -19,3 +19,8 @@ export const useTaskTypeStore = createPersistedStore<TaskTypeStoreModel>(
   }),
   (state) => ({ types: state.types })
 );
+
+export const typesList = () => {
+  const store = useTaskTypeStore.getState();
+  return store.types;
+};

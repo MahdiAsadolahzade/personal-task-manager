@@ -11,6 +11,7 @@ import { useTaskStatusStore } from "@/stores/task_status.store";
 import { useCallback, useState } from "react";
 import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
 import { useTaskTypeStore } from "@/stores/task_type.store";
+import IconsList from "@/components/sections/IconsList";
 
 const ConfigPage = () => {
   const { openDialog } = useDialogStore();
@@ -238,7 +239,8 @@ const ConfigPage = () => {
           setSelectedValue={setSelectedIcon}
           selectedValue={selectedIcon}
           laoding={!useIconStore().hydrated}
-          configuration={{ showIcon: true, iconKey: "src", showColor: false }}
+          // configuration={{ showIcon: true, iconKey: "src", showColor: false }}
+          CustomComponent={IconsList}
         />
       </div>
     </div>

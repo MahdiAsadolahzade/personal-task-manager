@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
   // Other Next.js config if needed
   reactStrictMode: true,
   swcMinify: true,
+
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
+  },
+  
 };
 
 export default withPWA({
