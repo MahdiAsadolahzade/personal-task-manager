@@ -6,16 +6,18 @@ import { TiDelete } from "react-icons/ti";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { v4 as uuid } from "uuid";
+import { useDynamicForm } from "@/lib/dynamicUseForm";
 
 export const Dialog = () => {
+  const { isOpen, content, closeDialog } = useDialogStore();
   const {
     register,
     control,
     formState: { errors },
     reset,
     handleSubmit,
-  } = useForm();
-  const { isOpen, content, closeDialog } = useDialogStore();
+  } = useDynamicForm(content?.schema);
+
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
   const onSubmit = (data: any) => {
@@ -37,7 +39,7 @@ export const Dialog = () => {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
         console.log(content?.defaultValues);
-        
+
         reset(content?.defaultValues || {}, { keepValues: false });
       }
     } else {

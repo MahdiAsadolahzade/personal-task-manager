@@ -50,6 +50,16 @@ export interface AutoCompleteProps {
   suggestKey?:string
 }
 
+export interface CheckboxProps {
+  name: string;
+  label?: string;
+  control?: Control<any>;
+  errors?: FieldErrors;
+  disabled?: boolean;
+  defaultChecked?: boolean;
+  className?: string;
+}
+
 export interface FileUploadProps {
   name:string
   label:string

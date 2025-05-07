@@ -265,6 +265,39 @@ body {
     display: none; /* Remove spinner for a cleaner look */
   }
 
+  .input[type="checkbox"] {
+    @apply h-5 w-5 rounded border-muted text-primary focus:ring-primary cursor-pointer;
+    appearance: none;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: var(--color-base1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .input[type="checkbox"]:checked {
+    @apply bg-primary border-primary;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;
+  }
+
+  .input[type="checkbox"]:focus {
+    @apply ring-2 ring-offset-2;
+    ring-offset-color: var(--color-background);
+  }
+
+  .input[type="checkbox"]:disabled {
+    @apply bg-base2 border-muted cursor-not-allowed opacity-50;
+  }
+
+  .input[type="checkbox"].checkbox-error {
+    @apply border-error text-error focus:ring-error;
+  }
+
+  .input[type="checkbox"].checkbox-success {
+    @apply border-success text-success focus:ring-success;
+  }
 
   /* Autocomplete component */
   .autocomplete {
@@ -282,4 +315,7 @@ body {
   .suggestion-item.selected {
     @apply border-2 border-primary;
   }
+
+    /* Checkbox component */
+
 }

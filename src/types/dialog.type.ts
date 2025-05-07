@@ -1,5 +1,6 @@
 import { Component, ComponentType, HTMLInputTypeAttribute } from "react";
 import { AutoCompleteOption } from "./inputs.type";
+import { ZodObject } from "zod";
 
 export type TDialogKind =
   | "Add"
@@ -26,6 +27,7 @@ export type TDialogContent = {
   kind: TDialogKind;
   message?: string;
   array?: TFieldArray[];
+  schema?:ZodObject<any>
 
   actions?: TDialogActions;
   defaultValues?: any;

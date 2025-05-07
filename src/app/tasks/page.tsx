@@ -1,6 +1,7 @@
 "use client";
 import Card from "@/components/card/Card";
 import AutoComplete from "@/components/inputs/AutoComplete";
+import Checkbox from "@/components/inputs/Checkbox";
 import TextField from "@/components/inputs/TextField";
 import TasksList from "@/components/sections/TasksList";
 import Title from "@/components/typography/Title";
@@ -11,7 +12,7 @@ import { useTaskStatusStore } from "@/stores/task_status.store";
 import { useTaskTypeStore } from "@/stores/task_type.store";
 import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
 import React, { useCallback, useState } from "react";
-
+import { TaskSchema } from "@/schemas/task.schema";
 export type Task = {
   id: string;
   title: string;
@@ -34,6 +35,7 @@ const page = () => {
     task: {
       Add: {
         title: "Add Task",
+        schema:TaskSchema,
         array: [
           { name: "title", label: "Title", Component: TextField },
           {
@@ -69,6 +71,19 @@ const page = () => {
             label: "Due Date",
             Component: TextField,
             type: "datetime-local",
+          },
+          {
+            name: "setAlarm",
+            label: "Set Alarm?",
+            Component: Checkbox,
+          
+          },
+          {
+            name: "priority",
+            label: "Priority",
+            Component: AutoComplete,
+            suggestions: [{id:'1',name:"LOW"},{id:'2',name:"MEDIUM"},{id:'3',name:"HIGH"}],
+            suggestionKey: "name",
           },
         ],
         actions: { Add: addTask },

@@ -5,7 +5,16 @@ export type Task = {
   status: TaskStatus;
   type?: TaskType;
   createdAt: string;
+  updatedAt?: string;
   dueDate?: string;
+  setAlarm?: boolean;
+  //new
+  priority?: "LOW" | "MEDIUM" | "HIGH";
+  attachments?: string[]; // URLs or file paths
+  isRecurring?: boolean;
+  recurrencePattern?: string; // e.g., "DAILY", "WEEKLY", "MONTHLY"
+  completedAt?: string;
+  notes?: string;
 };
 
 export type TaskStatusName =
