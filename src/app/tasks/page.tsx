@@ -136,8 +136,42 @@ const page = () => {
         setSelectedValue={setSelectedTask}
         selectedValue={selectedTask}
         laoding={!useTaskStore().hydrated}
-        configuration={{ showIcon: false, showColor: true }}
+        configuration={{  showColor: true }}
         CustomComponent={TasksList}
+        filter={{showFilter:true,filterArray: [
+          { name: "title", label: "Title", Component: TextField },
+        
+          {
+            name: "status",
+            label: "Status",
+            Component: AutoComplete,
+            suggestions: statuses?.map((status) => ({
+              id: status.id,
+              name: status.name ?? "",
+              src: findIcon(status?.icon!)?.src,
+            })),
+            multiSelect:true,
+            suggestionKey: "src",
+          },
+          {
+            name: "type",
+            label: "Type",
+            Component: AutoComplete,
+            suggestions: types?.map((type) => ({
+              id: type.id,
+              name: type.name ?? "",
+              src: findIcon(type?.icon!)?.src,
+            })),
+
+            suggestionKey: "src",
+          },
+          // {
+          //   name: "dueDate",
+          //   label: "Due Date",
+          //   Component: TextField,
+          //   type: "datetime-local",
+          // },
+        ]}}
       />
     </div>
   );

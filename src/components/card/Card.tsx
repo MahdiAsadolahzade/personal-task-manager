@@ -1,10 +1,13 @@
 "use client";
-import { TDialogActions, TDialogKind } from "@/types/dialog.type";
-import { Component, MouseEventHandler, useEffect } from "react";
-import { FC } from "react";
+import { TDialogActions, TDialogKind, TFieldArray } from "@/types/dialog.type";
+import { FC, MouseEventHandler, useEffect, useRef, useState } from "react";
 import { CardHeaderIcon } from "@/constants/card/cardData";
-import { v4 as uuid } from "uuid";
 import Icon from "../utils/Icon";
+import Menu from "../menu/Menu";
+import { BsFilterCircleFill } from "react-icons/bs";
+import FilterCard from "./FilterCard";
+import { useForm } from "react-hook-form";
+
 interface CardProps {
   title: string;
   actions?: Partial<Record<TDialogKind, MouseEventHandler<HTMLButtonElement>>>;
@@ -14,10 +17,9 @@ interface CardProps {
   laoding?: boolean;
   configuration?: {
     showColor?: boolean;
-    showIcon?: boolean;
-    iconKey?: string;
   };
   CustomComponent?: any;
+  filter?: { showFilter?: boolean, filterArray?: TFieldArray[] };
 }
 
 const Card: FC<CardProps> = ({
@@ -27,25 +29,83 @@ const Card: FC<CardProps> = ({
   setSelectedValue,
   selectedValue,
   laoding,
-  configuration = {
-    showColor: true,
-    showIcon: true,
-    iconKey: "src",
-  },
+  configuration = { showColor: true },
+  filter,
   CustomComponent,
 }) => {
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const filterMenuEL = useRef<HTMLButtonElement>(null);
+  const [filteredData, setFilteredData] = useState(data);
+  const { control, register, watch, reset } = useForm();
+
+  // Sync data with external changes
+  useEffect(() => {
+    setFilteredData(data);
+    // Reset filters when data changes
+    reset();
+  }, [data, reset]);
+
+  // Handle selection sync
   useEffect(() => {
     if (!selectedValue) return;
-
-    const freshItem = data.find((item) => item.id === selectedValue.id);
+  
+    const freshItem = filteredData.find((item) => item.id === selectedValue.id);
     if (!freshItem) {
-      // The selected item was deleted
       setSelectedValue(null);
     } else if (freshItem !== selectedValue) {
-      // The selected item was updated, replace it with the fresh one
       setSelectedValue(freshItem);
     }
-  }, [data, selectedValue, setSelectedValue]);
+  }, [filteredData, selectedValue, setSelectedValue]);
+
+  // Real-time filtering
+  useEffect(() => {
+    const subscription = watch((formValues) => {
+      let filtered = [...data];
+  
+      if (!filter?.filterArray) return;
+  
+      for (const filterItem of filter.filterArray) {
+        const { name } = filterItem;
+        const filterValue = formValues[name];
+  
+        if (
+          filterValue === undefined ||
+          (typeof filterValue === "string" && filterValue.trim() === "") ||
+          (Array.isArray(filterValue) && filterValue.length === 0)
+        ) {
+          continue;
+        }
+  
+        filtered = filtered.filter((item) => {
+          const itemValue = item[name];
+  
+          // Text field (string match)
+          if (typeof filterValue === "string") {
+            return itemValue?.toLowerCase().includes(filterValue.toLowerCase());
+          }
+  
+          // AutoComplete (single object selection)
+          if (typeof filterValue === "object" && !Array.isArray(filterValue) && filterValue?.id) {
+            return itemValue?.id === filterValue.id;
+          }
+  
+          // Multi-select (array of selected objects or IDs)
+          if (Array.isArray(filterValue)) {
+            const selectedIds = filterValue.map((val) => (typeof val === "object" ? val.id : val));
+            return selectedIds.includes(itemValue?.id || itemValue);
+          }
+  
+          return true;
+        });
+      }
+  
+      setFilteredData(filtered);
+    });
+  
+    return () => subscription.unsubscribe();
+  }, [watch, data, filter?.filterArray]);
+  
+  
 
   if (laoding) {
     return <div className="card bg-muted animate-pulse w-full h-64"></div>;
@@ -76,60 +136,70 @@ const Card: FC<CardProps> = ({
                 </button>
               );
             })}
+          {filter?.showFilter && (
+            <button
+              className="btn btn-ghost btn-sm p-0"
+              ref={filterMenuEL}
+              onClick={() => setOpenFilter((prev) => !prev)}
+            >
+              <BsFilterCircleFill className={`text-xl ${filteredData.length !== data.length ? 'text-primary' : ''}`} />
+            </button>
+          )}
         </div>
       </h2>
 
-      <div className="space-y-2 max-h-52 overflow-auto">
-        {!!data &&
-          !CustomComponent &&
-          data.map((item) => {
+      <div className="space-y-2">
+        {CustomComponent ? (
+          <CustomComponent
+            data={filteredData}
+            setSelectedValue={setSelectedValue}
+            selectedValue={selectedValue}
+          />
+        ) : (
+          filteredData.map((item, index) => {
             const isSelected = selectedValue?.id === item?.id;
 
             return (
               <div
-                className={`hover:bg-base2 hover:rounded-md p-2 cursor-pointer ${
-                  isSelected ? "border-[1px] border-primary rounded-md" : ""
+                className={`hover:bg-base2 hover:rounded-md p-2 cursor-pointer transition-colors ${
+                  isSelected ? "border-[1px] border-primary rounded-md bg-base2" : ""
                 }`}
-                onClick={() => {
-                  !!setSelectedValue && setSelectedValue(item);
-                }}
-                key={`${uuid()}`}
+                onClick={() => setSelectedValue(item)}
+                key={`${item?.id}/${index}`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    {configuration.showIcon && (
-                      <Icon
-                        alt=""
-                        src={
-                          item[configuration?.iconKey ?? "src"] ??
-                          "/icons/icon-192x192.png"
-                        }
-                      />
-                    )}
-
                     <span>{item.name}</span>
                   </div>
                   {!!item?.color && configuration.showColor && (
                     <span
-                      style={{
-                        backgroundColor:
-                          item?.color ?? "var(--color-foreground)",
-                      }}
+                      style={{ backgroundColor: item?.color }}
                       className="w-5 h-5 rounded-full border-2 border-muted"
                     ></span>
                   )}
                 </div>
               </div>
             );
-          })}
+          })
+        )}
       </div>
 
-      {!!CustomComponent && (
-        <CustomComponent
-          data={data}
-          setSelectedValue={setSelectedValue}
-          selectedValue={selectedValue}
-        />
+      {filter?.showFilter && (
+        <Menu
+          anchorEl={filterMenuEL.current}
+          onClose={() => setOpenFilter(false)}
+          open={openFilter}
+        >
+          <FilterCard 
+            fullData={data} 
+            filterArray={filter?.filterArray}
+            setFilteredData={setFilteredData}
+            onClose={() => setOpenFilter(false)}
+            // Pass form control props
+            control={control}
+            register={register}
+          />
+        </Menu>
       )}
     </div>
   );

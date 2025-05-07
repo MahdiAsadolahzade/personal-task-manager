@@ -9,23 +9,29 @@ export type TDialogKind =
   | "Confirm"
   | "Custom";
 
-export type TMethod = 'POST' | 'PUT' | 'DELETE' | 'GET';
+export type TMethod = "POST" | "PUT" | "DELETE" | "GET";
+
+export type TFieldArray = {
+  name: string;
+  label?: string;
+  Component: ComponentType<any>;
+  type?: HTMLInputTypeAttribute;
+  suggestions?: AutoCompleteOption[];
+  suggestionKey?: keyof AutoCompleteOption;
+  multiSelect?:boolean
+};
 
 export type TDialogContent = {
   title: string;
   kind: TDialogKind;
-message?:string
-  array?: {
-    name: string;
-    label?:string
-    Component: ComponentType<any>;
-    type?: HTMLInputTypeAttribute
-    suggestions?:AutoCompleteOption[]
-    suggestionKey?:keyof AutoCompleteOption
-  }[];
+  message?: string;
+  array?: TFieldArray[];
+
   actions?: TDialogActions;
-  defaultValues?:any
+  defaultValues?: any;
 };
 export type TDialogActions = Partial<Record<TDialogKind, Function>>;
 
-export type TDialogConfig ={  [key in string]: Partial<{ [key in TDialogKind]: TDialogContent }>}
+export type TDialogConfig = {
+  [key in string]: Partial<{ [key in TDialogKind]: TDialogContent }>;
+};

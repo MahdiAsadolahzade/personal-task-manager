@@ -211,7 +211,7 @@ const ConfigPage = () => {
           setSelectedValue={setSelectedStatus}
           selectedValue={selectedStatus}
           laoding={!useTaskStatusStore().hydrated}
-          configuration={{ showIcon: false, showColor: true }}
+          configuration={{ showColor: true }}
         />
 
         <Card
@@ -225,7 +225,7 @@ const ConfigPage = () => {
           setSelectedValue={setSelectedType}
           selectedValue={selectedType}
           laoding={!useTaskTypeStore().hydrated}
-          configuration={{ showIcon: false, showColor: true }}
+          configuration={{ showColor: true }}
         />
 
         <Card
@@ -239,7 +239,12 @@ const ConfigPage = () => {
           setSelectedValue={setSelectedIcon}
           selectedValue={selectedIcon}
           laoding={!useIconStore().hydrated}
-          // configuration={{ showIcon: true, iconKey: "src", showColor: false }}
+          filter={{
+            showFilter: true,
+            filterArray: [
+              { name: "name", label: "Name", Component: TextField },
+            ],
+          }}
           CustomComponent={IconsList}
         />
       </div>
