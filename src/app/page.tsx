@@ -1,34 +1,28 @@
 "use client";
 import { useRef, useState } from "react";
-import { useAppStore } from "@/stores/app.store";
 import Title from "@/components/typography/Title";
-import Menu from "@/components/menu/Menu";
+import { useTaskStore } from "@/stores/task.store";
+import TasksList from "@/components/sections/TasksList";
+import NavLink from "@/components/NavLink";
 
 export default function TaskPage() {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = useState(false);
-  
+  const { tasks } = useTaskStore();
+
   return (
-    <div className="">
+    <div className="p-4">
       <Title title="Home" />
 
-      <button
-        ref={buttonRef}
-        onClick={() => setOpen((prev) => !prev)}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Open Menu
-      </button>
-
-      <Menu
-        anchorEl={buttonRef.current}
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        <div className="hover:bg-gray-100 p-2 cursor-pointer">Item 1</div>
-        <div className="hover:bg-gray-100 p-2 cursor-pointer">Item 2</div>
-        <div className="hover:bg-gray-100 p-2 cursor-pointer">Item 3</div>
-      </Menu>
+      <h2 className="text-secondary ">Latest Tasks</h2>
+      {tasks?.length > 0 ? (
+        <TasksList data={tasks?.slice(Math.max(tasks?.length - 2, 0))} />
+      ) : (
+        <div className="flex-col justify-center items-center">
+          <p> you dont have task you can create a task in task page</p>
+          <NavLink href={"/tasks"}>
+            <div className="btn btn-secondary">Tasks</div>
+          </NavLink>
+        </div>
+      )}
     </div>
   );
 }

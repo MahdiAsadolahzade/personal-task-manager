@@ -28,7 +28,6 @@ export const Dialog = () => {
         ? data
         : data?.id;
     content?.actions?.[content?.kind]?.(finalData);
-    console.log("final Data", finalData);
 
     closeDialog();
   };
@@ -38,8 +37,6 @@ export const Dialog = () => {
       if (content?.kind === "Add") {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
-        console.log(content?.defaultValues);
-
         reset(content?.defaultValues || {}, { keepValues: false });
       }
     } else {
@@ -78,7 +75,9 @@ export const Dialog = () => {
               </div>
             )}
             {!!content?.array && (
-              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[70vh] overflow-auto`}>
+              <div
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[70vh] overflow-auto`}
+              >
                 {content.array?.map((item, index) => (
                   <item.Component
                     name={item.name}

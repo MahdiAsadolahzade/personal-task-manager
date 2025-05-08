@@ -32,8 +32,6 @@ export type Task = {
 const page = () => {
   const { openDialog } = useDialogStore();
   const { tasks, addTask, updateTask, deleteTask } = useTaskStore();
-console.log(tasks);
-
   const [selectedTask, setSelectedTask] = useState<any>();
 
   const dialogConfig: TDialogConfig = {

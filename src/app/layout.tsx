@@ -9,6 +9,7 @@ import { checkForAppUpdate } from "@/lib/checkForAppUpdate";
 import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
 import { scheduleTaskNotifications } from "@/lib/notifications/schedule/tasks";
+import { useTaskStore } from "@/stores/task.store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({
 }>) {
   useScreenSizeDetector();
   const { theme, isMobile } = useAppStore();
+  const {tasks} = useTaskStore()
 
   useEffect(() => {
     checkForAppUpdate();
@@ -34,7 +36,7 @@ export default function RootLayout({
 
   useEffect(()=>{
     scheduleTaskNotifications()
-  },[])
+  },[tasks])
 
   return (
     <html lang="en" data-theme={theme}>
@@ -64,7 +66,8 @@ export default function RootLayout({
         <main
           className={clsx(
             "flex-1 overflow-y-auto",
-            "p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20"
+            "p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20",
+            isMobile ? "pb-16" : "" 
           )}
           style={{
             maxHeight: isMobile ? "calc(100vh - 56px)" : "auto",

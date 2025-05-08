@@ -13,8 +13,8 @@ const TasksList = ({
   setSelectedValue,
 }: {
   data: Task[];
-  selectedValue: any;
-  setSelectedValue: any;
+  selectedValue?: any;
+  setSelectedValue?: any;
 }) => {
   return (
     <div className="space-y-4 p-4">
@@ -22,11 +22,13 @@ const TasksList = ({
         {data.map((task) => (
           <div
             key={task.id}
-            onClick={() => setSelectedValue(task)}
+            onClick={() => {
+              !!setSelectedValue && setSelectedValue(task);
+            }}
             className={`relative rounded-xl p-5 shadow-sm transition-all duration-200 cursor-pointer 
               border border-muted hover:border-secondary hover:shadow-md
               ${
-                selectedValue?.id === task.id
+                !!selectedValue && selectedValue?.id === task.id
                   ? "ring-2 ring-primary bg-base2"
                   : "bg-base2"
               }`}
@@ -37,13 +39,15 @@ const TasksList = ({
                 {task.title}
               </h3>
               {task.priority && (
-                <span className={`text-xs px-2 py-1 rounded-full ${
-                  task.priority === 'HIGH' 
-                    ? 'bg-red-100 text-red-800' 
-                    : task.priority === 'MEDIUM' 
-                      ? 'bg-yellow-100 text-yellow-800' 
-                      : 'bg-green-100 text-green-800'
-                }`}>
+                <span
+                  className={`text-xs px-2 py-1 rounded-full ${
+                    task.priority === "HIGH"
+                      ? "bg-red-100 text-red-800"
+                      : task.priority === "MEDIUM"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : "bg-green-100 text-green-800"
+                  }`}
+                >
                   {findPriority(task.priority)?.name}
                 </span>
               )}
@@ -61,7 +65,7 @@ const TasksList = ({
               {/* Due date */}
               {task.dueDate && (
                 <div className="flex items-center text-sm space-x-1">
-                  <Icon src="/icons/calendar.svg" alt="Due date"  />
+                  <Icon src="/icons/calendar.svg" alt="Due date" />
                   <span>{convertToStandardDateWithTime(task.dueDate)}</span>
                 </div>
               )}
@@ -78,7 +82,9 @@ const TasksList = ({
               {task.isRecurring && task.recurrencePattern && (
                 <div className="flex items-center text-sm space-x-1 text-purple-500">
                   <FiRepeat className="text-base" />
-                  <span>{findRecurrencePattern(task.recurrencePattern)?.name}</span>
+                  <span>
+                    {findRecurrencePattern(task.recurrencePattern)?.name}
+                  </span>
                 </div>
               )}
             </div>
@@ -98,7 +104,6 @@ const TasksList = ({
                     alt={task.status}
                     src={findIcon(findStatus(task.status)?.icon!)?.src!}
                     className="mr-1"
-                 
                   />
                   {findStatus(task.status)?.name}
                 </div>
@@ -116,7 +121,6 @@ const TasksList = ({
                       alt={task.type}
                       src={findIcon(findType(task.type)?.icon!)?.src!}
                       className="mr-1"
-                     
                     />
                     {findType(task.type)?.name}
                   </div>
