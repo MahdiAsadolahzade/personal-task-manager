@@ -240,7 +240,6 @@ const ConfigPage = () => {
           selectedValue={selectedIcon}
           laoding={!useIconStore().hydrated}
           filter={{
-            showFilter: true,
             filterArray: [
               { name: "name", label: "Name", Component: TextField },
             ],

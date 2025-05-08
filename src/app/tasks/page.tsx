@@ -13,6 +13,12 @@ import { useTaskTypeStore } from "@/stores/task_type.store";
 import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
 import React, { useCallback, useState } from "react";
 import { TaskSchema } from "@/schemas/task.schema";
+import {
+  getTasksDialogArray,
+  getTasksFilterArray,
+} from "@/data/dialogArrays/tasks";
+import { findPriority, Priorities } from "@/mock/priority.data";
+import { findRecurrencePattern } from "@/mock/recurrence.data";
 export type Task = {
   id: string;
   title: string;
@@ -26,8 +32,7 @@ export type Task = {
 const page = () => {
   const { openDialog } = useDialogStore();
   const { tasks, addTask, updateTask, deleteTask } = useTaskStore();
-  const { statuses } = useTaskStatusStore();
-  const { types } = useTaskTypeStore();
+console.log(tasks);
 
   const [selectedTask, setSelectedTask] = useState<any>();
 
@@ -35,93 +40,25 @@ const page = () => {
     task: {
       Add: {
         title: "Add Task",
-        schema:TaskSchema,
-        array: [
-          { name: "title", label: "Title", Component: TextField },
-          {
-            name: "description",
-            label: "Description",
-            Component: TextField,
-            type: "text",
-          },
-          {
-            name: "status",
-            label: "Status",
-            Component: AutoComplete,
-            suggestions: statuses?.map((status) => ({
-              id: status.id,
-              name: status.name ?? "",
-              src: findIcon(status?.icon!)?.src,
-            })),
-            suggestionKey: "src",
-          },
-          {
-            name: "type",
-            label: "Type",
-            Component: AutoComplete,
-            suggestions: types?.map((type) => ({
-              id: type.id,
-              name: type.name ?? "",
-              src: findIcon(type?.icon!)?.src,
-            })),
-            suggestionKey: "src",
-          },
-          {
-            name: "dueDate",
-            label: "Due Date",
-            Component: TextField,
-            type: "datetime-local",
-          },
-          {
-            name: "setAlarm",
-            label: "Set Alarm?",
-            Component: Checkbox,
-          
-          },
-          {
-            name: "priority",
-            label: "Priority",
-            Component: AutoComplete,
-            suggestions: [{id:'1',name:"LOW"},{id:'2',name:"MEDIUM"},{id:'3',name:"HIGH"}],
-            suggestionKey: "name",
-          },
-        ],
+        schema: TaskSchema,
+        array: getTasksDialogArray(),
         actions: { Add: addTask },
         kind: "Add",
       },
-      // Edit: {
-      //   title: "Edit Status",
-      //   array: [
-      //     { name: "name", label: "Name", Component: TextField },
-      //     {
-      //       name: "color",
-      //       label: "Color",
-      //       Component: TextField,
-      //       type: "color",
-      //     },
-      //     {
-      //       name: "icon",
-      //       label: "Icon",
-      //       Component: AutoComplete,
-      //       suggestions: icons?.map((icon) => ({
-      //         id: icon.id,
-      //         name: icon.name ?? "",
-      //         src: icon?.src,
-      //       })),
-      //       suggestionKey: "src",
-      //     },
-      //   ],
-      //   actions: { Edit: updateStatus },
-      //   defaultValues: selectedStatus,
-      //   kind: "Edit",
-      // },
-      // Delete: {
-      //   title: "Delete Status",
-      //   message: `Are you sure you want to delete ${selectedStatus?.name} ?`,
-      //   actions: { Delete: deleteStatus },
-      //   defaultValues: selectedStatus,
-      //   kind: "Delete",
-      // },
+      Edit: {
+        title: "Edit Task",
+        // schema: TaskSchema,
+        array: getTasksDialogArray(),
+        actions: { Edit: updateTask },
+        defaultValues: {
+          ...selectedTask,
+          priority: findPriority(selectedTask?.priority)?.id,
+          recurrencePattern: findRecurrencePattern(
+            selectedTask?.recurrencePattern
+          )?.id,
+        },
+        kind: "Edit",
+      },
     },
   };
 
@@ -145,48 +82,17 @@ const page = () => {
         data={tasks}
         actions={{
           Add: () => handleOpenDialog("Add/task"),
-          Edit: () => handleOpenDialog("Edit/status"),
-          Delete: () => handleOpenDialog("Delete/status"),
+          Edit: () => handleOpenDialog("Edit/task"),
+          Delete: () => handleOpenDialog("Delete/task"),
         }}
         setSelectedValue={setSelectedTask}
         selectedValue={selectedTask}
         laoding={!useTaskStore().hydrated}
-        configuration={{  showColor: true }}
+        configuration={{ showColor: true }}
         CustomComponent={TasksList}
-        filter={{showFilter:true,filterArray: [
-          { name: "title", label: "Title", Component: TextField },
-        
-          {
-            name: "status",
-            label: "Status",
-            Component: AutoComplete,
-            suggestions: statuses?.map((status) => ({
-              id: status.id,
-              name: status.name ?? "",
-              src: findIcon(status?.icon!)?.src,
-            })),
-            multiSelect:true,
-            suggestionKey: "src",
-          },
-          {
-            name: "type",
-            label: "Type",
-            Component: AutoComplete,
-            suggestions: types?.map((type) => ({
-              id: type.id,
-              name: type.name ?? "",
-              src: findIcon(type?.icon!)?.src,
-            })),
-
-            suggestionKey: "src",
-          },
-          // {
-          //   name: "dueDate",
-          //   label: "Due Date",
-          //   Component: TextField,
-          //   type: "datetime-local",
-          // },
-        ]}}
+        filter={{
+          filterArray: getTasksFilterArray(),
+        }}
       />
     </div>
   );

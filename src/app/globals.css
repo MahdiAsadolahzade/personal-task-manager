@@ -313,7 +313,7 @@ body {
   }
 
   .suggestion-item.selected {
-    @apply border-2 border-primary;
+    @apply bg-primary/20 ;
   }
 
     /* Checkbox component */

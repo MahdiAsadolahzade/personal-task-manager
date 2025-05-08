@@ -2,19 +2,19 @@ export type Task = {
   id: string;
   title: string;
   description?: string;
-  status: TaskStatus;
-  type?: TaskType;
+  status: string;
+  type?: string;
   createdAt: string;
   updatedAt?: string;
   dueDate?: string;
+
   setAlarm?: boolean;
   //new
-  priority?: "LOW" | "MEDIUM" | "HIGH";
-  attachments?: string[]; // URLs or file paths
+  priority?: string;
+
   isRecurring?: boolean;
   recurrencePattern?: string; // e.g., "DAILY", "WEEKLY", "MONTHLY"
-  completedAt?: string;
-  notes?: string;
+
 };
 
 export type TaskStatusName =

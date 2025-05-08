@@ -19,7 +19,7 @@ interface CardProps {
     showColor?: boolean;
   };
   CustomComponent?: any;
-  filter?: { showFilter?: boolean, filterArray?: TFieldArray[] };
+  filter?: {  filterArray?: TFieldArray[] };
 }
 
 const Card: FC<CardProps> = ({
@@ -136,7 +136,7 @@ const Card: FC<CardProps> = ({
                 </button>
               );
             })}
-          {filter?.showFilter && (
+          {filter?.filterArray && (
             <button
               className="btn btn-ghost btn-sm p-0"
               ref={filterMenuEL}
@@ -184,7 +184,7 @@ const Card: FC<CardProps> = ({
         )}
       </div>
 
-      {filter?.showFilter && (
+      {filter?.filterArray && (
         <Menu
           anchorEl={filterMenuEL.current}
           onClose={() => setOpenFilter(false)}

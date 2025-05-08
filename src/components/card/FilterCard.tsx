@@ -22,7 +22,7 @@ const FilterCard: FC<FilterCardProps> = ({
   register,
 }) => {
   return (
-    <div className="p-4 w-full  md:w-128 space-y-4">
+    <div className="p-4 w-full max-h-64 overflow-auto  md:w-128 space-y-4">
       {filterArray?.map((item, index) => (
         <item.Component
           name={item.name}

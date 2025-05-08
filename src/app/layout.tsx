@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { checkForAppUpdate } from "@/lib/checkForAppUpdate";
 import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
+import { scheduleTaskNotifications } from "@/lib/notifications/schedule/tasks";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,10 @@ export default function RootLayout({
   useEffect(() => {
     checkForAppUpdate();
   }, []);
+
+  useEffect(()=>{
+    scheduleTaskNotifications()
+  },[])
 
   return (
     <html lang="en" data-theme={theme}>

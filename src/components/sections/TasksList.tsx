@@ -1,8 +1,11 @@
-import { Task } from "@/app/tasks/page";
 import React from "react";
 import Icon from "../utils/Icon";
 import { findIcon, findStatus, findType } from "@/lib/utils/finders";
 import { convertToStandardDateWithTime } from "@/lib/utils/dateConverts";
+import { Task } from "@/types/task.type";
+import { FiBell, FiRepeat } from "react-icons/fi";
+import { findRecurrencePattern } from "@/mock/recurrence.data";
+import { findPriority } from "@/mock/priority.data";
 
 const TasksList = ({
   data,
@@ -26,33 +29,62 @@ const TasksList = ({
                 selectedValue?.id === task.id
                   ? "ring-2 ring-primary bg-base2"
                   : "bg-base2"
-              }
-          `}
+              }`}
           >
             {/* Task title with priority indicator */}
             <div className="flex items-start justify-between mb-2">
-              <h3 className="text-lg font-semibold  line-clamp-1">
+              <h3 className="text-lg font-semibold line-clamp-1">
                 {task.title}
               </h3>
+              {task.priority && (
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  task.priority === 'HIGH' 
+                    ? 'bg-red-100 text-red-800' 
+                    : task.priority === 'MEDIUM' 
+                      ? 'bg-yellow-100 text-yellow-800' 
+                      : 'bg-green-100 text-green-800'
+                }`}>
+                  {findPriority(task.priority)?.name}
+                </span>
+              )}
             </div>
 
             {/* Task description */}
             <div className="h-20 max-h-20">
-              <p className=" text-sm mb-4 line-clamp-2">
+              <p className="text-sm mb-4 line-clamp-2">
                 {task.description || "No description provided"}
               </p>
             </div>
 
-            {/* Due date */}
-            {task.dueDate && (
-              <div className="flex items-center text-sm space-x-2  mb-3">
-           <Icon src="/icons/calendar.svg" alt="Due date" />
-                <span>{convertToStandardDateWithTime(task.dueDate)}</span>
-              </div>
-            )}
+            {/* Metadata row */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              {/* Due date */}
+              {task.dueDate && (
+                <div className="flex items-center text-sm space-x-1">
+                  <Icon src="/icons/calendar.svg" alt="Due date"  />
+                  <span>{convertToStandardDateWithTime(task.dueDate)}</span>
+                </div>
+              )}
+
+              {/* Alarm indicator */}
+              {task.setAlarm && (
+                <div className="flex items-center text-sm space-x-1 text-blue-500">
+                  <FiBell className="text-base" />
+                  <span>Alarm Set</span>
+                </div>
+              )}
+
+              {/* Recurrence indicator */}
+              {task.isRecurring && task.recurrencePattern && (
+                <div className="flex items-center text-sm space-x-1 text-purple-500">
+                  <FiRepeat className="text-base" />
+                  <span>{findRecurrencePattern(task.recurrencePattern)?.name}</span>
+                </div>
+              )}
+            </div>
 
             {/* Status and type badges */}
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted ">
+            <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted">
               <div className="flex items-center space-x-2">
                 {/* Status badge */}
                 <div
@@ -63,11 +95,10 @@ const TasksList = ({
                   }}
                 >
                   <Icon
-                 
-            
                     alt={task.status}
                     src={findIcon(findStatus(task.status)?.icon!)?.src!}
                     className="mr-1"
+                 
                   />
                   {findStatus(task.status)?.name}
                 </div>
@@ -85,6 +116,7 @@ const TasksList = ({
                       alt={task.type}
                       src={findIcon(findType(task.type)?.icon!)?.src!}
                       className="mr-1"
+                     
                     />
                     {findType(task.type)?.name}
                   </div>

@@ -78,7 +78,7 @@ export const Dialog = () => {
               </div>
             )}
             {!!content?.array && (
-              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-2 `}>
+              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[70vh] overflow-auto`}>
                 {content.array?.map((item, index) => (
                   <item.Component
                     name={item.name}

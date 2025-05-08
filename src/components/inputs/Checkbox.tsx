@@ -22,7 +22,7 @@ const Checkbox: FC<CheckboxProps> = ({
         control={control}
         defaultValue={defaultChecked}
         render={({ field: { onChange, value, ref } }) => (
-          <>
+          <div className="w-full flex-col">
             <input
               id={checkboxId}
               type="checkbox"
@@ -37,7 +37,7 @@ const Checkbox: FC<CheckboxProps> = ({
                 {label}
               </label>
             )}
-          </>
+          </div>
         )}
       />
       {errors && errors[name] && (

@@ -2,19 +2,18 @@ import { z } from "zod";
 
 export const TaskSchema = z.object({
     title: z.string(),
-    description: z.string().optional(),
-    status: z.string(), // Replace with actual TaskStatus values
-    type: z.string().optional(), // Replace with actual TaskType if it's an enum
-    createdAt: z.string(),
-    updatedAt: z.string().optional(),
-    dueDate: z.string().optional(),
-    setAlarm: z.boolean().optional(),
-    priority: z.enum(["LOW", "MEDIUM", "HIGH"]).optional(),
-    attachments: z.array(z.string()).optional(),
-    isRecurring: z.boolean().optional(),
-    recurrencePattern: z.string().optional(),
-    completedAt: z.string().optional(),
-    notes: z.string().optional(),
+    description: z.string().optional().default(''),
+    status: z.string(),
+    type: z.string().optional().default(''),
+    updatedAt: z.string().optional().default(''),
+    dueDate: z.string().optional().default(''),
+    setAlarm: z.boolean().optional().default(false),
+    priority: z.string().optional().default(''),
+    attachments: z.array(z.string()).optional().default([]),
+    isRecurring: z.boolean().optional().default(false),
+    recurrencePattern: z.string().optional().default(''),
+    completedAt: z.string().optional().default(''),
+    notes: z.string().optional().default(''),
 });
 
 export type Task = z.infer<typeof TaskSchema>;
