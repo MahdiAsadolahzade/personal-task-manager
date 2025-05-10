@@ -1,6 +1,5 @@
 "use client";
 import { FC } from "react";
-import TextField from "../inputs/TextField";
 import { TFieldArray } from "@/types/dialog.type";
 import { UseFormRegister, Control } from "react-hook-form";
 
@@ -14,9 +13,6 @@ interface FilterCardProps {
 }
 
 const FilterCard: FC<FilterCardProps> = ({
-  fullData,
-  setFilteredData,
-  onClose,
   filterArray,
   control,
   register,

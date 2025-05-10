@@ -1,5 +1,5 @@
 // src/components/Calendar.tsx
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from "react";
 import {
   format,
   startOfMonth,
@@ -11,10 +11,10 @@ import {
   addMonths,
   isToday,
   isSameMonth,
-} from 'date-fns';
-import clsx from 'clsx';
-import { Task } from '@/types/task.type';
-import { useAppStore } from '@/stores/app.store';
+} from "date-fns";
+import clsx from "clsx";
+import { Task } from "@/types/task.type";
+import { useAppStore } from "@/stores/app.store";
 
 interface CalendarProps {
   tasks: Task[];
@@ -22,7 +22,11 @@ interface CalendarProps {
   onDayClick?: (date: Date) => void;
 }
 
-const Calendar: FC<CalendarProps> = ({ tasks, initialDate = new Date(), onDayClick }) => {
+const Calendar: FC<CalendarProps> = ({
+  tasks,
+  initialDate = new Date(),
+  onDayClick,
+}) => {
   const [currentDate, setCurrentDate] = useState(initialDate);
   const { isMobile } = useAppStore();
 
@@ -48,7 +52,9 @@ const Calendar: FC<CalendarProps> = ({ tasks, initialDate = new Date(), onDayCli
   const memoizedTasksByDate = useMemo(() => {
     const map = new Map<string, Task[]>();
     for (const task of tasks) {
-      const key = task.dueDate ? format(new Date(task.dueDate), 'yyyy-MM-dd') : '';
+      const key = task.dueDate
+        ? format(new Date(task.dueDate), "yyyy-MM-dd")
+        : "";
       if (!map.has(key)) map.set(key, []);
       map.get(key)?.push(task);
     }
@@ -62,18 +68,31 @@ const Calendar: FC<CalendarProps> = ({ tasks, initialDate = new Date(), onDayCli
     <div className="w-full">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <button onClick={handlePrev} className="text-sm px-3 py-1 rounded hover:bg-gray-200">
+        <button
+          onClick={handlePrev}
+          className="btn btn-outline"
+        >
           ← Prev
         </button>
-        <div className="font-semibold text-lg">{format(currentDate, 'MMMM yyyy')}</div>
-        <button onClick={handleNext} className="text-sm px-3 py-1 rounded hover:bg-gray-200">
+        <div className="font-semibold text-lg">
+          {format(currentDate, "MMMM yyyy")}
+        </div>
+        <button
+          onClick={handleNext}
+          className="btn btn-outline"
+        >
           Next →
         </button>
       </div>
 
       {/* Weekday Headers */}
-      <div className={clsx('grid text-center font-semibold mb-1', 'grid-cols-7 text-sm')}>
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, idx) => (
+      <div
+        className={clsx(
+          "grid text-center font-semibold mb-1",
+          "grid-cols-7 text-sm"
+        )}
+      >
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, idx) => (
           <div key={idx}>{day}</div>
         ))}
       </div>
@@ -82,7 +101,7 @@ const Calendar: FC<CalendarProps> = ({ tasks, initialDate = new Date(), onDayCli
       {days.map((week, idx) => (
         <div className="grid grid-cols-7 gap-1" key={idx}>
           {week.map((date) => {
-            const dateKey = format(date, 'yyyy-MM-dd');
+            const dateKey = format(date, "yyyy-MM-dd");
             const todayTasks = memoizedTasksByDate.get(dateKey) || [];
 
             return (
@@ -120,25 +139,27 @@ const CalendarDay: FC<CalendarDayProps> = React.memo(
       <div
         onClick={() => onClick?.(date)}
         className={clsx(
-          'border rounded min-h-[80px] flex flex-col gap-1 p-1 m-1 sm:p-2 transition duration-150',
-          !isCurrentMonth && 'bg-gray-100 text-gray-400',
-          isToday(date) && 'border-blue-500 ring-2 ring-blue-200',
-          'hover:bg-blue-50 active:scale-[0.98] cursor-pointer'
+          "border rounded min-h-[80px] flex flex-col gap-1 p-1 m-1 sm:p-2 transition duration-150",
+          !isCurrentMonth && "bg-base2 ",
+          isToday(date) && "border-accent ring-1 ring-accent",
+          "hover:bg-muted active:scale-[0.98] cursor-pointer"
         )}
       >
-        <div className="text-xs sm:text-sm font-medium">{format(date, 'd')}</div>
+        <div className="text-xs sm:text-sm font-medium">
+          {format(date, "d")}
+        </div>
         <div className="flex flex-col gap-0.5">
           {tasks.slice(0, maxVisibleTasks).map((task) => (
             <div
               key={task.id}
-              className="text-[10px] sm:text-xs truncate bg-blue-100 text-blue-700 rounded px-1 py-0.5"
+              className={`text-[10px] sm:text-xs truncate bg-primary/20 text-primary rounded px-1 py-0.5`}
               title={task.title}
             >
               {task.title}
             </div>
           ))}
           {tasks.length > maxVisibleTasks && (
-            <div className="text-[10px] sm:text-xs text-gray-500">
+            <div className="text-[10px] sm:text-xs ">
               +{tasks.length - maxVisibleTasks} more
             </div>
           )}
@@ -148,4 +169,4 @@ const CalendarDay: FC<CalendarDayProps> = React.memo(
   }
 );
 
-CalendarDay.displayName = 'CalendarDay';
+CalendarDay.displayName = "CalendarDay";

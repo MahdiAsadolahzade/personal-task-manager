@@ -3,7 +3,7 @@ import React from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import Title from "@/components/typography/Title";
 
-const page = () => {
+const SettingPage = () => {
   return (
     <div className="screen">
       <Title title="Settings" />
@@ -16,4 +16,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SettingPage;

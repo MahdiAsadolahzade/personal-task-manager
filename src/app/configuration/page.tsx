@@ -4,7 +4,7 @@ import Title from "@/components/typography/Title";
 import { useDialogStore } from "@/stores/dialog.store";
 import { useIconStore } from "@/stores/icons.store";
 import { useTaskStatusStore } from "@/stores/task_status.store";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
 import { useTaskTypeStore } from "@/stores/task_type.store";
 import IconsList from "@/components/sections/IconsList";
@@ -28,82 +28,97 @@ const ConfigPage = () => {
   const [selectedType, setSelectedType] = useState<any>();
   const [selectedIcon, setSelectedIcon] = useState<any>();
 
-  const dialogConfig: TDialogConfig = {
-    status: {
-      Add: {
-        title: "Add Status",
-        schema: TaskStatusSchema,
-        array: getStatusesDialogsArray(),
-        actions: { Add: addStatus },
-        kind: "Add",
+  const dialogConfig: TDialogConfig = useMemo(() => {
+    return {
+      status: {
+        Add: {
+          title: "Add Status",
+          schema: TaskStatusSchema,
+          array: getStatusesDialogsArray(),
+          actions: { Add: addStatus },
+          kind: "Add",
+        },
+        Edit: {
+          title: "Edit Status",
+          schema: TaskStatusSchema,
+          array: getStatusesDialogsArray(),
+          actions: { Edit: updateStatus },
+          defaultValues: selectedStatus,
+          kind: "Edit",
+        },
+        Delete: {
+          title: "Delete Status",
+          message: `Are you sure you want to delete ${selectedStatus?.name} ?`,
+          actions: { Delete: deleteStatus },
+          defaultValues: selectedStatus,
+          kind: "Delete",
+        },
       },
-      Edit: {
-        title: "Edit Status",
-        schema: TaskStatusSchema,
-        array: getStatusesDialogsArray(),
-        actions: { Edit: updateStatus },
-        defaultValues: selectedStatus,
-        kind: "Edit",
-      },
-      Delete: {
-        title: "Delete Status",
-        message: `Are you sure you want to delete ${selectedStatus?.name} ?`,
-        actions: { Delete: deleteStatus },
-        defaultValues: selectedStatus,
-        kind: "Delete",
-      },
-    },
 
-    type: {
-      Add: {
-        title: "Add Type",
-        schema: TaskTypeSchema,
-        array: getTypesDialogsArray(),
-        actions: { Add: addType },
-        kind: "Add",
+      type: {
+        Add: {
+          title: "Add Type",
+          schema: TaskTypeSchema,
+          array: getTypesDialogsArray(),
+          actions: { Add: addType },
+          kind: "Add",
+        },
+        Edit: {
+          title: "Edit Type",
+          schema: TaskTypeSchema,
+          array: getTypesDialogsArray(),
+          actions: { Edit: updateType },
+          defaultValues: selectedType,
+          kind: "Edit",
+        },
+        Delete: {
+          title: "Delete Type",
+          message: `Are you sure you want to delete ${selectedType?.name} ?`,
+          actions: { Delete: deleteType },
+          defaultValues: selectedType,
+          kind: "Delete",
+        },
       },
-      Edit: {
-        title: "Edit Type",
-        schema: TaskTypeSchema,
-        array: getTypesDialogsArray(),
-        actions: { Edit: updateType },
-        defaultValues: selectedType,
-        kind: "Edit",
-      },
-      Delete: {
-        title: "Delete Type",
-        message: `Are you sure you want to delete ${selectedType?.name} ?`,
-        actions: { Delete: deleteType },
-        defaultValues: selectedType,
-        kind: "Delete",
-      },
-    },
 
-    icon: {
-      Add: {
-        title: "Add Icon",
-        schema: IconItemSchema,
-        array: getIconsDialogsArray(),
-        actions: { Add: addIcon },
-        kind: "Add",
+      icon: {
+        Add: {
+          title: "Add Icon",
+          schema: IconItemSchema,
+          array: getIconsDialogsArray(),
+          actions: { Add: addIcon },
+          kind: "Add",
+        },
+        Edit: {
+          title: "Edit Icon",
+          schema: IconItemSchema,
+          array: getIconsDialogsArray(),
+          actions: { Edit: updateIcon },
+          kind: "Edit",
+          defaultValues: selectedIcon,
+        },
+        Delete: {
+          title: "Delete Icon",
+          message: `Are you sure you want to delete ${selectedIcon?.name} ?`,
+          actions: { Delete: deleteIcon },
+          defaultValues: selectedIcon,
+          kind: "Delete",
+        },
       },
-      Edit: {
-        title: "Edit Icon",
-        schema: IconItemSchema,
-        array: getIconsDialogsArray(),
-        actions: { Edit: updateIcon },
-        kind: "Edit",
-        defaultValues: selectedIcon,
-      },
-      Delete: {
-        title: "Delete Icon",
-        message: `Are you sure you want to delete ${selectedIcon?.name} ?`,
-        actions: { Delete: deleteIcon },
-        defaultValues: selectedIcon,
-        kind: "Delete",
-      },
-    },
-  };
+    };
+  }, [
+    addStatus,
+    updateStatus,
+    deleteStatus,
+    addType,
+    updateType,
+    deleteType,
+    addIcon,
+    updateIcon,
+    deleteIcon,
+    selectedIcon,
+    selectedType,
+    selectedStatus,
+  ]);
 
   const handleOpenDialog = useCallback(
     (url: `${TDialogKind}/${string}`) => {
@@ -113,7 +128,7 @@ const ConfigPage = () => {
         openDialog(config);
       }
     },
-    [dialogConfig, openDialog, statuses, icons]
+    [dialogConfig, openDialog]
   );
 
   return (

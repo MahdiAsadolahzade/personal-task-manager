@@ -4,7 +4,6 @@ import { CiSettings, CiHome, CiPen, CiDesktop } from "react-icons/ci";
 import { usePathname } from "next/navigation";
 import { useAppStore } from "@/stores/app.store";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Icon from "../utils/Icon";
 import NavLink from "../NavLink";
 

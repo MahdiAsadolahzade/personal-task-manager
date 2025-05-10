@@ -21,7 +21,7 @@ export const Dialog = () => {
 
   const onSubmit = (data: any) => {
     console.log("raw form data:", data);
-    let finalData =
+    const finalData =
       content?.kind === "Add"
         ? { ...data, id: uuid() }
         : content?.kind === "Edit"
@@ -45,7 +45,7 @@ console.log('final Data',finalData );
     } else {
       reset({}, { keepValues: false, keepDirtyValues: false });
     }
-  }, [isOpen, content?.defaultValues, content?.kind, content]);
+  }, [isOpen, content?.defaultValues, content?.kind, content ,reset]);
 
   if (!isOpen) return null;
 

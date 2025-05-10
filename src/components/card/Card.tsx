@@ -1,8 +1,7 @@
 "use client";
-import { TDialogActions, TDialogKind, TFieldArray } from "@/types/dialog.type";
+import { TDialogKind, TFieldArray } from "@/types/dialog.type";
 import { FC, MouseEventHandler, useEffect, useRef, useState } from "react";
 import { CardHeaderIcon } from "@/constants/card/cardData";
-import Icon from "../utils/Icon";
 import Menu from "../menu/Menu";
 import { BsFilterCircleFill } from "react-icons/bs";
 import FilterCard from "./FilterCard";
@@ -14,13 +13,13 @@ interface CardProps {
   actions?: Partial<Record<TDialogKind, MouseEventHandler<HTMLButtonElement>>>;
   data: any[];
   selectedValue: any;
-  setSelectedValue: Function;
+  setSelectedValue: any;
   laoding?: boolean;
   configuration?: {
     showColor?: boolean;
   };
   CustomComponent?: any;
-  filter?: {  filterArray?: TFieldArray[] };
+  filter?: { filterArray?: TFieldArray[] };
 }
 
 const Card: FC<CardProps> = ({
@@ -49,7 +48,7 @@ const Card: FC<CardProps> = ({
   // Handle selection sync
   useEffect(() => {
     if (!selectedValue) return;
-  
+
     const freshItem = filteredData.find((item) => item.id === selectedValue.id);
     if (!freshItem) {
       setSelectedValue(null);
@@ -62,13 +61,13 @@ const Card: FC<CardProps> = ({
   useEffect(() => {
     const subscription = watch((formValues) => {
       let filtered = [...data];
-  
+
       if (!filter?.filterArray) return;
-  
+
       for (const filterItem of filter.filterArray) {
         const { name } = filterItem;
         const filterValue = formValues[name];
-  
+
         if (
           filterValue === undefined ||
           (typeof filterValue === "string" && filterValue.trim() === "") ||
@@ -76,37 +75,41 @@ const Card: FC<CardProps> = ({
         ) {
           continue;
         }
-  
+
         filtered = filtered.filter((item) => {
           const itemValue = item[name];
-  
+
           // Text field (string match)
           if (typeof filterValue === "string") {
             return itemValue?.toLowerCase().includes(filterValue.toLowerCase());
           }
-  
+
           // AutoComplete (single object selection)
-          if (typeof filterValue === "object" && !Array.isArray(filterValue) && filterValue?.id) {
+          if (
+            typeof filterValue === "object" &&
+            !Array.isArray(filterValue) &&
+            filterValue?.id
+          ) {
             return itemValue?.id === filterValue.id;
           }
-  
+
           // Multi-select (array of selected objects or IDs)
           if (Array.isArray(filterValue)) {
-            const selectedIds = filterValue.map((val) => (typeof val === "object" ? val.id : val));
+            const selectedIds = filterValue.map((val) =>
+              typeof val === "object" ? val.id : val
+            );
             return selectedIds.includes(itemValue?.id || itemValue);
           }
-  
+
           return true;
         });
       }
-  
+
       setFilteredData(filtered);
     });
-  
+
     return () => subscription.unsubscribe();
   }, [watch, data, filter?.filterArray]);
-  
-  
 
   if (laoding) {
     return <div className="card bg-muted animate-pulse w-full h-64"></div>;
@@ -143,7 +146,11 @@ const Card: FC<CardProps> = ({
               ref={filterMenuEL}
               onClick={() => setOpenFilter((prev) => !prev)}
             >
-              <BsFilterCircleFill className={`text-xl ${filteredData.length !== data.length ? 'text-primary' : ''}`} />
+              <BsFilterCircleFill
+                className={`text-xl ${
+                  filteredData.length !== data.length ? "text-primary" : ""
+                }`}
+              />
             </button>
           )}
         </div>
@@ -163,7 +170,9 @@ const Card: FC<CardProps> = ({
             return (
               <div
                 className={`hover:bg-base2 hover:rounded-md p-2 cursor-pointer transition-colors ${
-                  isSelected ? "border-[1px] border-primary rounded-md bg-base2" : ""
+                  isSelected
+                    ? "border-[1px] border-primary rounded-md bg-base2"
+                    : ""
                 }`}
                 onClick={() => setSelectedValue(item)}
                 key={`${item?.id}/${index}`}
@@ -191,8 +200,8 @@ const Card: FC<CardProps> = ({
           onClose={() => setOpenFilter(false)}
           open={openFilter}
         >
-          <FilterCard 
-            fullData={data} 
+          <FilterCard
+            fullData={data}
             filterArray={filter?.filterArray}
             setFilteredData={setFilteredData}
             onClose={() => setOpenFilter(false)}
@@ -207,4 +216,3 @@ const Card: FC<CardProps> = ({
 };
 
 export default Card;
-

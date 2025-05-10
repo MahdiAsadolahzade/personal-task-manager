@@ -11,13 +11,22 @@ const FileUpload: FC<FileUploadProps> = ({
   label,
   errors,
   accept = "*",
-  kind,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const watchedValue = useWatch({ name, control });
+
+  // Moved useEffect to the top level
+  useEffect(() => {
+    if (!watchedValue) return;
+
+    if (typeof watchedValue === "string") {
+      setFileName("existing_file");
+      setFilePreview(watchedValue);
+    }
+  }, [watchedValue]); // Removed 'kind' as it's not used in the effect
 
   return (
     <div className="w-full">
@@ -49,21 +58,6 @@ const FileUpload: FC<FileUploadProps> = ({
             setFileName("");
             onChange(null);
           };
-
-          useEffect(() => {
-            if (!watchedValue) return;
-
-            // if (kind === "Add") {
-            //   setFileName("");
-            //   setFilePreview(null);
-            //   onChange(null);
-            // }
-
-            if (typeof watchedValue === "string") {
-              setFileName("existing_file");
-              setFilePreview(watchedValue);
-            }
-          }, [watchedValue, kind]);
 
           return (
             <>

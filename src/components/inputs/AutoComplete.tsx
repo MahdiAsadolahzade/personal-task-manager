@@ -5,7 +5,6 @@ import type {
   AutoCompleteOption,
 } from "@/types/inputs.type";
 import { Controller, useWatch } from "react-hook-form";
-import { RxCross2 } from "react-icons/rx";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import Icon from "../utils/Icon";
 import { shortenText } from "@/lib/utils/strings";
@@ -15,7 +14,6 @@ const AutoComplete: FC<AutoCompleteProps> = ({
   name,
   control,
   suggestions,
-  setValue,
   errors,
   multiSelect = false,
   suggestKey = "id",
@@ -77,17 +75,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
     }
   };
 
-  const handleDeselect = (
-    suggestion: AutoCompleteOption,
-    onChange: (value: any) => void
-  ) => {
-    const newSelectedItems = selectedItems.filter(
-      (item) => item.id !== suggestion.id
-    );
-    setSelectedItems(newSelectedItems);
-    onChange(multiSelect ? newSelectedItems.map((item) => item.id) : null);
-    setInputValue("");
-  };
+
 
   const isReadOnly =
     (multiSelect && selectedItems.length > 0) ||
@@ -111,7 +99,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                 type="text"
                 value={
                   selectedItems.length === 1
-                    ? shortenText(selectedItems[0].name,40)
+                    ? shortenText(selectedItems[0].name, 40)
                     : selectedItems.length > 1
                     ? `${selectedItems.length} item${
                         selectedItems.length > 1 ? "s" : ""
@@ -151,7 +139,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                         {!!suggestion?.src && (
                           <Icon alt={suggestion.name} src={suggestion.src} />
                         )}
-                        <p>{shortenText(suggestion.name,40)}</p>
+                        <p>{shortenText(suggestion.name, 40)}</p>
                       </div>
 
                       {selectedItems.some(

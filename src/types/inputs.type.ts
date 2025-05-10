@@ -1,21 +1,8 @@
 import { HTMLInputTypeAttribute } from "react";
 import {
   Control,
-  FieldValues,
-  FormState,
-  UseFormClearErrors,
-  UseFormGetFieldState,
   UseFormGetValues,
-  UseFormHandleSubmit,
   UseFormRegister,
-  UseFormReset,
-  UseFormResetField,
-  UseFormSetError,
-  UseFormSetFocus,
-  UseFormSetValue,
-  UseFormTrigger,
-  UseFormUnregister,
-  UseFormWatch,
   FieldErrors,
   SetFieldValue,
 } from "react-hook-form";
@@ -30,11 +17,10 @@ export interface TextFieldProps {
   variant?: "defult" | "description";
 }
 
-
 export interface AutoCompleteOption {
   id: string;
   name: string;
-  src?:string
+  src?: string;
 }
 
 export interface AutoCompleteProps {
@@ -47,7 +33,7 @@ export interface AutoCompleteProps {
   suggestions: AutoCompleteOption[];
   control: Control;
   multiSelect?: boolean;
-  suggestKey?:string
+  suggestKey?: string;
 }
 
 export interface CheckboxProps {
@@ -61,10 +47,10 @@ export interface CheckboxProps {
 }
 
 export interface FileUploadProps {
-  name:string
-  label:string
-  control:Control
-  errors:FieldErrors
-  accept?:string
-  kind?:TDialogKind
+  name: string;
+  label: string;
+  control: Control;
+  errors: FieldErrors;
+  accept?: string;
+  kind?: TDialogKind;
 }

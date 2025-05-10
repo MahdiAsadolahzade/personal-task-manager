@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   useScreenSizeDetector();
-  const { theme, isMobile ,hydrated } = useAppStore();
+  const { theme, isMobile  } = useAppStore();
   const {tasks} = useTaskStore()
 
   useEffect(() => {

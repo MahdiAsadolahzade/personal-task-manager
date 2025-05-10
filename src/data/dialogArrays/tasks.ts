@@ -24,7 +24,7 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       suggestions: statuses?.map((status) => ({
         id: status.id,
         name: status.name ?? "",
-        src: findIcon(status?.icon!)?.src,
+        src: findIcon(status?.icon??'')?.src,
       })),
       suggestionKey: "src",
     },
@@ -35,7 +35,7 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       suggestions: types?.map((type) => ({
         id: type.id,
         name: type.name ?? "",
-        src: findIcon(type?.icon!)?.src,
+        src: findIcon(type?.icon??'')?.src,
       })),
       suggestionKey: "src",
     },
@@ -91,7 +91,7 @@ export const getTasksFilterArray = (): TFieldArray[] => {
       suggestions: statuses?.map((status) => ({
         id: status.id,
         name: status.name ?? "",
-        src: findIcon(status?.icon!)?.src,
+        src: findIcon(status?.icon??'')?.src,
       })),
       multiSelect: true,
       suggestionKey: "src",
@@ -104,7 +104,7 @@ export const getTasksFilterArray = (): TFieldArray[] => {
       suggestions: types?.map((type) => ({
         id: type.id,
         name: type.name ?? "",
-        src: findIcon(type?.icon!)?.src,
+        src: findIcon(type?.icon??'')?.src,
       })),
 
       suggestionKey: "src",

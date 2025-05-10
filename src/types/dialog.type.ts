@@ -1,4 +1,4 @@
-import { Component, ComponentType, HTMLInputTypeAttribute } from "react";
+import {  ComponentType, HTMLInputTypeAttribute } from "react";
 import { AutoCompleteOption } from "./inputs.type";
 import { ZodObject } from "zod";
 
@@ -32,7 +32,7 @@ export type TDialogContent = {
   actions?: TDialogActions;
   defaultValues?: any;
 };
-export type TDialogActions = Partial<Record<TDialogKind, Function>>;
+export type TDialogActions = Partial<Record<TDialogKind, any>>;
 
 export type TDialogConfig = {
   [key in string]: Partial<{ [key in TDialogKind]: TDialogContent }>;

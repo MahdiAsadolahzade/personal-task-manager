@@ -1,7 +1,6 @@
 import { scheduleNotification } from "@/lib/notifications/scheduleNotification";
 import { scheduleRecurringNotification } from "@/lib/notifications/scheduleRecurringNotification";
 import { NotificationPayload } from "@/lib/notifications/notificationTypes";
-import { Task } from "@/types/task.type";
 import { useTaskStore } from "@/stores/task.store";
 
 export function scheduleTaskNotifications() {

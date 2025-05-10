@@ -1,4 +1,3 @@
-// components/NavLink.tsx
 "use client";
 
 import { useRouteTransition } from "@/hooks/useRouteTransition";
@@ -15,11 +14,15 @@ export default function NavLink({ href, children, className }: NavLinkProps) {
   const { isNavigating, navigate } = useRouteTransition();
   const path = usePathname();
 
+  const handleClick = () => {
+    if (path !== href || isNavigating) {
+      navigate(href);
+    }
+  };
+
   return (
     <button
-      onClick={() => {
-        (path !== href || isNavigating) && navigate(href);
-      }}
+      onClick={handleClick}
       className={`${className} cursor-pointer`}
     >
       {!isNavigating && children}

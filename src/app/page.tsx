@@ -1,12 +1,10 @@
 "use client";
-import { useRef, useState } from "react";
 import Title from "@/components/typography/Title";
 import { useTaskStore } from "@/stores/task.store";
-import TasksList from "@/components/sections/TasksList";
 import NavLink from "@/components/NavLink";
 import Calendar from "@/components/calendar/Calendar";
 
-export default function TaskPage() {
+export default function HomePage() {
   const { tasks } = useTaskStore();
 
   return (
@@ -16,11 +14,7 @@ export default function TaskPage() {
       {tasks?.length > 0 ? (
         <>
           {/* <TasksList data={tasks?.slice(Math.max(tasks?.length - 2, 0))} /> */}
-          <Calendar
-            currentDate={new Date()}
-            tasks={tasks}
-            onDayClick={(date) => console.log(date)}
-          />
+          <Calendar tasks={tasks} onDayClick={(date) => console.log(date)} />
         </>
       ) : (
         <div className="flex-col justify-center items-center">

@@ -24,12 +24,14 @@ const TasksList = ({
           <div
             key={task.id}
             onClick={() => {
-              !!setSelectedValue && setSelectedValue(task);
+              if (setSelectedValue) {
+                setSelectedValue(task);
+              }
             }}
             className={`relative rounded-xl p-5 shadow-sm transition-all duration-200 cursor-pointer 
               border border-muted hover:border-secondary hover:shadow-md
               ${
-                !!selectedValue && selectedValue?.id === task.id
+                selectedValue?.id === task.id
                   ? "ring-2 ring-primary bg-base2"
                   : "bg-base2"
               }`}
@@ -41,7 +43,7 @@ const TasksList = ({
               </h3>
               {task.priority && (
                 <span
-                  className={`text-xs px-2 py-1  rounded-full ${
+                  className={`text-xs px-2 py-1 rounded-full ${
                     task.priority === "HIGH"
                       ? "bg-red-100 text-red-800"
                       : task.priority === "MEDIUM"
@@ -56,7 +58,7 @@ const TasksList = ({
 
             {/* Task description */}
             <div className="h-20 max-h-20">
-              <p className="text-sm mb-4  line-clamp-2">
+              <p className="text-sm mb-4 line-clamp-2">
                 {task.description || "No description provided"}
               </p>
             </div>
@@ -103,11 +105,10 @@ const TasksList = ({
                 >
                   <Icon
                     alt={task.status}
-                    src={findIcon(findStatus(task.status)?.icon!)?.src!}
+                    src={findIcon(findStatus(task?.status??'')?.icon??'')?.src || ''}
                     className="mr-1"
                   />
-
-                  {shortenText(findStatus(task.status)?.name!, 15)}
+                  {shortenText(findStatus(task.status)?.name || '', 15)}
                 </div>
 
                 {/* Type badge */}
@@ -121,10 +122,10 @@ const TasksList = ({
                   >
                     <Icon
                       alt={task.type}
-                      src={findIcon(findType(task.type)?.icon!)?.src!}
+                      src={findIcon(findType(task?.type)?.icon??'')?.src || ''}
                       className="mr-1"
                     />
-                    {shortenText(findType(task.type)?.name!, 15)}
+                    {shortenText(findType(task.type)?.name || '', 15)}
                   </div>
                 )}
               </div>

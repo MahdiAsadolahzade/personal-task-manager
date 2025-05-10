@@ -1,5 +1,5 @@
 import { TDialogKind } from "@/types/dialog.type";
-import { IconBaseProps, IconType } from "react-icons";
+import {  IconType } from "react-icons";
 import type { TAppColors } from "@/lib/config";
 import { IoIosAddCircle } from "react-icons/io";
 import { RiEditCircleFill } from "react-icons/ri";
