@@ -10,6 +10,7 @@ import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
 import { scheduleTaskNotifications } from "@/lib/notifications/schedule/tasks";
 import { useTaskStore } from "@/stores/task.store";
+import { useNotificationTrigger } from "@/hooks/useNotificationTrigger";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   useScreenSizeDetector();
+  useNotificationTrigger()
   const { theme, isMobile  } = useAppStore();
   const {tasks} = useTaskStore()
 
@@ -35,8 +37,14 @@ export default function RootLayout({
   }, []);
 
   useEffect(()=>{
-    scheduleTaskNotifications()
+    scheduleTaskNotifications(tasks);
   },[tasks])
+
+  useEffect(() => {
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  }, []);
 
   return (
     <html lang="en" data-theme={theme}>

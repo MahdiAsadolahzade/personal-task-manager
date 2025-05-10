@@ -1,25 +1,26 @@
-import { scheduleNotification } from "@/lib/notifications/scheduleNotification";
-import { scheduleRecurringNotification } from "@/lib/notifications/scheduleRecurringNotification";
-import { NotificationPayload } from "@/lib/notifications/notificationTypes";
-import { useTaskStore } from "@/stores/task.store";
+// src/lib/notifications/schedule/tasks.ts
 
-export function scheduleTaskNotifications() {
-  const tasks = useTaskStore.getState().tasks;
+import { Task } from "@/types/task.type";
+
+let timeouts: NodeJS.Timeout[] = [];
+
+export function scheduleTaskNotifications(tasks: Task[]) {
+  // Clear previous timeouts
+  timeouts.forEach(clearTimeout);
+  timeouts = [];
+
   tasks.forEach((task) => {
-    if (!task.setAlarm || !task.dueDate) return;
+    if (!task.dueDate || task.setAlarm === false) return;
 
-    const payload: NotificationPayload = {
-      title: task.title,
-      body: task.description || "You have a task due!",
-      
-    };
+    const due = new Date(task.dueDate);
+    const now = Date.now();
 
-    const dueDate = new Date(task.dueDate);
+    if (due.getTime() > now) {
+      const timeout = setTimeout(() => {
+        new Notification(`Task Due: ${task.title}`);
+      }, due.getTime() - now);
 
-    if (task.isRecurring && task.recurrencePattern) {
-      scheduleRecurringNotification(dueDate, payload, task.recurrencePattern);
-    } else {
-      scheduleNotification(dueDate, payload);
+      timeouts.push(timeout);
     }
   });
 }

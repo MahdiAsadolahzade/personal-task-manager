@@ -2,12 +2,11 @@
 import React from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import Title from "@/components/typography/Title";
-import { sendNotification } from "@/lib/notifications/notificationManager";
+import Test from "@/components/TestPage";
+
 
 const SettingPage = () => {
-  const ntificationTest = () => {
-    sendNotification({ title: "this is a test", body: "test body" });
-  };
+
   return (
     <div className="screen">
       <Title title="Settings" />
@@ -17,9 +16,11 @@ const SettingPage = () => {
         <ThemeToggle />
       </div>
 
-      <button onClick={ntificationTest} className="btn btn-primary">
-        Test the Notification
-      </button>
+      <hr />
+
+      <Test/>
+
+
     </div>
   );
 };
