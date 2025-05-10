@@ -1,6 +1,7 @@
 // tasks-dialog-array.ts
 import AutoComplete from "@/components/inputs/AutoComplete";
 import Checkbox from "@/components/inputs/Checkbox";
+import TextArea from "@/components/inputs/TextArea";
 import TextField from "@/components/inputs/TextField";
 import { findIcon } from "@/lib/utils/finders";
 import { Priorities } from "@/mock/priority.data";
@@ -15,12 +16,7 @@ export const getTasksDialogArray = (): TFieldArray[] => {
 
   return [
     { name: "title", label: "Title", Component: TextField },
-    {
-      name: "description",
-      label: "Description",
-      Component: TextField,
-      type: "text",
-    },
+
     {
       name: "status",
       label: "Status",
@@ -73,6 +69,12 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       suggestions: recurrencePattern,
       suggestionKey: "name",
     },
+    {
+      name: "description",
+      label: "Description",
+      Component: TextArea,
+      type: "text",
+    },
   ];
 };
 
@@ -108,20 +110,20 @@ export const getTasksFilterArray = (): TFieldArray[] => {
       suggestionKey: "src",
     },
     {
-        name: "priority",
-        label: "Priority",
-        Component: AutoComplete,
-        suggestions: Priorities,
-        multiSelect: true,
-        suggestionKey: "name",
-      },
-      {
-        name: "recurrencePattern",
-        label: "Recurrence Pattern",
-        Component: AutoComplete,
-        suggestions: recurrencePattern,
-        multiSelect: true,
-        suggestionKey: "name",
-      },
+      name: "priority",
+      label: "Priority",
+      Component: AutoComplete,
+      suggestions: Priorities,
+      multiSelect: true,
+      suggestionKey: "name",
+    },
+    {
+      name: "recurrencePattern",
+      label: "Recurrence Pattern",
+      Component: AutoComplete,
+      suggestions: recurrencePattern,
+      multiSelect: true,
+      suggestionKey: "name",
+    },
   ];
 };

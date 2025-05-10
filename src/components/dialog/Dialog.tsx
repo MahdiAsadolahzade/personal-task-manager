@@ -3,7 +3,6 @@
 import { useDialogStore } from "@/stores/dialog.store";
 import { dialogHeaderIcon } from "@/constants/dialog/dialogData";
 import { TiDelete } from "react-icons/ti";
-import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import { useDynamicForm } from "@/lib/dynamicUseForm";
@@ -21,6 +20,7 @@ export const Dialog = () => {
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
   const onSubmit = (data: any) => {
+    console.log("raw form data:", data);
     let finalData =
       content?.kind === "Add"
         ? { ...data, id: uuid() }
@@ -28,6 +28,7 @@ export const Dialog = () => {
         ? data
         : data?.id;
     content?.actions?.[content?.kind]?.(finalData);
+console.log('final Data',finalData );
 
     closeDialog();
   };
@@ -37,6 +38,8 @@ export const Dialog = () => {
       if (content?.kind === "Add") {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
+        console.log('edit defaultValues' ,content?.defaultValues);
+ 
         reset(content?.defaultValues || {}, { keepValues: false });
       }
     } else {

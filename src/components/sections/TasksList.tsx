@@ -6,6 +6,7 @@ import { Task } from "@/types/task.type";
 import { FiBell, FiRepeat } from "react-icons/fi";
 import { findRecurrencePattern } from "@/mock/recurrence.data";
 import { findPriority } from "@/mock/priority.data";
+import { shortenText } from "@/lib/utils/strings";
 
 const TasksList = ({
   data,
@@ -40,7 +41,7 @@ const TasksList = ({
               </h3>
               {task.priority && (
                 <span
-                  className={`text-xs px-2 py-1 rounded-full ${
+                  className={`text-xs px-2 py-1  rounded-full ${
                     task.priority === "HIGH"
                       ? "bg-red-100 text-red-800"
                       : task.priority === "MEDIUM"
@@ -55,7 +56,7 @@ const TasksList = ({
 
             {/* Task description */}
             <div className="h-20 max-h-20">
-              <p className="text-sm mb-4 line-clamp-2">
+              <p className="text-sm mb-4  line-clamp-2">
                 {task.description || "No description provided"}
               </p>
             </div>
@@ -105,7 +106,8 @@ const TasksList = ({
                     src={findIcon(findStatus(task.status)?.icon!)?.src!}
                     className="mr-1"
                   />
-                  {findStatus(task.status)?.name}
+
+                  {shortenText(findStatus(task.status)?.name!, 15)}
                 </div>
 
                 {/* Type badge */}
@@ -122,7 +124,7 @@ const TasksList = ({
                       src={findIcon(findType(task.type)?.icon!)?.src!}
                       className="mr-1"
                     />
-                    {findType(task.type)?.name}
+                    {shortenText(findType(task.type)?.name!, 15)}
                   </div>
                 )}
               </div>

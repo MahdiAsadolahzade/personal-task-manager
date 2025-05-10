@@ -7,9 +7,9 @@ export const useIconStore = createPersistedStore<IconStoreModel>(
   (set) => ({
     icons: IconItems,
     addIcon: (icon) => set((state) => ({ icons: [icon, ...state.icons] })),
-    deleteIcon: (name) =>
+    deleteIcon: (id) =>
       set((state) => ({
-        icons: state.icons.filter((icon) => icon.name !== name),
+        icons: state.icons.filter((icon) => icon.id !== id),
       })),
     updateIcon: (updatedIcon) =>
       set((state) => ({

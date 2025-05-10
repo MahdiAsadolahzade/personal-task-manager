@@ -1,19 +1,24 @@
 import { z } from "zod";
 
 export const TaskSchema = z.object({
-    title: z.string(),
-    description: z.string().optional().default(''),
-    status: z.string(),
-    type: z.string().optional().default(''),
-    updatedAt: z.string().optional().default(''),
-    dueDate: z.string().optional().default(''),
-    setAlarm: z.boolean().optional().default(false),
-    priority: z.string().optional().default(''),
-    attachments: z.array(z.string()).optional().default([]),
-    isRecurring: z.boolean().optional().default(false),
-    recurrencePattern: z.string().optional().default(''),
-    completedAt: z.string().optional().default(''),
-    notes: z.string().optional().default(''),
+  id: z.string().optional(),
+  title: z
+    .string()
+    .min(5, { message: "Title must be at least 5 characters long" }),
+  description: z
+    .string()
+    .max(500, { message: "Description must not exceed 500 characters" }),
+  status: z.string().nonempty({ message: "Status is required" }),
+  type: z.string().nonempty({ message: "Type is required" }),
+  dueDate: z.string().nonempty({ message: "Due date is required" }),
+  setAlarm: z.boolean(),
+  updatedAt: z.string().optional(),
+  completedAt: z.string().optional(),
+  priority: z.string().optional(),
+  notes: z.string().optional(),
+  attachments: z.array(z.any()).optional(),
+  isRecurring: z.boolean().optional(),
+  recurrencePattern: z.string().optional(),
 });
 
 export type Task = z.infer<typeof TaskSchema>;

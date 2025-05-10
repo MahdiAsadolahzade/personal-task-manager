@@ -8,6 +8,7 @@ import { Controller, useWatch } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import Icon from "../utils/Icon";
+import { shortenText } from "@/lib/utils/strings";
 
 const AutoComplete: FC<AutoCompleteProps> = ({
   label,
@@ -110,7 +111,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                 type="text"
                 value={
                   selectedItems.length === 1
-                    ? selectedItems[0].name
+                    ? shortenText(selectedItems[0].name,40)
                     : selectedItems.length > 1
                     ? `${selectedItems.length} item${
                         selectedItems.length > 1 ? "s" : ""
@@ -150,7 +151,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                         {!!suggestion?.src && (
                           <Icon alt={suggestion.name} src={suggestion.src} />
                         )}
-                        <p>{suggestion.name}</p>
+                        <p>{shortenText(suggestion.name,40)}</p>
                       </div>
 
                       {selectedItems.some(

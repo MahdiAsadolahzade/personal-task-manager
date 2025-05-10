@@ -24,7 +24,9 @@ const IconsList = ({
           onClick={() => setSelectedValue(icon)}
         >
           <Icon alt={icon.name} src={icon.src} className="w-12 h-12" />
-          <span className="mt-2 text-sm ">{icon.name}</span>
+            <span className="mt-2 text-sm truncate w-full text-center" title={icon.name}>
+              {icon.name}
+            </span>
         </div>
       ))}
     </div>

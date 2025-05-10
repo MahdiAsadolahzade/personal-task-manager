@@ -1,15 +1,9 @@
 "use client";
 import Card from "@/components/card/Card";
-import AutoComplete from "@/components/inputs/AutoComplete";
-import Checkbox from "@/components/inputs/Checkbox";
-import TextField from "@/components/inputs/TextField";
 import TasksList from "@/components/sections/TasksList";
 import Title from "@/components/typography/Title";
-import { findIcon } from "@/lib/utils/finders";
 import { useDialogStore } from "@/stores/dialog.store";
 import { useTaskStore } from "@/stores/task.store";
-import { useTaskStatusStore } from "@/stores/task_status.store";
-import { useTaskTypeStore } from "@/stores/task_type.store";
 import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
 import React, { useCallback, useState } from "react";
 import { TaskSchema } from "@/schemas/task.schema";
@@ -45,7 +39,7 @@ const page = () => {
       },
       Edit: {
         title: "Edit Task",
-        // schema: TaskSchema,
+        schema: TaskSchema,
         array: getTasksDialogArray(),
         actions: { Edit: updateTask },
         defaultValues: {
@@ -76,7 +70,7 @@ const page = () => {
       <Title title="Tasks" />
 
       <Card
-        title="Tasks"
+        title="Lists"
         data={tasks}
         actions={{
           Add: () => handleOpenDialog("Add/task"),

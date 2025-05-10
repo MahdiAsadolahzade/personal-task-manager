@@ -7,6 +7,7 @@ import Menu from "../menu/Menu";
 import { BsFilterCircleFill } from "react-icons/bs";
 import FilterCard from "./FilterCard";
 import { useForm } from "react-hook-form";
+import { shortenText } from "@/lib/utils/strings";
 
 interface CardProps {
   title: string;
@@ -169,7 +170,7 @@ const Card: FC<CardProps> = ({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <span>{item.name}</span>
+                    <span className="">{shortenText(item.name, 40)}</span>
                   </div>
                   {!!item?.color && configuration.showColor && (
                     <span
@@ -206,3 +207,4 @@ const Card: FC<CardProps> = ({
 };
 
 export default Card;
+

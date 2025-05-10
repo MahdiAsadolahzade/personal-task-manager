@@ -1,10 +1,6 @@
 "use client";
 import Card from "@/components/card/Card";
-import AutoComplete from "@/components/inputs/AutoComplete";
-import FileUploadField from "@/components/inputs/FileUploadField";
-import TextField from "@/components/inputs/TextField";
 import Title from "@/components/typography/Title";
-import Icon from "@/components/utils/Icon";
 import { useDialogStore } from "@/stores/dialog.store";
 import { useIconStore } from "@/stores/icons.store";
 import { useTaskStatusStore } from "@/stores/task_status.store";
@@ -12,6 +8,15 @@ import { useCallback, useState } from "react";
 import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
 import { useTaskTypeStore } from "@/stores/task_type.store";
 import IconsList from "@/components/sections/IconsList";
+import {
+  getIconsDialogsArray,
+  getNameFilterArray,
+  getStatusesDialogsArray,
+  getTypesDialogsArray,
+} from "@/data/dialogArrays/configuration";
+import { IconItemSchema } from "@/schemas/icon.schema";
+import { TaskStatusSchema } from "@/schemas/status.schema";
+import { TaskTypeSchema } from "@/schemas/type.schema";
 
 const ConfigPage = () => {
   const { openDialog } = useDialogStore();
@@ -27,51 +32,15 @@ const ConfigPage = () => {
     status: {
       Add: {
         title: "Add Status",
-        array: [
-          { name: "name", label: "Name", Component: TextField },
-          {
-            name: "color",
-            label: "Color",
-            Component: TextField,
-            type: "color",
-          },
-          {
-            name: "icon",
-            label: "Icon",
-            Component: AutoComplete,
-            suggestions: icons?.map((icon) => ({
-              id: icon.id,
-              name: icon.name ?? "",
-              src: icon?.src,
-            })),
-            suggestionKey: "src",
-          },
-        ],
+        schema: TaskStatusSchema,
+        array: getStatusesDialogsArray(),
         actions: { Add: addStatus },
         kind: "Add",
       },
       Edit: {
         title: "Edit Status",
-        array: [
-          { name: "name", label: "Name", Component: TextField },
-          {
-            name: "color",
-            label: "Color",
-            Component: TextField,
-            type: "color",
-          },
-          {
-            name: "icon",
-            label: "Icon",
-            Component: AutoComplete,
-            suggestions: icons?.map((icon) => ({
-              id: icon.id,
-              name: icon.name ?? "",
-              src: icon?.src,
-            })),
-            suggestionKey: "src",
-          },
-        ],
+        schema: TaskStatusSchema,
+        array: getStatusesDialogsArray(),
         actions: { Edit: updateStatus },
         defaultValues: selectedStatus,
         kind: "Edit",
@@ -88,51 +57,15 @@ const ConfigPage = () => {
     type: {
       Add: {
         title: "Add Type",
-        array: [
-          { name: "name", label: "Name", Component: TextField },
-          {
-            name: "color",
-            label: "Color",
-            Component: TextField,
-            type: "color",
-          },
-          {
-            name: "icon",
-            label: "Icon",
-            Component: AutoComplete,
-            suggestions: icons?.map((icon) => ({
-              id: icon.id,
-              name: icon.name ?? "",
-              src: icon?.src,
-            })),
-            suggestionKey: "src",
-          },
-        ],
+        schema: TaskTypeSchema,
+        array: getTypesDialogsArray(),
         actions: { Add: addType },
         kind: "Add",
       },
       Edit: {
         title: "Edit Type",
-        array: [
-          { name: "name", label: "Name", Component: TextField },
-          {
-            name: "color",
-            label: "Color",
-            Component: TextField,
-            type: "color",
-          },
-          {
-            name: "icon",
-            label: "Icon",
-            Component: AutoComplete,
-            suggestions: icons?.map((icon) => ({
-              id: icon.id,
-              name: icon.name ?? "",
-              src: icon?.src,
-            })),
-            suggestionKey: "src",
-          },
-        ],
+        schema: TaskTypeSchema,
+        array: getTypesDialogsArray(),
         actions: { Edit: updateType },
         defaultValues: selectedType,
         kind: "Edit",
@@ -149,27 +82,15 @@ const ConfigPage = () => {
     icon: {
       Add: {
         title: "Add Icon",
-        array: [
-          { name: "name", label: "Name", Component: TextField },
-          {
-            name: "src",
-            label: "Icon Source",
-            Component: FileUploadField,
-          },
-        ],
+        schema: IconItemSchema,
+        array: getIconsDialogsArray(),
         actions: { Add: addIcon },
         kind: "Add",
       },
       Edit: {
         title: "Edit Icon",
-        array: [
-          { name: "name", label: "Name", Component: TextField },
-          {
-            name: "src",
-            label: "Icon Source",
-            Component: FileUploadField,
-          },
-        ],
+        schema: IconItemSchema,
+        array: getIconsDialogsArray(),
         actions: { Edit: updateIcon },
         kind: "Edit",
         defaultValues: selectedIcon,
@@ -177,7 +98,7 @@ const ConfigPage = () => {
       Delete: {
         title: "Delete Icon",
         message: `Are you sure you want to delete ${selectedIcon?.name} ?`,
-        actions: { Delete: deleteStatus },
+        actions: { Delete: deleteIcon },
         defaultValues: selectedIcon,
         kind: "Delete",
       },
@@ -212,6 +133,9 @@ const ConfigPage = () => {
           selectedValue={selectedStatus}
           laoding={!useTaskStatusStore().hydrated}
           configuration={{ showColor: true }}
+          filter={{
+            filterArray: getNameFilterArray(),
+          }}
         />
 
         <Card
@@ -226,6 +150,9 @@ const ConfigPage = () => {
           selectedValue={selectedType}
           laoding={!useTaskTypeStore().hydrated}
           configuration={{ showColor: true }}
+          filter={{
+            filterArray: getNameFilterArray(),
+          }}
         />
 
         <Card
@@ -240,9 +167,7 @@ const ConfigPage = () => {
           selectedValue={selectedIcon}
           laoding={!useIconStore().hydrated}
           filter={{
-            filterArray: [
-              { name: "name", label: "Name", Component: TextField },
-            ],
+            filterArray: getNameFilterArray(),
           }}
           CustomComponent={IconsList}
         />
