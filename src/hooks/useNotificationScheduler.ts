@@ -122,6 +122,8 @@ export const useNotificationScheduler = () => {
   }
 
   function showBrowserNotification(title: string, message: string) {
+    console.log(title,message);
+    
     if (Notification.permission === "granted") {
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Scheduled Notification", {
