@@ -70,6 +70,18 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       suggestionKey: "name",
     },
     {
+      name: "recurrenceInterval",
+      label: "Recurrence Interval",
+      Component: TextField,
+      type: "number",
+    },
+    {
+      name: "recurrenceEndDate",
+      label: "Recurrence EndDate",
+      Component: TextField,
+      type: "datetime-local",
+    },
+    {
       name: "description",
       label: "Description",
       Component: TextArea,

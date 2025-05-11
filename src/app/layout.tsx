@@ -5,12 +5,11 @@ import { useScreenSizeDetector } from "@/hooks/useScreenSizeDetector";
 import Header from "@/components/layout/Header";
 import { useAppStore } from "@/stores/app.store";
 import { useEffect } from "react";
-import { checkForAppUpdate } from "@/lib/checkForAppUpdate";
 import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
-import { scheduleTaskNotifications } from "@/lib/notifications/schedule/tasks";
-import { useTaskStore } from "@/stores/task.store";
-import { useNotificationTrigger } from "@/hooks/useNotificationTrigger";
+import { useNotificationScheduler } from "@/hooks/useNotificationScheduler";
+import { useTaskScheduler } from "@/hooks/useTaskSchedular";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,23 +27,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   useScreenSizeDetector();
-  useNotificationTrigger()
-  const { theme, isMobile  } = useAppStore();
-  const {tasks} = useTaskStore()
+  useNotificationScheduler();
+
+  useTaskScheduler()
+  const { theme, isMobile } = useAppStore();
+
 
   useEffect(() => {
-    checkForAppUpdate();
-  }, []);
-
-  useEffect(()=>{
-    scheduleTaskNotifications(tasks);
-  },[tasks])
-
-  useEffect(() => {
-    if (Notification.permission !== 'granted') {
+    if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
   }, []);
+
+
+
 
   return (
     <html lang="en" data-theme={theme}>
@@ -75,7 +71,7 @@ export default function RootLayout({
           className={clsx(
             "flex-1 overflow-y-auto",
             "p-4 md:p-8 lg:p-12 xl:p-16 2xl:p-20",
-            isMobile ? "pb-16" : "" 
+            isMobile ? "pb-16" : ""
           )}
           style={{
             maxHeight: isMobile ? "calc(100vh - 56px)" : "auto",

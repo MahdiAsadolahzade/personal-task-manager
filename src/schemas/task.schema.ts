@@ -19,6 +19,11 @@ export const TaskSchema = z.object({
   attachments: z.array(z.any()).optional(),
   isRecurring: z.boolean().optional(),
   recurrencePattern: z.string().optional(),
+  recurrenceInterval: z
+    .number()
+    .positive({ message: "Recurrence interval must be greater than zero" })
+    .optional(),
+  recurrenceEndDate: z.string().optional(),
 });
 
 export type Task = z.infer<typeof TaskSchema>;
