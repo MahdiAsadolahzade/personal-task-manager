@@ -9,6 +9,7 @@ import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
 import { useNotificationScheduler } from "@/hooks/useNotificationScheduler";
 import { useTaskScheduler } from "@/hooks/useTaskSchedular";
+import { setupNotificationDB } from "@/lib/initializeDB";
 
 
 const geistSans = Geist({
@@ -26,6 +27,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  useEffect(() => {
+    setupNotificationDB();
+  }, []);
+  
+
   useScreenSizeDetector();
   useNotificationScheduler();
 
@@ -39,6 +46,8 @@ export default function RootLayout({
     }
   }, []);
 
+  
+
 
 
 
@@ -47,7 +56,7 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/icons/icon-192x192.png" />
-        <meta name="theme-color" content="#1e3a8a" />
+        <meta name="theme-color" content="#009688" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"

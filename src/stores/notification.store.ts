@@ -1,15 +1,15 @@
 import { createPersistedStore } from "./createPersistedStore";
 
 interface NotificationStoreModel {
-    notifications: Notification[];
-    pushNotification: (notification: Notification) => void;
+    notifications: TNotification[];
+    pushNotification: (notification: TNotification) => void;
     removeNotification: (id: string) => void;
-    updateNotification: (notification: Notification) => void;
+    updateNotification: (notification: TNotification) => void;
     clearNotifications: () => void;
-    setNotifications: (notifications: Notification[]) => void;
+    setNotifications: (notifications: TNotification[]) => void;
 }
 
-interface Notification {
+export interface TNotification {
     id: string;
     title: string;
     message: string;
@@ -22,7 +22,9 @@ export const useNotificationStore = createPersistedStore<NotificationStoreModel>
     (set) => ({
         notifications: [],
         pushNotification: (notification) =>
-            set((state) => ({ notifications: [notification, ...state.notifications] })),
+            {set((state) => ({ notifications: [notification, ...state.notifications] }))
+    
+    },
         removeNotification: (id) =>
             set((state) => ({ notifications: state.notifications.filter((n) => n.id !== id) })),
         updateNotification: (notification) =>
@@ -42,7 +44,7 @@ export const notificationList = () => {
     return store.notifications;
 };
 
-export const postNotification = (notif: Notification) => {
+export const postNotification = (notif: TNotification) => {
     console.log("Posting notification:", notif.id, notif.scheduledTime);
     useNotificationStore.getState().pushNotification(notif);
 };
