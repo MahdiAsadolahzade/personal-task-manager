@@ -127,6 +127,7 @@ export const useNotificationScheduler = () => {
     if (Notification.permission === "granted") {
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Scheduled Notification", {
+            
           body: "It's time for your scheduled task!",
           icon: "/icons/icon-192x192.png", // optional
         });

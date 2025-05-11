@@ -3,13 +3,13 @@ import React from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import Title from "@/components/typography/Title";
 import { useNotificationStore } from "@/stores/notification.store";
-
+import { v4 as uuid } from "uuid";
 const SettingPage = () => {
   const { pushNotification } = useNotificationStore();
 
   const handleClick = () => {
     pushNotification({
-      id: crypto.randomUUID(),
+      id: uuid(),
       title: "Reminder",
       message: "Do the thing!",
       timestamp: new Date(),

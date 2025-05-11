@@ -93,3 +93,16 @@ self.addEventListener('push', function(event) {
     });
   }
   
+
+  self.addEventListener('periodicsync', event => {
+    if (event.tag === 'my-sync-tag') {
+      event.waitUntil(doPeriodicTask());
+    }
+  });
+  
+  async function doPeriodicTask() {
+    // Fetch API, IndexedDB, cache updates, etc.
+    console.log('Running background sync task...');
+    // Example: await fetch('/api/sync');
+  }
+  
