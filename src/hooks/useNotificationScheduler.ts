@@ -123,11 +123,21 @@ export const useNotificationScheduler = () => {
 
   function showBrowserNotification(title: string, message: string) {
     if (Notification.permission === "granted") {
-      new Notification(title, { body: message });
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification("Scheduled Notification", {
+          body: "It's time for your scheduled task!",
+          icon: "/icons/icon-192x192.png", // optional
+        });
+      });
     } else if (Notification.permission !== "denied") {
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          new Notification(title, { body: message });
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification("Scheduled Notification", {
+              body: "It's time for your scheduled task!",
+              icon: "/icons/icon-192x192.png", // optional
+            });
+          });
         }
       });
     }
