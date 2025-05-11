@@ -1,6 +1,5 @@
 // hooks/useRouteTransition.ts
 "use client";
-
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 

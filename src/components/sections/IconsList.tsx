@@ -1,3 +1,4 @@
+'use client'
 import { IconItem } from "@/types/icon.type";
 import React from "react";
 import Icon from "../utils/Icon";

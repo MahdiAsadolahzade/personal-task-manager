@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import Icon from "../utils/Icon";
 import { findIcon, findStatus, findType } from "@/lib/utils/finders";

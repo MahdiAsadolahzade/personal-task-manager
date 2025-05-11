@@ -1,4 +1,5 @@
 // src/components/Calendar.tsx
+'use client'
 import React, { FC, useMemo, useState } from "react";
 import {
   format,

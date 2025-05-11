@@ -1,4 +1,5 @@
 // hooks/useNotificationScheduler.ts
+"use client";
 import { useEffect, useRef } from "react";
 import { useNotificationStore } from "@/stores/notification.store";
 import type { TNotification } from "@/stores/notification.store";
@@ -72,7 +73,8 @@ export const useNotificationScheduler = () => {
           await (registration as any)?.sync?.register(`notif-${notif.id}`);
           console.log("Background sync registered for notification");
         } catch (syncError) {
-          console.error("Background sync registration failed:", syncError);
+          console.log("Background sync registration failed:", syncError);
+          alert(`Background sync registration failed:${syncError} `);
           // Fallback to setTimeout if sync fails
           scheduleWithTimeout(
             notif,
@@ -87,7 +89,8 @@ export const useNotificationScheduler = () => {
         );
       }
     } catch (e) {
-      console.error("Service worker error:", e);
+      console.log("Service worker error:", e);
+      alert(`Service worker error:${e} `);
       scheduleWithTimeout(
         notif,
         new Date(notif.scheduledTime!).getTime() - Date.now()
@@ -98,14 +101,14 @@ export const useNotificationScheduler = () => {
   async function storeNotificationForSync(notif: TNotification) {
     return new Promise((resolve) => {
       const request = indexedDB.open("notification-store", 1);
-  
+
       request.onupgradeneeded = () => {
         const db = request.result;
         if (!db.objectStoreNames.contains("notifications")) {
           db.createObjectStore("notifications", { keyPath: "id" });
         }
       };
-  
+
       request.onsuccess = () => {
         const db = request.result;
         const tx = db.transaction("notifications", "readwrite");
@@ -113,11 +116,10 @@ export const useNotificationScheduler = () => {
         store.put(notif);
         tx.oncomplete = () => resolve(true);
       };
-  
+
       request.onerror = () => resolve(false);
     });
   }
-  
 
   function showBrowserNotification(title: string, message: string) {
     if (Notification.permission === "granted") {

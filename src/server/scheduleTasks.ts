@@ -1,3 +1,4 @@
+'use client'
 import { addDays, addWeeks, isAfter, isEqual } from "date-fns";
 import { Task } from "@/types/task.type";
 import {
