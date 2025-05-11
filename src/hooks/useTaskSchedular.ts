@@ -1,3 +1,4 @@
+'use client'
 import { useEffect } from "react";
 import { useTaskStore } from "@/stores/task.store";
 import { ScheduleTasks } from "@/server/scheduleTasks";

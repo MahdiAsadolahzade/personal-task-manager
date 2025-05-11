@@ -1,4 +1,5 @@
 // components/ui/Menu.tsx
+'use client'
 import { FC, useEffect, useRef, useState } from "react";
 
 interface MenuProps {
