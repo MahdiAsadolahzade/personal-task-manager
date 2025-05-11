@@ -1,1 +1,0 @@
-self.addEventListener("push",function(i){var n;let t=null==(n=i.data)?void 0:n.json(),o=(null==t?void 0:t.title)||"Notification",l={body:(null==t?void 0:t.message)||"",icon:"/icons/icon-192x192.png",tag:null==t?void 0:t.id,vibrate:[200,100,200]};i.waitUntil(self.registration.showNotification(o,l))});
