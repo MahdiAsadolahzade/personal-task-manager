@@ -21,5 +21,8 @@ export default withPWA({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
   register: true,
+  customWorkerSrc: 'worker', // Directory containing index.js or index.ts (default: 'worker')
+  customWorkerDest: 'public', // Output directory for bundled worker (default: same as dest)
+  customWorkerPrefix: 'worker',
   // skipWaiting: true,
 })(nextConfig);

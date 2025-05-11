@@ -14,6 +14,8 @@ export type Task = {
 
   isRecurring?: boolean;
   recurrencePattern?: string; // e.g., "DAILY", "WEEKLY", "MONTHLY"
+  recurrenceInterval?:number
+  recurrenceEndDate?:string
 
 };
 

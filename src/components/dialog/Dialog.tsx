@@ -15,6 +15,7 @@ export const Dialog = () => {
     formState: { errors },
     reset,
     handleSubmit,
+    watch
   } = useDynamicForm(content?.schema);
 
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
@@ -87,6 +88,7 @@ console.log('final Data',finalData );
                     label={item?.label}
                     type={item?.type}
                     register={register}
+                    watch={watch}
                     errors={errors}
                     control={control}
                     suggestions={item?.suggestions}
