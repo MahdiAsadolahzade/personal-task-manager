@@ -4,9 +4,8 @@ import ThemeToggle from "@/components/ThemeToggle";
 import Title from "@/components/typography/Title";
 import { useNotificationStore } from "@/stores/notification.store";
 
-
 const SettingPage = () => {
-const {pushNotification} = useNotificationStore()
+  const { pushNotification } = useNotificationStore();
 
   const handleClick = () => {
     pushNotification({
@@ -26,10 +25,9 @@ const {pushNotification} = useNotificationStore()
         <ThemeToggle />
       </div>
 
-     
-     <button onClick={handleClick}>
-      test a notif
-     </button>
+      <button className="btn btn-primary" onClick={handleClick}>
+        test a notif
+      </button>
     </div>
   );
 };
