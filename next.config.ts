@@ -26,6 +26,8 @@ export default withPWA({
   register: true,
 cacheOnFrontEndNav:true,
 aggressiveFrontEndNavCaching:true,
+reloadOnOnline:true,
+cacheStartUrl:true,
   customWorkerSrc: 'worker', // Directory containing index.js or index.ts (default: 'worker')
   customWorkerDest: 'public', // Output directory for bundled worker (default: same as dest)
   customWorkerPrefix: 'worker',
