@@ -17,7 +17,6 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
-  
 };
 
 export default withPWA({
@@ -28,58 +27,4 @@ export default withPWA({
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
   cacheStartUrl: true,
-  customWorkerSrc: "worker",
-  customWorkerDest: "public",
-  customWorkerPrefix: "worker",
-  workboxOptions: {
-    navigationPreload: true,
-
-    // Precache fallback routes
-    runtimeCaching: [
-      {
-        urlPattern: /^\/$/, // Home page
-        handler: "NetworkFirst",
-        options: {
-          cacheName: "start-page",
-          expiration: {
-            maxEntries: 1,
-            maxAgeSeconds: 24 * 60 * 60, // 1 day
-          },
-        },
-      },
-      {
-        urlPattern: /^\/tasks$/,
-        handler: "NetworkFirst",
-        options: {
-          cacheName: "tasks-page",
-          expiration: {
-            maxEntries: 1,
-            maxAgeSeconds: 24 * 60 * 60,
-          },
-        },
-      },
-      {
-        urlPattern: /^\/configuration$/,
-        handler: "NetworkFirst",
-        options: {
-          cacheName: "configuration-page",
-          expiration: {
-            maxEntries: 1,
-            maxAgeSeconds: 24 * 60 * 60,
-          },
-        },
-      },
-      {
-        urlPattern: /^\/settings$/,
-        handler: "NetworkFirst",
-        options: {
-          cacheName: "settings-page",
-          expiration: {
-            maxEntries: 1,
-            maxAgeSeconds: 24 * 60 * 60,
-          },
-        },
-      },
-    ],
-  },
 })(nextConfig);
