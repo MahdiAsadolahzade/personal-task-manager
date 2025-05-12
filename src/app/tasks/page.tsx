@@ -12,7 +12,6 @@ import {
   getTasksFilterArray,
 } from "@/data/dialogArrays/tasks";
 import { findPriority } from "@/mock/priority.data";
-import { findRecurrencePattern } from "@/mock/recurrence.data";
 
 export type Task = {
   id: string;
@@ -26,7 +25,7 @@ export type Task = {
 
 const TasksPage = () => {
   const { openDialog } = useDialogStore();
-  const { tasks, addTask, updateTask, hydrated } = useTaskStore();
+  const { tasks, addTask, updateTask,deleteTask, hydrated } = useTaskStore();
   const [selectedTask, setSelectedTask] = useState<any>();
 
   const dialogConfig: TDialogConfig = useMemo(() => ({
@@ -46,12 +45,20 @@ const TasksPage = () => {
         defaultValues: {
           ...selectedTask,
           priority: findPriority(selectedTask?.priority)?.id,
-          recurrencePattern: findRecurrencePattern(
-            selectedTask?.recurrencePattern
-          )?.id,
         },
         kind: "Edit",
       },
+      Delete:{
+        title: "Edit Task",
+        schema: TaskSchema,
+      message:`are you sure about deleting ${selectedTask?.title}`,
+        actions: { Delete: deleteTask },
+        defaultValues: {
+          ...selectedTask,
+          priority: findPriority(selectedTask?.priority)?.id,
+        },
+        kind: "Delete",
+      }
     },
   }), [addTask, updateTask, selectedTask]);
 

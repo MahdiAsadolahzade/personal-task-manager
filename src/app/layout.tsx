@@ -4,12 +4,9 @@ import "./globals.css";
 import { useScreenSizeDetector } from "@/hooks/useScreenSizeDetector";
 import Header from "@/components/layout/Header";
 import { useAppStore } from "@/stores/app.store";
-import { useEffect } from "react";
 import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
-import { useNotificationScheduler } from "@/hooks/useNotificationScheduler";
-import { useTaskScheduler } from "@/hooks/useTaskSchedular";
-import { setupNotificationDB } from "@/lib/initializeDB";
+import { useCheckForAppUpdate } from "@/hooks/useCheckForAppUpdate";
 
 
 const geistSans = Geist({
@@ -28,40 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').then(reg => {
-        console.log('Service Worker registered with scope:', reg.scope);
-        
-      }).catch(err => {
-        console.error('Service Worker registration failed:', err);
-      });
-    });
-  }
-
-  
-  useEffect(() => {
-    setupNotificationDB();
-  }, []);
-  
-
   useScreenSizeDetector();
-  useNotificationScheduler();
+  useCheckForAppUpdate();
 
-  useTaskScheduler()
   const { theme, isMobile } = useAppStore();
-
-
-  useEffect(() => {
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-  }, []);
-
-  
-
-
-
 
   return (
     <html lang="en" data-theme={theme}>

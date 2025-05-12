@@ -4,8 +4,7 @@ import Icon from "../utils/Icon";
 import { findIcon, findStatus, findType } from "@/lib/utils/finders";
 import { convertToStandardDateWithTime } from "@/lib/utils/dateConverts";
 import { Task } from "@/types/task.type";
-import { FiBell, FiRepeat } from "react-icons/fi";
-import { findRecurrencePattern } from "@/mock/recurrence.data";
+import { FiBell } from "react-icons/fi";
 import { findPriority } from "@/mock/priority.data";
 import { shortenText } from "@/lib/utils/strings";
 
@@ -19,7 +18,7 @@ const TasksList = ({
   setSelectedValue?: any;
 }) => {
   return (
-    <div className="space-y-4 p-4">
+    <div className=" space-y-4 p-4 max-h-[60vh] overflow-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data.map((task) => (
           <div
@@ -34,7 +33,7 @@ const TasksList = ({
               ${
                 selectedValue?.id === task.id
                   ? "ring-2 ring-primary bg-base2"
-                  : "bg-base2"
+                  : "bg-background"
               }`}
           >
             {/* Task title with priority indicator */}
@@ -42,19 +41,26 @@ const TasksList = ({
               <h3 className="text-lg font-semibold line-clamp-1">
                 {task.title}
               </h3>
-              {task.priority && (
-                <span
-                  className={`text-xs px-2 py-1 rounded-full ${
-                    task.priority === "HIGH"
-                      ? "bg-red-100 text-red-800"
-                      : task.priority === "MEDIUM"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : "bg-green-100 text-green-800"
+                {task.priority && (
+                <div className="flex items-center space-x-2">
+                  <span
+                  className={`flex items-center text-xs px-3 py-1 rounded-full font-medium transition-all duration-200 ${
+                    task.priority === "3"
+                    ? "bg-red-100 text-red-800"
+                    : task.priority === "2"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : "bg-green-100 text-green-800"
                   }`}
-                >
+                  >
                   {findPriority(task.priority)?.name}
-                </span>
-              )}
+                  </span>
+                  {task.priority === "3" && (
+                  <span className="text-red-500 animate-pulse">
+                    <FiBell />
+                  </span>
+                  )}
+                </div>
+                )}
             </div>
 
             {/* Task description */}
@@ -74,23 +80,9 @@ const TasksList = ({
                 </div>
               )}
 
-              {/* Alarm indicator */}
-              {task.setAlarm && (
-                <div className="flex items-center text-sm space-x-1 text-blue-500">
-                  <FiBell className="text-base" />
-                  <span>Alarm Set</span>
-                </div>
-              )}
 
-              {/* Recurrence indicator */}
-              {task.isRecurring && task.recurrencePattern && (
-                <div className="flex items-center text-sm space-x-1 text-purple-500">
-                  <FiRepeat className="text-base" />
-                  <span>
-                    {findRecurrencePattern(task.recurrencePattern)?.name}
-                  </span>
-                </div>
-              )}
+
+
             </div>
 
             {/* Status and type badges */}

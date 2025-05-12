@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import { FC } from "react";
 
 interface IconProps {
   src?: string;
   alt: string;
   className?: string;
-  color?: string; // Tailwind class like "text-red-500"
+  color?: string; 
 }
 
 const Icon: FC<IconProps> = ({
@@ -13,12 +13,12 @@ const Icon: FC<IconProps> = ({
   src = "/icons/icon-192x192.png",
   className = "",
 }) => {
-  const isSvg = src.endsWith(".svg");
+  const isSvg = src.endsWith(".svg") || src.startsWith("data:image/svg+xml");
 
   if (isSvg) {
     return (
       <div
-        className={`w-5 h-5 inline-block text-foreground  ${className}`}
+        className={`w-5 h-5 inline-block   ${className}`}
         style={{
           maskImage: `url(${src})`,
           WebkitMaskImage: `url(${src})`,

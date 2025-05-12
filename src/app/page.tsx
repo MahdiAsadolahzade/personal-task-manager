@@ -13,8 +13,7 @@ export default function HomePage() {
 
       {tasks?.length > 0 ? (
         <>
-          {/* <TasksList data={tasks?.slice(Math.max(tasks?.length - 2, 0))} /> */}
-          <Calendar tasks={tasks} onDayClick={(date) => console.log(date)} />
+          <Calendar tasks={tasks}  />
         </>
       ) : (
         <div className="flex-col justify-center items-center">

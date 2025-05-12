@@ -6,6 +6,7 @@ import { TiDelete } from "react-icons/ti";
 import { useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import { useDynamicForm } from "@/lib/dynamicUseForm";
+import { motion } from "framer-motion";
 
 export const Dialog = () => {
   const { isOpen, content, closeDialog } = useDialogStore();
@@ -15,13 +16,12 @@ export const Dialog = () => {
     formState: { errors },
     reset,
     handleSubmit,
-    watch
+    watch,
   } = useDynamicForm(content?.schema);
 
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
   const onSubmit = (data: any) => {
-    console.log("raw form data:", data);
     const finalData =
       content?.kind === "Add"
         ? { ...data, id: uuid() }
@@ -29,7 +29,6 @@ export const Dialog = () => {
         ? data
         : data?.id;
     content?.actions?.[content?.kind]?.(finalData);
-console.log('final Data',finalData );
 
     closeDialog();
   };
@@ -39,14 +38,12 @@ console.log('final Data',finalData );
       if (content?.kind === "Add") {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
-        console.log('edit defaultValues' ,content?.defaultValues);
- 
         reset(content?.defaultValues || {}, { keepValues: false });
       }
     } else {
       reset({}, { keepValues: false, keepDirtyValues: false });
     }
-  }, [isOpen, content?.defaultValues, content?.kind, content ,reset]);
+  }, [isOpen, content?.defaultValues, content?.kind, content, reset]);
 
   if (!isOpen) return null;
 
@@ -56,7 +53,13 @@ console.log('final Data',finalData );
 
   return (
     <div className="fixed  inset-0 z-50 flex items-center justify-center bg-muted/80 ">
-      <div className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3  max-h-[90vh] h-fit ">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        transition={{ duration: 0.5 }}
+        className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3  max-h-[90vh] h-fit "
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" flex justify-between items-center">
             <div className="flex items-center justify-center space-x-1">
@@ -64,23 +67,27 @@ console.log('final Data',finalData );
               <h2 className="text-xl font-semibold ">{content?.title}</h2>
             </div>
 
-            <div className="btn btn-ghost p-0">
-              <TiDelete
-                className="text-3xl text-muted "
-                onClick={closeDialog}
-              />
-            </div>
+            <motion.div
+              className="btn btn-ghost p-0"
+              initial={{ opacity: 0, scale: 0.8, color: "var(--color-muted)" }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ color: "var(--color-error)" }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.5 }}
+            >
+              <TiDelete className="text-3xl " onClick={closeDialog} />
+            </motion.div>
           </div>
           <hr className="text-muted" />
           <div className=" content mb-4">
             {!!content?.message && (
-              <div>
+              <div className="text-wrap">
                 <p>{content?.message}</p>
               </div>
             )}
             {!!content?.array && (
               <div
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-2 max-h-[70vh] overflow-auto`}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-2  max-h-[70vh] overflow-auto p-1`}
               >
                 {content.array?.map((item, index) => (
                   <item.Component
@@ -99,6 +106,10 @@ console.log('final Data',finalData );
                 ))}
               </div>
             )}
+
+            {content?.CustomComponent && (
+              <content.CustomComponent {...content?.customContnet} />
+            )}
           </div>
           <div className="mt-4 flex justify-end space-x-2">
             <button onClick={closeDialog} className="btn btn-secondary ">
@@ -112,7 +123,7 @@ console.log('final Data',finalData );
             )}
           </div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -10,13 +10,13 @@ export const types: TaskType[] = [
   {
     id: uuid(),
     name: "PERSONAL",
-    color: "#FF5733",
+    color: "#cddc39",
     icon: findIcon("5"),
   },
   {
     id: uuid(),
     name: "WORK",
-    color: "#FFC300",
+    color: "#ab47bc",
     icon: findIcon("6"),
   },
 ];

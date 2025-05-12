@@ -1,3 +1,2 @@
-import { CURRENT_APP_VERSION_BADGE } from "@/lib/config";
-
-export const CURRENT_APP_VERSION = CURRENT_APP_VERSION_BADGE;
+// src/constants/version.ts
+export const CURRENT_APP_VERSION = "1.0.1"; // update this manually if needed

@@ -10,12 +10,12 @@ import {
   addDays,
   subMonths,
   addMonths,
-  isToday,
   isSameMonth,
 } from "date-fns";
 import clsx from "clsx";
 import { Task } from "@/types/task.type";
 import { useAppStore } from "@/stores/app.store";
+import CalendarDay from "./CalendarDay";
 
 interface CalendarProps {
   tasks: Task[];
@@ -124,50 +124,4 @@ const Calendar: FC<CalendarProps> = ({
 
 export default Calendar;
 
-interface CalendarDayProps {
-  date: Date;
-  isCurrentMonth: boolean;
-  tasks: Task[];
-  isMobile: boolean;
-  onClick?: (date: Date) => void;
-}
 
-const CalendarDay: FC<CalendarDayProps> = React.memo(
-  ({ date, isCurrentMonth, tasks, isMobile, onClick }) => {
-    const maxVisibleTasks = isMobile ? 1 : 2;
-
-    return (
-      <div
-        onClick={() => onClick?.(date)}
-        className={clsx(
-          "border rounded min-h-[80px] flex flex-col gap-1 p-1 m-1 sm:p-2 transition duration-150",
-          !isCurrentMonth && "bg-base2 ",
-          isToday(date) && "border-accent ring-1 ring-accent",
-          "hover:bg-muted active:scale-[0.98] cursor-pointer"
-        )}
-      >
-        <div className="text-xs sm:text-sm font-medium">
-          {format(date, "d")}
-        </div>
-        <div className="flex flex-col gap-0.5">
-          {tasks.slice(0, maxVisibleTasks).map((task) => (
-            <div
-              key={task.id}
-              className={`text-[10px] sm:text-xs truncate bg-primary/20 text-primary rounded px-1 py-0.5`}
-              title={task.title}
-            >
-              {task.title}
-            </div>
-          ))}
-          {tasks.length > maxVisibleTasks && (
-            <div className="text-[10px] sm:text-xs ">
-              +{tasks.length - maxVisibleTasks} more
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-);
-
-CalendarDay.displayName = "CalendarDay";

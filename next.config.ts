@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   // Other Next.js config if needed
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    externalDir: true, // Allows importing from src directory
+  },
 
   webpack(config) {
     config.module.rules.push({
@@ -24,5 +27,4 @@ export default withPWA({
   customWorkerSrc: 'worker', // Directory containing index.js or index.ts (default: 'worker')
   customWorkerDest: 'public', // Output directory for bundled worker (default: same as dest)
   customWorkerPrefix: 'worker',
-  // skipWaiting: true,
 })(nextConfig);

@@ -28,7 +28,8 @@ export type TDialogContent = {
   message?: string;
   array?: TFieldArray[];
   schema?:ZodObject<any>
-
+CustomComponent?:any,
+customContnet?:{[key in string]:any}
   actions?: TDialogActions;
   defaultValues?: any;
 };

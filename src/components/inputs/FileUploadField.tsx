@@ -4,6 +4,7 @@ import { Controller, useWatch } from "react-hook-form";
 import { convertFileToBase64 } from "@/lib/upload/convertFileToBase64";
 import { RxCross2 } from "react-icons/rx";
 import type { FileUploadProps } from "@/types/inputs.type";
+import Icon from "../utils/Icon";
 
 const FileUpload: FC<FileUploadProps> = ({
   control,
@@ -72,10 +73,10 @@ const FileUpload: FC<FileUploadProps> = ({
                 {value && (
                   <div className="flex items-center gap-2">
                     {filePreview && (
-                      <img
+                      <Icon
                         src={filePreview}
                         alt="preview"
-                        className="w-10 h-10 rounded border"
+                        className="w-10 h-10 rounded border text-foreground"
                       />
                     )}
                     <span className="text-sm truncate max-w-[150px]">
