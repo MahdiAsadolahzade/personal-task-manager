@@ -7,16 +7,7 @@ export type Task = {
   createdAt: string;
   updatedAt?: string;
   dueDate?: string;
-
-  setAlarm?: boolean;
-  //new
-  priority?: string;
-
-  isRecurring?: boolean;
-  recurrencePattern?: string; // e.g., "DAILY", "WEEKLY", "MONTHLY"
-  recurrenceInterval?:number
-  recurrenceEndDate?:string
-
+  priority?:string
 };
 
 export type TaskStatusName =

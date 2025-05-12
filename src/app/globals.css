@@ -147,16 +147,16 @@ body {
     @apply bg-primary text-muted;
   }
   .btn-secondary {
-    @apply bg-secondary text-foreground;
+    @apply bg-secondary text-muted;
   }
   .btn-accent {
-    @apply bg-accent text-foreground;
+    @apply bg-accent text-muted;
   }
   .btn-muted {
-    @apply bg-muted text-foreground;
+    @apply bg-muted text-muted;
   }
   .btn-outline {
-    @apply border border-secondary text-secondary;
+    @apply border border-secondary text-muted;
   }
 
   .btn-error {
@@ -316,19 +316,13 @@ body {
     @apply bg-primary/20;
   }
 
+  /* Textarea component */
+  .textarea {
+    @apply w-full px-4 py-2 border rounded-md  text-foreground bg-background;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
 
-
-    /* Textarea component */
-    .textarea {
-      @apply w-full px-4 py-2 border rounded-md  text-foreground bg-background;
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-  
-    .textarea:focus {
-      @apply border-primary outline-none ring-1 ring-primary;
-    }
-  
-
-
-
+  .textarea:focus {
+    @apply border-primary outline-none ring-1 ring-primary;
+  }
 }
