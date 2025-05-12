@@ -3,6 +3,7 @@ import withPWA from "@ducanh2912/next-pwa";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Other Next.js config if needed
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
@@ -16,6 +17,7 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  
 };
 
 export default withPWA({
@@ -26,53 +28,55 @@ export default withPWA({
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
   cacheStartUrl: true,
-  customWorkerSrc: 'worker',
-  customWorkerDest: 'public',
-  customWorkerPrefix: 'worker',
+  customWorkerSrc: "worker",
+  customWorkerDest: "public",
+  customWorkerPrefix: "worker",
   workboxOptions: {
     navigationPreload: true,
+
+    // Precache fallback routes
     runtimeCaching: [
       {
-        urlPattern: /^\/$/, // Cache the root page
-        handler: "CacheFirst",
+        urlPattern: /^\/$/, // Home page
+        handler: "NetworkFirst",
         options: {
-          cacheName: "page-cache",
+          cacheName: "start-page",
           expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
+            maxEntries: 1,
+            maxAgeSeconds: 24 * 60 * 60, // 1 day
           },
         },
       },
       {
         urlPattern: /^\/tasks$/,
-        handler: "CacheFirst",
+        handler: "NetworkFirst",
         options: {
-          cacheName: "page-cache",
+          cacheName: "tasks-page",
           expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 7 * 24 * 60 * 60,
+            maxEntries: 1,
+            maxAgeSeconds: 24 * 60 * 60,
           },
         },
       },
       {
         urlPattern: /^\/configuration$/,
-        handler: "CacheFirst",
+        handler: "NetworkFirst",
         options: {
-          cacheName: "page-cache",
+          cacheName: "configuration-page",
           expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 7 * 24 * 60 * 60,
+            maxEntries: 1,
+            maxAgeSeconds: 24 * 60 * 60,
           },
         },
       },
       {
         urlPattern: /^\/settings$/,
-        handler: "CacheFirst",
+        handler: "NetworkFirst",
         options: {
-          cacheName: "page-cache",
+          cacheName: "settings-page",
           expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 7 * 24 * 60 * 60,
+            maxEntries: 1,
+            maxAgeSeconds: 24 * 60 * 60,
           },
         },
       },
