@@ -39,3 +39,31 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# Android build outputs
+app/build/
+app/release/
+*.apk
+*.aab
+
+# Sensitive files
+android.keystore
+local.properties
+
+# Gradle files
+.gradle/
+build/
+gradle.properties
+
+# IDE files
+.idea/
+*.iml
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+
+# macOS-specific
+.DS_Store
