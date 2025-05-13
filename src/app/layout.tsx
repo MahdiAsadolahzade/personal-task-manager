@@ -33,19 +33,12 @@ export default function RootLayout({
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      // Programmatically preload other pages to trigger caching
       const preloadPages = ['/tasks', '/configuration', '/settings'];
-      preloadPages.forEach((path) => {
-        fetch(path)
-          .then((res) => {
-            console.log(`Preloaded ${path}`, res.status);
-          })
-          .catch((err) => {
-            console.error(`Failed to preload ${path}`, err);
-          });
-      });
+      preloadPages.forEach(path => fetch(path)); // These will get cached now
     }
   }, []);
+  
+  
   
   
 

@@ -1,67 +1,51 @@
-// public/sw.js
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-      self.skipWaiting();
-    }
-  });
-  
-  self.addEventListener('activate', event => {
-    event.waitUntil(
+const PRECACHE_URLS = ['/', '/tasks', '/configuration', '/settings'];
+const STATIC_CACHE = 'static-cache-v1';
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(STATIC_CACHE).then(cache => {
+      return cache.addAll(PRECACHE_URLS);
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    clients.claim().then(() =>
       clients.matchAll({ type: 'window' }).then(windowClients => {
         windowClients.forEach(client => {
           client.postMessage({ type: 'APP_UPDATED' });
         });
       })
-    );
-  });
-  
-  self.addEventListener('notificationclick', event => {
-    event.notification.close();
-    
-    if (event.action === 'refresh') {
-      // Tell the page to refresh
-      event.waitUntil(
-        clients.matchAll({ type: 'window' }).then(clients => {
-          if (clients && clients.length) {
-            clients.forEach(client => {
-              client.postMessage({
-                action: 'notificationclick',
-                notificationAction: event.action
-              });
-            });
-          }
-        })
-      );
-    }
-  });
+    )
+  );
+});
 
+// Handle fetch and serve from cache if offline
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
 
-//   const PRECACHE_URLS = [
-//     '/', // home page
-//     '/tasks',
-//     '/configuration',
-//     '/settings',
-//   ];
-  
-//   // Install event: Cache all core pages
-//   self.addEventListener('install', (event) => {
-//     event.waitUntil(
-//       caches.open('static-cache-v1').then((cache) => {
-//         return cache.addAll(PRECACHE_URLS);
-//       })
-//     );
-//     self.skipWaiting(); // Ensure immediate activation
-//   });
-  
-//   // Activate event
-//   self.addEventListener('activate', (event) => {
-//     event.waitUntil(
-//       clients.matchAll({ type: 'window' }).then(windowClients => {
-//         windowClients.forEach(client => {
-//           client.postMessage({ type: 'APP_UPDATED' });
-//         });
-//       })
-//     );
-//     self.clients.claim(); // Take control immediately
-//   });
-  
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      return cached || fetch(event.request).then(response => {
+        return caches.open(STATIC_CACHE).then(cache => {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      }).catch(() => {
+        // Offline fallback (optional)
+        if (event.request.mode === 'navigate') {
+          return caches.match('/');
+        }
+      });
+    })
+  );
+});
+
+// Handle skipWaiting from app
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
