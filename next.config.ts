@@ -27,4 +27,7 @@ export default withPWA({
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
   cacheStartUrl: true,
+  customWorkerSrc: "worker",
+  customWorkerDest: "public",
+  customWorkerPrefix: "worker",
 })(nextConfig);

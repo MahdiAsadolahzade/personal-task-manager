@@ -5,7 +5,7 @@ export const IconItemSchema = z.object({
   src: z.any().optional(),
   name: z
     .string()
-    .min(5, "Name must be at least 5 characters long")
+    .min(1, "Name must be at least 1 characters long")
     .max(200, "Name must not exceed 200 characters"),
   color: z.string().optional(),
 });

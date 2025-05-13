@@ -7,6 +7,7 @@ import { useAppStore } from "@/stores/app.store";
 import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
 import { useCheckForAppUpdate } from "@/hooks/useCheckForAppUpdate";
+import { useEffect } from "react";
 
 
 const geistSans = Geist({
@@ -29,6 +30,24 @@ export default function RootLayout({
   useCheckForAppUpdate();
 
   const { theme, isMobile } = useAppStore();
+
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      // Programmatically preload other pages to trigger caching
+      const preloadPages = ['/tasks', '/configuration', '/settings'];
+      preloadPages.forEach((path) => {
+        fetch(path)
+          .then((res) => {
+            console.log(`Preloaded ${path}`, res.status);
+          })
+          .catch((err) => {
+            console.error(`Failed to preload ${path}`, err);
+          });
+      });
+    }
+  }, []);
+  
+  
 
   return (
     <html lang="en" data-theme={theme}>
