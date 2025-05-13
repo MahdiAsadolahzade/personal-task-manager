@@ -42,8 +42,8 @@ next-env.d.ts
 
 
 # Android build outputs
-app/build/
-app/release/
+app/*
+
 *.apk
 *.aab
 
