@@ -36,32 +36,32 @@ self.addEventListener('message', (event) => {
   });
 
 
-  const PRECACHE_URLS = [
-    '/', // home page
-    '/tasks',
-    '/configuration',
-    '/settings',
-  ];
+//   const PRECACHE_URLS = [
+//     '/', // home page
+//     '/tasks',
+//     '/configuration',
+//     '/settings',
+//   ];
   
-  // Install event: Cache all core pages
-  self.addEventListener('install', (event) => {
-    event.waitUntil(
-      caches.open('static-cache-v1').then((cache) => {
-        return cache.addAll(PRECACHE_URLS);
-      })
-    );
-    self.skipWaiting(); // Ensure immediate activation
-  });
+//   // Install event: Cache all core pages
+//   self.addEventListener('install', (event) => {
+//     event.waitUntil(
+//       caches.open('static-cache-v1').then((cache) => {
+//         return cache.addAll(PRECACHE_URLS);
+//       })
+//     );
+//     self.skipWaiting(); // Ensure immediate activation
+//   });
   
-  // Activate event
-  self.addEventListener('activate', (event) => {
-    event.waitUntil(
-      clients.matchAll({ type: 'window' }).then(windowClients => {
-        windowClients.forEach(client => {
-          client.postMessage({ type: 'APP_UPDATED' });
-        });
-      })
-    );
-    self.clients.claim(); // Take control immediately
-  });
+//   // Activate event
+//   self.addEventListener('activate', (event) => {
+//     event.waitUntil(
+//       clients.matchAll({ type: 'window' }).then(windowClients => {
+//         windowClients.forEach(client => {
+//           client.postMessage({ type: 'APP_UPDATED' });
+//         });
+//       })
+//     );
+//     self.clients.claim(); // Take control immediately
+//   });
   
