@@ -19,8 +19,8 @@
     "path": "C:\\Users\\Mahdi\\Desktop\\My Projects\\personal-task-manager\\android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1",
-  "appVersionCode": 1,
+  "appVersionName": "2",
+  "appVersionCode": 2,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://personal-task-manager-ten.vercel.app/manifest.json",
@@ -39,5 +39,5 @@
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
   "protocolHandlers": [],
-  "appVersion": "1"
+  "appVersion": "2"
 }

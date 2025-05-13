@@ -1,10 +1,12 @@
-[{
+[
+  {
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
       "package_name": "app.vercel.personal_task_manager_ten.twa",
       "sha256_cert_fingerprints": [
-        "AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90"
+        "FF:52:6D:1D:C5:8E:EC:A2:D2:8B:73:94:BB:37:2A:C3:9B:EA:B0:BA:1C:9D:D0:CC:38:DE:F8:36:02:2C:D6:F9"
       ]
     }
-  }]
+  }
+]
