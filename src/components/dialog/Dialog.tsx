@@ -17,6 +17,7 @@ export const Dialog = () => {
     reset,
     handleSubmit,
     watch,
+    setValue,
   } = useDynamicForm(content?.schema);
 
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
@@ -29,6 +30,7 @@ export const Dialog = () => {
         ? data
         : data?.id;
     content?.actions?.[content?.kind]?.(finalData);
+    console.log("finalData", finalData);
 
     closeDialog();
   };
@@ -89,21 +91,25 @@ export const Dialog = () => {
               <div
                 className={`grid grid-cols-1 lg:grid-cols-2 gap-2  max-h-[70vh] overflow-auto p-1`}
               >
-                {content.array?.map((item, index) => (
-                  <item.Component
-                    name={item.name}
-                    label={item?.label}
-                    type={item?.type}
-                    register={register}
-                    watch={watch}
-                    errors={errors}
-                    control={control}
-                    suggestions={item?.suggestions}
-                    suggestionKey={item?.suggestionKey}
-                    kind={content?.kind}
-                    key={`${item.name}/${index}`}
-                  />
-                ))}
+                {content.array?.map((item, index) => {
+                  if (!item.show || item.show(watch))
+                    return (
+                      <item.Component
+                        name={item.name}
+                        label={item?.label}
+                        type={item?.type}
+                        register={register}
+                        watch={watch}
+                        setValue={setValue}
+                        errors={errors}
+                        control={control}
+                        suggestions={item?.suggestions}
+                        suggestionKey={item?.suggestionKey}
+                        kind={content?.kind}
+                        key={`${item.name}/${index}`}
+                      />
+                    );
+                })}
               </div>
             )}
 

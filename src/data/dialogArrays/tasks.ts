@@ -1,6 +1,7 @@
 // tasks-dialog-array.ts
 import AutoComplete from "@/components/inputs/AutoComplete";
-
+import Checkbox from "@/components/inputs/Checkbox";
+import RecurrenceRule from "@/components/inputs/customs/RecurrenceRule";
 import TextArea from "@/components/inputs/TextArea";
 import TextField from "@/components/inputs/TextField";
 import { findIcon } from "@/lib/utils/finders";
@@ -23,9 +24,8 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       suggestions: statuses?.map((status) => ({
         id: status.id,
         name: status.name ?? "",
-        src: findIcon(status?.icon??'')?.src,
+        src: findIcon(status?.icon ?? "")?.src,
       })),
-      suggestionKey: "src",
     },
     {
       name: "type",
@@ -34,7 +34,7 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       suggestions: types?.map((type) => ({
         id: type.id,
         name: type.name ?? "",
-        src: findIcon(type?.icon??'')?.src,
+        src: findIcon(type?.icon ?? "")?.src,
       })),
       suggestionKey: "src",
     },
@@ -51,7 +51,29 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       suggestions: Priorities,
       suggestionKey: "name",
     },
-
+    {
+      name: "startTime",
+      label: "Start Time",
+      Component: TextField,
+      type: "time",
+    },
+    {
+      name: "endTime",
+      label: "End Time",
+      Component: TextField,
+      type: "time",
+    },
+    {
+      name: "isRecurring",
+      label: "Is Recurring",
+      Component: Checkbox,
+    },
+    {
+      name: "recurrenceRule",
+      label: "Recurrence Rule",
+      Component: RecurrenceRule,
+      show: (watch: any) => watch("isRecurring"),
+    },
     {
       name: "description",
       label: "Description",
@@ -74,7 +96,7 @@ export const getTasksFilterArray = (): TFieldArray[] => {
       suggestions: statuses?.map((status) => ({
         id: status.id,
         name: status.name ?? "",
-        src: findIcon(status?.icon??'')?.src,
+        src: findIcon(status?.icon ?? "")?.src,
       })),
       multiSelect: true,
       suggestionKey: "src",
@@ -87,7 +109,7 @@ export const getTasksFilterArray = (): TFieldArray[] => {
       suggestions: types?.map((type) => ({
         id: type.id,
         name: type.name ?? "",
-        src: findIcon(type?.icon??'')?.src,
+        src: findIcon(type?.icon ?? "")?.src,
       })),
 
       suggestionKey: "src",
@@ -100,6 +122,5 @@ export const getTasksFilterArray = (): TFieldArray[] => {
       multiSelect: true,
       suggestionKey: "name",
     },
-
   ];
 };

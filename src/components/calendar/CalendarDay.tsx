@@ -24,7 +24,6 @@ const CalendarDay: FC<CalendarDayProps> = React.memo(
     const padding = isMobile ? "p-0.5 m-0.5" : "p-1.5 m-1";
 
     const handleClick = () => {
-       
       openDialog({
         kind: "Info",
         title: `${date?.toLocaleDateString()}`,
@@ -37,7 +36,7 @@ const CalendarDay: FC<CalendarDayProps> = React.memo(
       <div
         onClick={handleClick}
         className={clsx(
-          "border rounded flex flex-col transition duration-150",
+          "border rounded flex flex-col transition duration-150 relative",
           daySize,
           padding,
           !isCurrentMonth && "bg-base2 opacity-80",
@@ -46,6 +45,11 @@ const CalendarDay: FC<CalendarDayProps> = React.memo(
           isMobile && "text-center" // Center content on mobile
         )}
       >
+        {isMobile && tasks.length > 0 && (
+          <div className="absolute -top-1 -left-1 bg-accent text-foreground rounded-full w-4 h-4 flex items-center justify-center text-[0.6rem]">
+            {tasks.length}
+          </div>
+        )}
         <div
           className={clsx(
             "font-medium self-end", // Position day number at top-right
@@ -55,7 +59,12 @@ const CalendarDay: FC<CalendarDayProps> = React.memo(
           {format(date, "d")}
         </div>
 
-        <div className={clsx(`flex flex-col gap-0.5 flex-grow justify-end`,isMobile && 'justify-center')}>
+        <div
+          className={clsx(
+            `flex flex-col gap-0.5 flex-grow justify-end`,
+            isMobile && "justify-center"
+          )}
+        >
           {tasks.slice(0, maxVisibleTasks).map((task) => (
             <div
               key={task.id}

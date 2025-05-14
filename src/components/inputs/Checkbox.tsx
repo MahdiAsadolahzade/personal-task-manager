@@ -1,6 +1,6 @@
 "use client";
-import { FC, useId } from "react";
-import { Controller } from "react-hook-form";
+import { FC, useEffect, useId } from "react";
+import { Controller, useWatch } from "react-hook-form";
 import type { CheckboxProps } from "@/types/inputs.type";
 
 const Checkbox: FC<CheckboxProps> = ({
@@ -11,9 +11,20 @@ const Checkbox: FC<CheckboxProps> = ({
   disabled = false,
   defaultChecked = false,
   className = "",
+  setValue
 }) => {
   const checkboxId = useId();
+  const watchedValue = useWatch({ name, control });
 
+  useEffect(() => {
+    if (watchedValue === undefined || watchedValue === null) {
+      // Clear or reset logic for the first time
+   if(setValue){
+    setValue(name, defaultChecked);
+   }
+    
+    }
+  }, [watchedValue, control, name, defaultChecked]);
 
   return (
     <div className={`flex items-center ${className}`}>

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Task } from "@/types/task.type";
 
 export const TaskSchema = z.object({
   id: z.string().optional(),
@@ -15,6 +16,13 @@ export const TaskSchema = z.object({
   updatedAt: z.string().optional(),
   completedAt: z.string().optional(),
   priority: z.string().optional(),
+
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
+  isRecurring: z.boolean().optional(),
+  originalTaskId: z.string().optional(),
+  isInstance: z.boolean().optional(),
+  
 });
 
-export type Task = z.infer<typeof TaskSchema>;
+

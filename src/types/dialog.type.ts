@@ -1,6 +1,9 @@
-import {  ComponentType, HTMLInputTypeAttribute } from "react";
+import { ComponentType, HTMLInputTypeAttribute } from "react";
 import { AutoCompleteOption } from "./inputs.type";
 import { ZodObject } from "zod";
+import {
+  UseFormWatch
+} from "react-hook-form";
 
 export type TDialogKind =
   | "Add"
@@ -19,7 +22,8 @@ export type TFieldArray = {
   type?: HTMLInputTypeAttribute;
   suggestions?: AutoCompleteOption[];
   suggestionKey?: keyof AutoCompleteOption;
-  multiSelect?:boolean
+  multiSelect?: boolean;
+  show?:(form:any)=>boolean
 };
 
 export type TDialogContent = {
@@ -27,9 +31,9 @@ export type TDialogContent = {
   kind: TDialogKind;
   message?: string;
   array?: TFieldArray[];
-  schema?:ZodObject<any>
-CustomComponent?:any,
-customContnet?:{[key in string]:any}
+  schema?: ZodObject<any>;
+  CustomComponent?: any;
+  customContnet?: { [key in string]: any };
   actions?: TDialogActions;
   defaultValues?: any;
 };

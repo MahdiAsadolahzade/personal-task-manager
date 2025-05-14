@@ -5,6 +5,7 @@ import {
   UseFormRegister,
   FieldErrors,
   SetFieldValue,
+
 } from "react-hook-form";
 import { TDialogKind } from "./dialog.type";
 
@@ -44,6 +45,7 @@ export interface CheckboxProps {
   disabled?: boolean;
   defaultChecked?: boolean;
   className?: string;
+  setValue?:SetFieldValue<any>;
 }
 
 export interface FileUploadProps {

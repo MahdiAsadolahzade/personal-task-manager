@@ -24,7 +24,7 @@ export type Task = {
 };
 
 const TasksPage = () => {
-  const { openDialog } = useDialogStore();
+  const { openDialog ,content } = useDialogStore();
   const { tasks, addTask, updateTask,deleteTask, hydrated } = useTaskStore();
   const [selectedTask, setSelectedTask] = useState<any>();
 

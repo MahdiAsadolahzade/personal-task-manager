@@ -265,6 +265,34 @@ body {
     display: none; /* Remove spinner for a cleaner look */
   }
 
+  
+  .input[type="time"] {
+    @apply w-full px-4 py-2 border rounded-md text-foreground bg-background;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .input[type="time"]:focus {
+    @apply border-primary outline-none ring-1 ring-primary;
+  }
+
+  .input[type="time"]:disabled {
+    @apply bg-base2 text-muted cursor-not-allowed;
+  }
+
+  .input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(50%) sepia(30%) saturate(600%) hue-rotate(200deg); /* Adjust color */
+    cursor: pointer;
+  }
+
+  .input[type="time"]::-ms-clear {
+    display: none; /* Hide clear button if desired */
+  }
+
+  .input[type="time"]::-webkit-inner-spin-button,
+  .input[type="time"]::-webkit-clear-button {
+    display: none; /* Remove spinner for a cleaner look */
+  }
+
   .input[type="checkbox"] {
     @apply h-5 w-5 rounded border-muted text-primary focus:ring-primary cursor-pointer;
     appearance: none;
