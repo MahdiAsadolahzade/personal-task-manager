@@ -1,27 +1,51 @@
 import { FC } from "react";
 import TextField from "../TextField";
 
-type TrecurrenceRule = {
-  frequency: "daily" | "weekly" | "monthly" | "yearly";
-  interval: number; // Every X days/weeks/months/years
-  endDate?: string; // When the recurrence should stop
-  exceptions?: string[]; // Dates where the task shouldn't appear
-  byWeekDay?: number[]; // For weekly - days of week (0-6, Sun-Sat)
-  byMonthDay?: number[]; // For monthly - specific days
-};
 
-const RecurrenceRule = ({
+interface RecurrenceRuleProps {
+  name: string;
+  register: any;
+  watch: any;
+  setValue: any;
+  errors: any;
+  control: any;
+  getValues: any;
+}
+
+const RecurrenceRule: FC<RecurrenceRuleProps> = ({
+  name,
   register,
   watch,
   setValue,
   errors,
   control,
-}: any) => {
+  getValues,
+}) => {
+  // You can watch isRecurring or other values if needed
+  const intervalPath = `${name}.interval`;
+  const frequencyPath = `${name}.frequency`;
 
 
-  return <div>
-    <TextField label="Interval" name="interval" register={register} errors={errors} type="number"/>
-  </div>;
+  
+
+  return (
+    <div className="space-y-2">
+      <TextField
+        label="Interval"
+        name={intervalPath}
+        register={register}
+        errors={errors}
+        type="number"
+      />
+      <TextField
+        label="Frequency"
+        name={frequencyPath}
+        register={register}
+        errors={errors}
+        type="text"
+      />
+    </div>
+  );
 };
 
 export default RecurrenceRule;

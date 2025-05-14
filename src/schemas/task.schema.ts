@@ -22,7 +22,10 @@ export const TaskSchema = z.object({
   isRecurring: z.boolean().optional(),
   originalTaskId: z.string().optional(),
   isInstance: z.boolean().optional(),
-  
+  recurrenceRule: z.object({
+    interval: z.number().optional(),
+    frequency: z.string().optional(),
+  }).optional(),
 });
 
 

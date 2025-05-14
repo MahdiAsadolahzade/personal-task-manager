@@ -18,11 +18,16 @@ export const Dialog = () => {
     handleSubmit,
     watch,
     setValue,
+    getValues,
+    unregister
   } = useDynamicForm(content?.schema);
 
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
+  console.log(watch('recurrenceRule'));
+  
   const onSubmit = (data: any) => {
+    console.log("pure data", data);
     const finalData =
       content?.kind === "Add"
         ? { ...data, id: uuid() }
@@ -40,6 +45,8 @@ export const Dialog = () => {
       if (content?.kind === "Add") {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
+        console.log('edit def',content?.defaultValues);
+        
         reset(content?.defaultValues || {}, { keepValues: false });
       }
     } else {
@@ -101,6 +108,8 @@ export const Dialog = () => {
                         register={register}
                         watch={watch}
                         setValue={setValue}
+                        unregister={unregister}
+                        getValues={getValues}
                         errors={errors}
                         control={control}
                         suggestions={item?.suggestions}

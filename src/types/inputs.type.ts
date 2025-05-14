@@ -45,6 +45,8 @@ export interface CheckboxProps {
   disabled?: boolean;
   defaultChecked?: boolean;
   className?: string;
+  kind?: TDialogKind;
+  register: UseFormRegister<any>; 
   setValue?:SetFieldValue<any>;
 }
 
