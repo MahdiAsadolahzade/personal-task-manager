@@ -11,10 +11,17 @@ const Checkbox: FC<CheckboxProps> = ({
   disabled = false,
   defaultChecked = false,
   className = "",
-  kind, // Add kind prop to distinguish between Add/Edit modes
+  setValue,
+  kind, 
 }) => {
   const checkboxId = useId();
   const watchedValue = useWatch({ name, control });
+
+  useEffect(() => {
+    if (kind === "Add" && watchedValue === undefined) {
+      setValue(name, false);
+    }
+  }, [kind, name, setValue, watchedValue]);
 
   return (
     <div className={`flex items-center ${className}`}>
@@ -24,11 +31,11 @@ const Checkbox: FC<CheckboxProps> = ({
         defaultValue={kind === "Add" ? false : defaultChecked} // Default to false in Add mode
         render={({ field: { onChange, value, ref } }) => {
           // Ensure the field is properly initialized
-          useEffect(() => {
-            if (watchedValue === undefined && kind === "Add") {
-              onChange(false); // Explicitly set to false in Add mode if no value exists
-            }
-          }, [kind, watchedValue, onChange]);
+          // useEffect(() => {
+          //   if (watchedValue === undefined && kind === "Add") {
+          //     onChange(false); // Explicitly set to false in Add mode if no value exists
+          //   }
+          // }, [kind, watchedValue, onChange]);
 
           return (
             <div className="w-full flex-col">

@@ -16,7 +16,6 @@ interface RecurrenceRuleProps {
 const RecurrenceRule: FC<RecurrenceRuleProps> = ({
   name,
   register,
-  watch,
   setValue,
   errors,
   control,

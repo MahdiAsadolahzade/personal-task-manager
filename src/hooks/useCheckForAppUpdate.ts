@@ -4,6 +4,7 @@ import { CURRENT_APP_VERSION } from "@/constants/version";
 import { useRouter } from "next/navigation";
 import { useDialogStore } from "@/stores/dialog.store";
 import UpdateNote from "@/components/dialog/UpdateNote";
+import { CURRENT_UPDATE_NOTES } from "@/constants/versions";
 
 const LOCAL_STORAGE_KEY = "appVersion";
 
@@ -27,6 +28,29 @@ export function useCheckForAppUpdate() {
       console.log("🚀 New version detected!");
       notifyUpdateAvailable(router);
       handleUpdateNoteDialog();
+      if (CURRENT_UPDATE_NOTES.needClean) {
+        if ("caches" in window) {
+          // Clear all caches
+          caches.keys().then((cacheNames) => {
+        cacheNames.forEach((cacheName) => {
+          caches.delete(cacheName);
+        });
+          });
+        }
+
+        // Clear localStorage and sessionStorage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Clear cookies
+        document.cookie.split(";").forEach((cookie) => {
+          const eqPos = cookie.indexOf("=");
+          const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        });
+
+        console.log("🚀 Site data cleared due to update!");
+      }
       // Register service worker if not already registered
       if ("serviceWorker" in navigator) {
         registerServiceWorker();

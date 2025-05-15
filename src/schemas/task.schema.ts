@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Task } from "@/types/task.type";
 
 export const TaskSchema = z.object({
   id: z.string().optional(),

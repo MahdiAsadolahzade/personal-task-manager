@@ -1,13 +1,8 @@
 // src/utils/recurrence.ts
 import { Task } from "@/types/task.type";
 import {
-  addDays,
-  addWeeks,
-  addMonths,
-  addYears,
   isBefore,
   isAfter,
-  isSameDay,
   format,
 } from "date-fns";
 import { parseISO } from "date-fns/fp";
@@ -16,7 +11,6 @@ export function isTaskOccurringOnDate(task: Task, date: Date): boolean {
   if (!task.isRecurring || !task.dueDate) return false;
 
   const dueDate = parseISO(task.dueDate);
-  const dateStr = format(date, "yyyy-MM-dd");
 
   // Check if this is before the initial due date
   if (isBefore(date, dueDate)) return false;

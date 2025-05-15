@@ -1,7 +1,5 @@
 "use client";
 import Card from "@/components/card/Card";
-import TasksList from "@/components/sections/TasksList";
-import Title from "@/components/typography/Title";
 import { useDialogStore } from "@/stores/dialog.store";
 import { useTaskStore } from "@/stores/task.store";
 import { TDialogConfig, TDialogKind } from "@/types/dialog.type";
@@ -17,7 +15,7 @@ import SubTasksList from "@/components/sections/SubTaskList";
 import NavLink from "@/components/NavLink";
 
 const SubTasksPage = () => {
-  const { openDialog, content } = useDialogStore();
+  const { openDialog } = useDialogStore();
   const { taskID } = useParams();
 console.log(taskID);
 

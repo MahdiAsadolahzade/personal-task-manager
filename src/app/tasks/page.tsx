@@ -15,7 +15,7 @@ import { findPriority } from "@/mock/priority.data";
 
 
 const TasksPage = () => {
-  const { openDialog ,content } = useDialogStore();
+  const { openDialog  } = useDialogStore();
   const { tasks, addTask, updateTask,deleteTask, hydrated } = useTaskStore();
   const [selectedTask, setSelectedTask] = useState<any>();
 

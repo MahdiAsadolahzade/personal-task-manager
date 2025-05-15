@@ -1,9 +1,6 @@
 import { ComponentType, HTMLInputTypeAttribute } from "react";
 import { AutoCompleteOption } from "./inputs.type";
 import { ZodObject } from "zod";
-import {
-  UseFormWatch
-} from "react-hook-form";
 
 export type TDialogKind =
   | "Add"
