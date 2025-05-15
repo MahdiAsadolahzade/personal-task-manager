@@ -12,7 +12,6 @@ import {
 import { findPriority } from "@/mock/priority.data";
 import { useParams } from "next/navigation";
 import SubTasksList from "@/components/sections/SubTaskList";
-import NavLink from "@/components/NavLink";
 import Title from "@/components/typography/Title";
 
 const SubTasksPage = () => {

@@ -7,7 +7,7 @@ import {
   CiDesktop,
   CiCircleChevLeft,
 } from "react-icons/ci";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useAppStore } from "@/stores/app.store";
 import { motion } from "framer-motion";
 import Icon from "../utils/Icon";
@@ -30,7 +30,6 @@ const navItems: NavItem[] = [
 
 const Header = () => {
   const pathname = usePathname();
-  const router = useRouter();
   const isActive = (href: string) => pathname === href;
   const { isMobile, isTablet } = useAppStore();
 
