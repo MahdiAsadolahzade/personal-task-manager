@@ -19,12 +19,11 @@ export const Dialog = () => {
     watch,
     setValue,
     getValues,
-    unregister
+    unregister,
   } = useDynamicForm(content?.schema);
 
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
-  
   const onSubmit = (data: any) => {
     console.log("pure data", data);
     const finalData =
@@ -44,8 +43,8 @@ export const Dialog = () => {
       if (content?.kind === "Add") {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
-        console.log('edit def',content?.defaultValues);
-        
+        console.log("edit def", content?.defaultValues);
+
         reset(content?.defaultValues || {}, { keepValues: false });
       }
     } else {
@@ -61,13 +60,7 @@ export const Dialog = () => {
 
   return (
     <div className="fixed  inset-0 z-50 flex items-center justify-center bg-muted/80 ">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        transition={{ duration: 0.5 }}
-        className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3  max-h-[90vh] h-fit "
-      >
+      <div className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3  max-h-[90vh] h-fit ">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" flex justify-between items-center">
             <div className="flex items-center justify-center space-x-1">
@@ -137,7 +130,7 @@ export const Dialog = () => {
             )}
           </div>
         </form>
-      </motion.div>
+      </div>
     </div>
   );
 };

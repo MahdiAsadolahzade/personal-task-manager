@@ -9,27 +9,33 @@ const findIcon = (id: string) => {
 export const statuses: TaskStatus[] = [
   {
     id: uuid(),
-    name: "PENDING",
+    name: "Pending",
     color: "#2196f3",
     icon: findIcon("1"),
   },
   {
     id: uuid(),
-    name: "IN_PROGRESS",
+    name: "In Progress",
     color: "#FFC300",
     icon: findIcon("2"),
   },
   {
     id: uuid(),
-    name: "COMPLETED",
+    name: "Completed",
     color: "#28A745",
     icon: findIcon("3"),
   },
   {
     id: uuid(),
-    name: "ARCHIVED",
+    name: "Archived",
     color: "#6C757D",
     icon: findIcon("4"),
+  },
+  {
+    id: uuid(),
+    name: "Unknown",
+    color: "#dce775",
+    icon: findIcon("9"),
   },
 
 ];

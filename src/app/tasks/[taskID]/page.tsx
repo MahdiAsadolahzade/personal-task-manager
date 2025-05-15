@@ -24,6 +24,10 @@ console.log(taskID);
   const { tasks, addTask, updateTask, deleteTask, hydrated } = useTaskStore();
   const [selectedTask, setSelectedTask] = useState<any>();
 
+  const subTasks = useMemo(()=>{
+    return tasks?.filter((item) => item?.originalTaskId === taskID)
+  },[tasks])
+
   const dialogConfig: TDialogConfig = useMemo(
     () => ({
       task: {
@@ -80,7 +84,7 @@ console.log(taskID);
 
       <Card
         title="Lists"
-        data={tasks?.filter((item) => item?.originalTaskId === taskID)}
+        data={subTasks}
         actions={{
           Add: () => handleOpenDialog("Add/task"),
           Edit: () => handleOpenDialog("Edit/task"),

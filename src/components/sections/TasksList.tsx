@@ -1,13 +1,12 @@
 "use client";
 import React, { useMemo } from "react";
 import Icon from "../utils/Icon";
-import { findIcon, findStatus, findType } from "@/lib/utils/finders";
 import { convertToStandardDateWithTime } from "@/lib/utils/dateConverts";
 import { Task } from "@/types/task.type";
-import { FiBell } from "react-icons/fi";
-import { findPriority } from "@/mock/priority.data";
-import { shortenText } from "@/lib/utils/strings";
 import { useRouter } from "next/navigation";
+import PriorityBadge from "./PriorityBadge";
+import TypeBadge from "./TypeBadge";
+import StatusBadge from "./StatusBadge";
 
 const TasksList = ({
   data,
@@ -18,15 +17,27 @@ const TasksList = ({
   selectedValue?: any;
   setSelectedValue?: any;
 }) => {
-const router =useRouter()
+  const router = useRouter();
   const handleDoubleClick = (parentID: string) => {
-    
-router.push(`/tasks/${parentID}`)
+    router.push(`/tasks/${parentID}`);
   };
 
   const taskData = useMemo(() => {
-    return data?.filter((item) => !item?.isInstance);
+    const parentTasks = data?.filter((item) => !item?.isInstance) || [];
+    const subCounts = data?.reduce((acc, item) => {
+      if (item.isInstance && item.originalTaskId) {
+        acc[item.originalTaskId] = (acc[item.originalTaskId] || 0) + 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+
+    return parentTasks.map((parent) => ({
+      ...parent,
+      subCount: subCounts?.[parent.id] || 0,
+    }));
   }, [data]);
+
+  console.log(taskData);
 
   return (
     <div className=" space-y-4 p-4 max-h-[60vh] overflow-auto">
@@ -53,26 +64,8 @@ router.push(`/tasks/${parentID}`)
               <h3 className="text-lg font-semibold line-clamp-1">
                 {task.title}
               </h3>
-              {task.priority && (
-                <div className="flex items-center space-x-2">
-                  <span
-                    className={`flex items-center text-xs px-3 py-1 rounded-full font-medium transition-all duration-200 ${
-                      task.priority === "3"
-                        ? "bg-red-100 text-red-800"
-                        : task.priority === "2"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-green-100 text-green-800"
-                    }`}
-                  >
-                    {findPriority(task.priority)?.name}
-                  </span>
-                  {task.priority === "3" && (
-                    <span className="text-red-500 animate-pulse">
-                      <FiBell />
-                    </span>
-                  )}
-                </div>
-              )}
+
+              <PriorityBadge priority={task.priority ?? ""} />
             </div>
 
             {/* Task description */}
@@ -83,7 +76,7 @@ router.push(`/tasks/${parentID}`)
             </div>
 
             {/* Metadata row */}
-            <div className="flex flex-wrap gap-2 mb-3">
+            <div className="flex justify-between flex-wrap gap-2 mb-3">
               {/* Due date */}
               {task.dueDate && (
                 <div className="flex items-center text-sm space-x-1">
@@ -91,49 +84,18 @@ router.push(`/tasks/${parentID}`)
                   <span>{convertToStandardDateWithTime(task.dueDate)}</span>
                 </div>
               )}
+
+              <div>{task.subCount > 0 && <p>{task.subCount} Subs</p>} </div>
             </div>
 
             {/* Status and type badges */}
             <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted">
               <div className="flex items-center space-x-2">
                 {/* Status badge */}
-                <div
-                  className="flex items-center px-3 py-1 rounded-full text-xs font-medium"
-                  style={{
-                    backgroundColor: `${findStatus(task.status)?.color}20`,
-                    color: findStatus(task.status)?.color,
-                  }}
-                >
-                  <Icon
-                    alt={task.status}
-                    src={
-                      findIcon(findStatus(task?.status ?? "")?.icon ?? "")
-                        ?.src || ""
-                    }
-                    className="mr-1"
-                  />
-                  {shortenText(findStatus(task.status)?.name || "", 15)}
-                </div>
+                <StatusBadge status={task.status} />
 
                 {/* Type badge */}
-                {task.type && (
-                  <div
-                    className="flex items-center px-3 py-1 rounded-full text-xs font-medium"
-                    style={{
-                      backgroundColor: `${findType(task.type)?.color}20`,
-                      color: findType(task.type)?.color,
-                    }}
-                  >
-                    <Icon
-                      alt={task.type}
-                      src={
-                        findIcon(findType(task?.type)?.icon ?? "")?.src || ""
-                      }
-                      className="mr-1"
-                    />
-                    {shortenText(findType(task.type)?.name || "", 15)}
-                  </div>
-                )}
+                <TypeBadge type={task?.type ?? ""} />
               </div>
             </div>
           </div>
