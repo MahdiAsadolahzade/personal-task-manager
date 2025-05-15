@@ -102,8 +102,8 @@ const TaskShow: FC<TaskShowProps> = ({ tasks }) => {
                 </h3>
 
                 {task.dueDate &&
-                  findStatus(task?.status ?? "")?.name !== "COMPLETED" &&
-                  findStatus(task?.status ?? "")?.name !== "ARCHIVED" && (
+                  findStatus(task?.status ?? "")?.name !== "Completed" &&
+                  findStatus(task?.status ?? "")?.name !== "Archived" && (
                     <span
                       className={`text-xs px-2 py-1 rounded-md ${
                         timeRemaining[task.id] === "Overdue!"
