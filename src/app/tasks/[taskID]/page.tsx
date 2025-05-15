@@ -13,6 +13,7 @@ import { findPriority } from "@/mock/priority.data";
 import { useParams } from "next/navigation";
 import SubTasksList from "@/components/sections/SubTaskList";
 import NavLink from "@/components/NavLink";
+import Title from "@/components/typography/Title";
 
 const SubTasksPage = () => {
   const { openDialog } = useDialogStore();
@@ -24,6 +25,8 @@ const SubTasksPage = () => {
   const subTasks = useMemo(()=>{
     return tasks?.filter((item) => item?.originalTaskId === taskID)
   },[tasks])
+
+  const parentTask = tasks.find((task)=>task.id===taskID)
 
   const dialogConfig: TDialogConfig = useMemo(
     () => ({
@@ -75,10 +78,7 @@ const SubTasksPage = () => {
 
   return (
     <div>
-    <NavLink href="/tasks" className="btn btn-primary">
-        back
-    </NavLink>
-
+  <Title title={`${parentTask?.title} Tasks`} />
       <Card
         title="Lists"
         data={subTasks}

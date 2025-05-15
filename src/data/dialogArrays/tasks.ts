@@ -55,24 +55,6 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       suggestionKey: "name",
     },
     {
-      name: "startTime",
-      label: "Start Time",
-      Component: TextField,
-      type: "time",
-      show: (watch: any) => {
-        return !watch("isInstance");
-      },
-    },
-    {
-      name: "endTime",
-      label: "End Time",
-      Component: TextField,
-      type: "time",
-      show: (watch: any) => {
-        return !watch("isInstance");
-      },
-    },
-    {
       name: "isRecurring",
       label: "Is Recurring",
       Component: Checkbox,
