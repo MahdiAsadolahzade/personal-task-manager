@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { Task } from "@/types/task.type";
 import { useAppStore } from "@/stores/app.store";
 import CalendarDay from "./CalendarDay";
+import { generateTaskInstancesForDate } from "@/lib/utils/recurrence";
 
 interface CalendarProps {
   tasks: Task[];

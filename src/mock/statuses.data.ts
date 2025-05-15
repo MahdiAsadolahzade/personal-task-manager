@@ -32,10 +32,4 @@ export const statuses: TaskStatus[] = [
     icon: findIcon("4"),
   },
 
-  {
-    id: uuid(),
-    name: "REPETITIVE",
-    color: "#f48fb1",
-    icon: findIcon("8"),
-  },
 ];

@@ -37,6 +37,9 @@ export const getTasksDialogArray = (): TFieldArray[] => {
         src: findIcon(type?.icon ?? "")?.src,
       })),
       suggestionKey: "src",
+      show: (watch: any) => {
+        return !watch("isInstance");
+      },
     },
     {
       name: "dueDate",
@@ -56,23 +59,35 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       label: "Start Time",
       Component: TextField,
       type: "time",
+      show: (watch: any) => {
+        return !watch("isInstance");
+      },
     },
     {
       name: "endTime",
       label: "End Time",
       Component: TextField,
       type: "time",
+      show: (watch: any) => {
+        return !watch("isInstance");
+      },
     },
     {
       name: "isRecurring",
       label: "Is Recurring",
       Component: Checkbox,
+      show: (watch: any) => {
+        return !watch("isInstance");
+      },
     },
     {
       name: "recurrenceRule",
       label: "Recurrence Rule",
       Component: RecurrenceRule,
-      show: (watch: any) => watch("isRecurring"),
+      show: (watch: any) => {
+        return !watch("isInstance") && watch("isRecurring");
+      },
+   
     },
     {
       name: "description",
@@ -121,6 +136,11 @@ export const getTasksFilterArray = (): TFieldArray[] => {
       suggestions: Priorities,
       multiSelect: true,
       suggestionKey: "name",
+    },
+    {
+      name: "isInstance",
+      label: "Is Instance",
+      Component: Checkbox,
     },
   ];
 };

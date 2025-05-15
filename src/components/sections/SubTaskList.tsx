@@ -9,7 +9,7 @@ import { findPriority } from "@/mock/priority.data";
 import { shortenText } from "@/lib/utils/strings";
 import { useRouter } from "next/navigation";
 
-const TasksList = ({
+const SubTasksList = ({
   data,
   selectedValue,
   setSelectedValue,
@@ -18,20 +18,12 @@ const TasksList = ({
   selectedValue?: any;
   setSelectedValue?: any;
 }) => {
-const router =useRouter()
-  const handleDoubleClick = (parentID: string) => {
-    
-router.push(`/tasks/${parentID}`)
-  };
 
-  const taskData = useMemo(() => {
-    return data?.filter((item) => !item?.isInstance);
-  }, [data]);
 
   return (
     <div className=" space-y-4 p-4 max-h-[60vh] overflow-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {taskData.map((task) => (
+        {data.map((task) => (
           <div
             key={task.id}
             onClick={() => {
@@ -39,7 +31,7 @@ router.push(`/tasks/${parentID}`)
                 setSelectedValue(task);
               }
             }}
-            onDoubleClick={() => handleDoubleClick(task.id)}
+           
             className={`relative rounded-xl p-5 shadow-sm transition-all duration-200 cursor-pointer 
               border border-muted hover:border-secondary hover:shadow-md
               ${
@@ -143,4 +135,4 @@ router.push(`/tasks/${parentID}`)
   );
 };
 
-export default TasksList;
+export default SubTasksList;

@@ -13,15 +13,6 @@ import {
 } from "@/data/dialogArrays/tasks";
 import { findPriority } from "@/mock/priority.data";
 
-export type Task = {
-  id: string;
-  title: string;
-  description?: string;
-  status: string;
-  type?: string;
-  createdAt: string;
-  dueDate?: string;
-};
 
 const TasksPage = () => {
   const { openDialog ,content } = useDialogStore();

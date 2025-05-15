@@ -33,13 +33,26 @@ const TaskShow: FC<TaskShowProps> = ({ tasks }) => {
           const diff = dueDate.getTime() - now.getTime();
 
           if (diff > 0) {
-            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            // Mobile shows shorter format
-            newTimeRemaining[task.id] = isMobile
-              ? `${hours}h ${minutes}m`
-              : `${hours}h ${minutes}m ${seconds}s`;
+
+            if (days > 30) {
+              const months = Math.floor(days / 30);
+              const remainingDays = days % 30;
+              newTimeRemaining[task.id] = isMobile
+                ? `${months}m ${remainingDays}d`
+                : `${months}m ${remainingDays}d ${hours}h`;
+            } else if (days > 0) {
+              newTimeRemaining[task.id] = isMobile
+                ? `${days}d ${hours}h`
+                : `${days}d ${hours}h ${minutes}m`;
+            } else {
+              newTimeRemaining[task.id] = isMobile
+                ? `${hours}h ${minutes}m`
+                : `${hours}h ${minutes}m ${seconds}s`;
+            }
           } else {
             newTimeRemaining[task.id] = "Overdue!";
           }

@@ -8,6 +8,7 @@ const TextField: FC<TextFieldProps> = ({
   register,
   name,
   errors,
+  defaultValue
 }) => {
   const inputUniqueID = useId();
   return (
@@ -18,6 +19,7 @@ const TextField: FC<TextFieldProps> = ({
       <div className="w-full">
         <input
           autoComplete="off"
+          value={defaultValue}
           id={inputUniqueID}
           {...register(name, {
             setValueAs: (value) =>

@@ -7,21 +7,23 @@ export type Task = {
   createdAt: string;
   updatedAt?: string;
   dueDate?: string;
-  priority?:string;
-  // 
+  priority?: string;
+  //
   startTime?: string; // Optional separate time if needed
   endTime?: string; // Optional separate time if needed
   isRecurring?: boolean;
   originalTaskId?: string; // For recurring instances, points to original
   isInstance?: boolean; // Whether this is a generated instance
   recurrenceRule?: {
-    frequency: 'daily' | 'weekly' | 'monthly' | 'yearly';
+    frequency: string;
     interval: number; // Every X days/weeks/months/years
     endDate?: string; // When the recurrence should stop
-    exceptions?: string[]; // Dates where the task shouldn't appear
-    byWeekDay?: number[]; // For weekly - days of week (0-6, Sun-Sat)
-    byMonthDay?: number[]; // For monthly - specific days
   };
+
+  isRecurringParent?: boolean;
+  isModifiedInstance?: boolean;
+  instanceDate?: string;
+  instanceIndex?: number;
 };
 
 export type TaskStatusName =

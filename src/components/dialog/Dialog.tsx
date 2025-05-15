@@ -24,7 +24,6 @@ export const Dialog = () => {
 
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
-  console.log(watch('recurrenceRule'));
   
   const onSubmit = (data: any) => {
     console.log("pure data", data);

@@ -179,7 +179,9 @@ const Card: FC<CardProps> = ({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <span className="">{shortenText(item.name, 40)}</span>
+                    <span className="">
+                      {!!item?.name && shortenText(item?.name, 40)}
+                    </span>
                   </div>
                   {!!item?.color && configuration.showColor && (
                     <span

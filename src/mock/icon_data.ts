@@ -38,7 +38,7 @@ export const IconItems: IconItem[] = [
   },
   {
     id:'8',
-    name: "Repetitive Icon",
-    src:'/icons/repetitive.svg'
+    name: "Project Icon",
+    src:'/icons/project.svg'
   },
 ];

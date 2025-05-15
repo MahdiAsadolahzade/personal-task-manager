@@ -5,7 +5,6 @@ import {
   UseFormRegister,
   FieldErrors,
   SetFieldValue,
-
 } from "react-hook-form";
 import { TDialogKind } from "./dialog.type";
 
@@ -16,6 +15,7 @@ export interface TextFieldProps {
   name: string;
   errors?: FieldErrors;
   variant?: "defult" | "description";
+  defaultValue?: string;
 }
 
 export interface AutoCompleteOption {
@@ -46,8 +46,8 @@ export interface CheckboxProps {
   defaultChecked?: boolean;
   className?: string;
   kind?: TDialogKind;
-  register: UseFormRegister<any>; 
-  setValue?:SetFieldValue<any>;
+  register: UseFormRegister<any>;
+  setValue?: SetFieldValue<any>;
 }
 
 export interface FileUploadProps {
