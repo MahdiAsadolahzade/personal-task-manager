@@ -17,7 +17,6 @@ import NavLink from "@/components/NavLink";
 const SubTasksPage = () => {
   const { openDialog } = useDialogStore();
   const { taskID } = useParams();
-console.log(taskID);
 
   const { tasks, addTask, updateTask, deleteTask, hydrated } = useTaskStore();
   const [selectedTask, setSelectedTask] = useState<any>();

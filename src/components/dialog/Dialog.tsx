@@ -25,7 +25,6 @@ export const Dialog = () => {
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
 
   const onSubmit = (data: any) => {
-    console.log("pure data", data);
     const finalData =
       content?.kind === "Add"
         ? { ...data, id: uuid() }
@@ -33,7 +32,6 @@ export const Dialog = () => {
         ? data
         : data?.id;
     content?.actions?.[content?.kind]?.(finalData);
-    console.log("finalData", finalData);
 
     closeDialog();
   };
@@ -43,8 +41,6 @@ export const Dialog = () => {
       if (content?.kind === "Add") {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
-        console.log("edit def", content?.defaultValues);
-
         reset(content?.defaultValues || {}, { keepValues: false });
       }
     } else {

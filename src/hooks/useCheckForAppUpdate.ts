@@ -1,4 +1,3 @@
-// src/hooks/useCheckForAppUpdate.ts
 import { useEffect } from "react";
 import { CURRENT_APP_VERSION } from "@/constants/version";
 import { useRouter } from "next/navigation";
@@ -29,27 +28,38 @@ export function useCheckForAppUpdate() {
       notifyUpdateAvailable(router);
       handleUpdateNoteDialog();
       if (CURRENT_UPDATE_NOTES.needClean) {
+        // Clear localStorage
+        localStorage.clear();
+
+        // Clear sessionStorage
+        sessionStorage.clear();
+
+        // Clear all caches
         if ("caches" in window) {
-          // Clear all caches
           caches.keys().then((cacheNames) => {
-        cacheNames.forEach((cacheName) => {
-          caches.delete(cacheName);
-        });
+            cacheNames.forEach((cacheName) => {
+              caches.delete(cacheName);
+            });
           });
         }
 
-        // Clear localStorage and sessionStorage
-        localStorage.clear();
-        sessionStorage.clear();
-
         // Clear cookies
         document.cookie.split(";").forEach((cookie) => {
-          const eqPos = cookie.indexOf("=");
-          const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          const name = cookie.split("=")[0].trim();
           document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
         });
 
-        console.log("🚀 Site data cleared due to update!");
+        // Unregister all service workers
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.getRegistrations().then((registrations) => {
+            registrations.forEach((registration) => {
+              registration.unregister();
+            });
+          });
+        }
+
+        // Ensure the app version is updated after clearing
+        localStorage.setItem(LOCAL_STORAGE_KEY, CURRENT_APP_VERSION);
       }
       // Register service worker if not already registered
       if ("serviceWorker" in navigator) {
@@ -68,7 +78,7 @@ async function registerServiceWorker() {
       "ServiceWorker registration successful with scope: ",
       registration.scope
     );
-    return registration; // Return the registration object
+    return registration;
   } catch (err) {
     console.error("ServiceWorker registration failed: ", err);
     return null;
@@ -83,11 +93,9 @@ async function notifyUpdateAvailable(router: ReturnType<typeof useRouter>) {
     icon: "/icons/icon-192x192.png",
     tag: "app-update",
     requireInteraction: true,
-    // Removed actions since they only work with service worker notifications
   };
 
   const handleNotificationClick = () => {
-    // If service worker is ready, use it to update
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.ready.then((registration) => {
         registration.active?.postMessage({ type: "SKIP_WAITING" });
@@ -97,12 +105,10 @@ async function notifyUpdateAvailable(router: ReturnType<typeof useRouter>) {
     router.push("/");
   };
 
-  // Try to show notification through service worker first
   if ("serviceWorker" in navigator) {
     try {
       const registration = await navigator.serviceWorker.ready;
       if (registration) {
-        // This is where we can use actions
         await registration.showNotification("Update Available", {
           ...notificationOptions,
           actions: [
@@ -111,7 +117,6 @@ async function notifyUpdateAvailable(router: ReturnType<typeof useRouter>) {
           ],
         });
 
-        // Add event listener for notification click
         navigator.serviceWorker.addEventListener("message", (event) => {
           if (event.data && event.data.action === "notificationclick") {
             if (event.data.notificationAction === "refresh") {
@@ -129,7 +134,6 @@ async function notifyUpdateAvailable(router: ReturnType<typeof useRouter>) {
     }
   }
 
-  // Fallback to regular notifications
   if (Notification.permission === "granted") {
     const notification = new Notification(
       "Update Available",
