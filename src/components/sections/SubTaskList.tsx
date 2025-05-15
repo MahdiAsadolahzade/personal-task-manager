@@ -1,14 +1,12 @@
 "use client";
-import React, { useMemo } from "react";
+import React from "react";
 import Icon from "../utils/Icon";
 import { convertToStandardDateWithTime } from "@/lib/utils/dateConverts";
 import { Task } from "@/types/task.type";
-import { useRouter } from "next/navigation";
-import PriorityBadge from "./PriorityBadge";
-import TypeBadge from "./TypeBadge";
 import StatusBadge from "./StatusBadge";
+import PriorityBadge from "./PriorityBadge";
 
-const TasksList = ({
+const SubTasksList = ({
   data,
   selectedValue,
   setSelectedValue,
@@ -17,32 +15,10 @@ const TasksList = ({
   selectedValue?: any;
   setSelectedValue?: any;
 }) => {
-  const router = useRouter();
-  const handleDoubleClick = (parentID: string) => {
-    router.push(`/tasks/${parentID}`);
-  };
-
-  const taskData = useMemo(() => {
-    const parentTasks = data?.filter((item) => !item?.isInstance) || [];
-    const subCounts = data?.reduce((acc, item) => {
-      if (item.isInstance && item.originalTaskId) {
-        acc[item.originalTaskId] = (acc[item.originalTaskId] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>);
-
-    return parentTasks.map((parent) => ({
-      ...parent,
-      subCount: subCounts?.[parent.id] || 0,
-    }));
-  }, [data]);
-
-  console.log(taskData);
-
   return (
     <div className=" space-y-4 p-4 max-h-[60vh] overflow-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {taskData.map((task) => (
+        {data.map((task) => (
           <div
             key={task.id}
             onClick={() => {
@@ -50,7 +26,6 @@ const TasksList = ({
                 setSelectedValue(task);
               }
             }}
-            onDoubleClick={() => handleDoubleClick(task.id)}
             className={`relative rounded-xl p-5 shadow-sm transition-all duration-200 cursor-pointer 
               border border-muted hover:border-secondary hover:shadow-md
               ${
@@ -64,7 +39,6 @@ const TasksList = ({
               <h3 className="text-lg font-semibold line-clamp-1">
                 {task.title}
               </h3>
-
               <PriorityBadge priority={task.priority ?? ""} />
             </div>
 
@@ -76,7 +50,7 @@ const TasksList = ({
             </div>
 
             {/* Metadata row */}
-            <div className="flex justify-between flex-wrap gap-2 mb-3">
+            <div className="flex flex-wrap gap-2 mb-3">
               {/* Due date */}
               {task.dueDate && (
                 <div className="flex items-center text-sm space-x-1">
@@ -84,8 +58,6 @@ const TasksList = ({
                   <span>{convertToStandardDateWithTime(task.dueDate)}</span>
                 </div>
               )}
-
-              <div>{task.subCount > 0 && <p>{task.subCount} Subs</p>} </div>
             </div>
 
             {/* Status and type badges */}
@@ -93,9 +65,6 @@ const TasksList = ({
               <div className="flex items-center space-x-2">
                 {/* Status badge */}
                 <StatusBadge status={task.status} />
-
-                {/* Type badge */}
-                <TypeBadge type={task?.type ?? ""} />
               </div>
             </div>
           </div>
@@ -105,4 +74,4 @@ const TasksList = ({
   );
 };
 
-export default TasksList;
+export default SubTasksList;

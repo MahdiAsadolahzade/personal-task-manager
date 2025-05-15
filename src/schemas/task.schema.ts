@@ -15,6 +15,20 @@ export const TaskSchema = z.object({
   updatedAt: z.string().optional(),
   completedAt: z.string().optional(),
   priority: z.string().optional(),
-});
 
-export type Task = z.infer<typeof TaskSchema>;
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
+  isRecurring: z.boolean().optional(),
+  originalTaskId: z.string().optional(),
+  isInstance: z.boolean().optional(),
+  recurrenceRule: z
+    .object({
+      interval: z
+        .number()
+        .positive({ message: "interval must be greater than 0" })
+        .optional(),
+      frequency: z.string().optional(),
+      endDate: z.string().optional(),
+    })
+    .optional(),
+});

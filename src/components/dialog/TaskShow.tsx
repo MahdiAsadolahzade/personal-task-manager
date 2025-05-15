@@ -2,13 +2,11 @@ import { Task } from "@/types/task.type";
 import { FC, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { convertToStandardDateWithTime } from "@/lib/utils/dateConverts";
-import Icon from "../utils/Icon";
-import { findIcon, findStatus } from "@/lib/utils/finders";
+import { findStatus } from "@/lib/utils/finders";
 import { shortenText } from "@/lib/utils/strings";
-import { findPriority } from "@/mock/priority.data";
-import { FiBell } from "react-icons/fi";
 import { useAppStore } from "@/stores/app.store";
-import clsx from "clsx";
+import PriorityBadge from "../sections/PriorityBadge";
+import StatusBadge from "../sections/StatusBadge";
 
 interface TaskShowProps {
   tasks: Task[];
@@ -33,13 +31,28 @@ const TaskShow: FC<TaskShowProps> = ({ tasks }) => {
           const diff = dueDate.getTime() - now.getTime();
 
           if (diff > 0) {
-            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor(
+              (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            // Mobile shows shorter format
-            newTimeRemaining[task.id] = isMobile
-              ? `${hours}h ${minutes}m`
-              : `${hours}h ${minutes}m ${seconds}s`;
+
+            if (days > 30) {
+              const months = Math.floor(days / 30);
+              const remainingDays = days % 30;
+              newTimeRemaining[task.id] = isMobile
+                ? `${months}m ${remainingDays}d`
+                : `${months}m ${remainingDays}d ${hours}h`;
+            } else if (days > 0) {
+              newTimeRemaining[task.id] = isMobile
+                ? `${days}d ${hours}h`
+                : `${days}d ${hours}h ${minutes}m`;
+            } else {
+              newTimeRemaining[task.id] = isMobile
+                ? `${hours}h ${minutes}m`
+                : `${hours}h ${minutes}m ${seconds}s`;
+            }
           } else {
             newTimeRemaining[task.id] = "Overdue!";
           }
@@ -51,8 +64,6 @@ const TaskShow: FC<TaskShowProps> = ({ tasks }) => {
 
     return () => clearInterval(interval);
   }, [tasks, isMobile]);
-
- 
 
   return (
     <div>
@@ -123,58 +134,9 @@ const TaskShow: FC<TaskShowProps> = ({ tasks }) => {
                   : "items-center space-x-2 ml-4"
               }`}
             >
-              <div
-                className={`flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                  isMobile ? "mt-1" : ""
-                }`}
-                style={{
-                  backgroundColor: `${findStatus(task.status)?.color}20`,
-                  color: findStatus(task.status)?.color,
-                }}
-              >
-                <Icon
-                  alt={task.status}
-                  src={
-                    findIcon(findStatus(task?.status ?? "")?.icon ?? "")?.src ||
-                    ""
-                  }
-                  className={clsx(
-                    `mr-1 `,
-                    `text-[${findStatus(task?.status ?? "")?.color}]`
-                  )}
-                />
-                {shortenText(
-                  findStatus(task.status)?.name || "",
-                  isMobile ? 10 : 15
-                )}
-              </div>
+              <StatusBadge status={task.status} />
 
-              {task.priority && (
-                <div
-                  className={`flex items-center ${
-                    isMobile ? "gap-1" : "space-x-2"
-                  }`}
-                >
-                  <span
-                    className={`flex items-center text-xs px-2 py-1 rounded-full font-medium ${
-                      task.priority === "3"
-                        ? "bg-error/20 text-error"
-                        : task.priority === "2"
-                        ? "bg-warning/20 text-warning"
-                        : "bg-success/20 text-success"
-                    }`}
-                  >
-                    {isMobile
-                      ? findPriority(task.priority)?.name
-                      : findPriority(task.priority)?.name}
-                  </span>
-                  {task.priority === "3" && (
-                    <span className="text-error animate-pulse">
-                      <FiBell size={isMobile ? 14 : 16} />
-                    </span>
-                  )}
-                </div>
-              )}
+              <PriorityBadge priority={task?.priority ?? ""} />
             </div>
           </motion.div>
         ))}

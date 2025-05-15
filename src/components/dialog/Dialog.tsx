@@ -17,6 +17,9 @@ export const Dialog = () => {
     reset,
     handleSubmit,
     watch,
+    setValue,
+    getValues,
+    unregister,
   } = useDynamicForm(content?.schema);
 
   const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
@@ -53,13 +56,7 @@ export const Dialog = () => {
 
   return (
     <div className="fixed  inset-0 z-50 flex items-center justify-center bg-muted/80 ">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        transition={{ duration: 0.5 }}
-        className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3  max-h-[90vh] h-fit "
-      >
+      <div className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3  max-h-[90vh] h-fit ">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" flex justify-between items-center">
             <div className="flex items-center justify-center space-x-1">
@@ -89,21 +86,27 @@ export const Dialog = () => {
               <div
                 className={`grid grid-cols-1 lg:grid-cols-2 gap-2  max-h-[70vh] overflow-auto p-1`}
               >
-                {content.array?.map((item, index) => (
-                  <item.Component
-                    name={item.name}
-                    label={item?.label}
-                    type={item?.type}
-                    register={register}
-                    watch={watch}
-                    errors={errors}
-                    control={control}
-                    suggestions={item?.suggestions}
-                    suggestionKey={item?.suggestionKey}
-                    kind={content?.kind}
-                    key={`${item.name}/${index}`}
-                  />
-                ))}
+                {content.array?.map((item, index) => {
+                  if (!item.show || item.show(watch))
+                    return (
+                      <item.Component
+                        name={item.name}
+                        label={item?.label}
+                        type={item?.type}
+                        register={register}
+                        watch={watch}
+                        setValue={setValue}
+                        unregister={unregister}
+                        getValues={getValues}
+                        errors={errors}
+                        control={control}
+                        suggestions={item?.suggestions}
+                        suggestionKey={item?.suggestionKey}
+                        kind={content?.kind}
+                        key={`${item.name}/${index}`}
+                      />
+                    );
+                })}
               </div>
             )}
 
@@ -123,7 +126,7 @@ export const Dialog = () => {
             )}
           </div>
         </form>
-      </motion.div>
+      </div>
     </div>
   );
 };

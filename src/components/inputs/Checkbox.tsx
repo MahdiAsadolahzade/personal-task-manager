@@ -1,6 +1,6 @@
 "use client";
-import { FC, useId } from "react";
-import { Controller } from "react-hook-form";
+import { FC, useEffect, useId } from "react";
+import { Controller, useWatch } from "react-hook-form";
 import type { CheckboxProps } from "@/types/inputs.type";
 
 const Checkbox: FC<CheckboxProps> = ({
@@ -11,34 +11,51 @@ const Checkbox: FC<CheckboxProps> = ({
   disabled = false,
   defaultChecked = false,
   className = "",
+  setValue,
+  kind, 
 }) => {
   const checkboxId = useId();
+  const watchedValue = useWatch({ name, control });
 
+  useEffect(() => {
+    if (kind === "Add" && watchedValue === undefined) {
+      setValue(name, false);
+    }
+  }, [kind, name, setValue, watchedValue]);
 
   return (
     <div className={`flex items-center ${className}`}>
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultChecked}
-        render={({ field: { onChange, value, ref } }) => (
-          <div className="w-full flex-col">
-            <input
-              id={checkboxId}
-              type="checkbox"
-              ref={ref}
-              checked={value}
-              onChange={(e) => onChange(e.target.checked)}
-              disabled={disabled}
-              className={`input  ${errors?.[name] ? "checkbox-error" : ""}`}
-            />
-            {label && (
-              <label htmlFor={checkboxId} className="label ml-2 cursor-pointer">
-                {label}
-              </label>
-            )}
-          </div>
-        )}
+        defaultValue={kind === "Add" ? false : defaultChecked} // Default to false in Add mode
+        render={({ field: { onChange, value, ref } }) => {
+          // Ensure the field is properly initialized
+          // useEffect(() => {
+          //   if (watchedValue === undefined && kind === "Add") {
+          //     onChange(false); // Explicitly set to false in Add mode if no value exists
+          //   }
+          // }, [kind, watchedValue, onChange]);
+
+          return (
+            <div className="w-full flex-col">
+              <input
+                id={checkboxId}
+                type="checkbox"
+                ref={ref}
+                checked={value || false} // Fallback to false if undefined
+                onChange={(e) => onChange(e.target.checked)}
+                disabled={disabled}
+                className={`input ${errors?.[name] ? "checkbox-error" : ""}`}
+              />
+              {label && (
+                <label htmlFor={checkboxId} className="label ml-2 cursor-pointer">
+                  {label}
+                </label>
+              )}
+            </div>
+          );
+        }}
       />
       {errors && errors[name] && (
         <p className="mt-1 text-sm text-error">

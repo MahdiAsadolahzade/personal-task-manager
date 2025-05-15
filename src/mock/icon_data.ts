@@ -33,12 +33,17 @@ export const IconItems: IconItem[] = [
   },
   {
     id:'7',
-    name: "GYM Icon",
-    src:'/icons/gym.svg'
+    name: "Health Icon",
+    src:'/icons/health.svg'
   },
   {
     id:'8',
-    name: "Repetitive Icon",
-    src:'/icons/repetitive.svg'
+    name: "Project Icon",
+    src:'/icons/project.svg'
+  },
+  {
+    id:'9',
+    name: "Unknown Icon",
+    src:'/icons/unknown.svg'
   },
 ];

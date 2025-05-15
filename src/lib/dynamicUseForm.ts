@@ -9,5 +9,6 @@ export function useDynamicForm<T extends FieldValues>(
   return useForm<T>({
     resolver: schema ? zodResolver(schema) : undefined,
     mode: "onTouched",
+    shouldUnregister: false,
   });
 }

@@ -9,20 +9,26 @@ const findIcon = (id: string) => {
 export const types: TaskType[] = [
   {
     id: uuid(),
-    name: "PERSONAL",
+    name: "Personal",
     color: "#cddc39",
     icon: findIcon("5"),
   },
   {
     id: uuid(),
-    name: "WORK",
+    name: "Work",
     color: "#ab47bc",
     icon: findIcon("6"),
   },
   {
     id: uuid(),
-    name: "GYM",
+    name: "Health",
     color: "#80deea",
     icon: findIcon("7"),
+  },
+  {
+    id: uuid(),
+    name: "Project",
+    color: "#f48fb1",
+    icon: findIcon("8"),
   },
 ];
