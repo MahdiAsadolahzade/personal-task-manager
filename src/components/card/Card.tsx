@@ -3,10 +3,10 @@ import { TDialogKind, TFieldArray } from "@/types/dialog.type";
 import { FC, MouseEventHandler, useEffect, useRef, useState } from "react";
 import { CardHeaderIcon } from "@/constants/card/cardData";
 import Menu from "../menu/Menu";
-import { BsFilterCircleFill } from "react-icons/bs";
 import FilterCard from "./FilterCard";
 import { useForm } from "react-hook-form";
 import { shortenText } from "@/lib/utils/strings";
+import Icon from "../utils/Icon";
 
 interface CardProps {
   title: string;
@@ -125,7 +125,7 @@ const Card: FC<CardProps> = ({
         <div className="flex gap-2">
           {actions &&
             Object.entries(actions).map(([key, value]) => {
-              const { Icon } = CardHeaderIcon[key as TDialogKind];
+              const headrerIcon = CardHeaderIcon[key as TDialogKind];
               return (
                 <button
                   key={key}
@@ -136,7 +136,11 @@ const Card: FC<CardProps> = ({
                     (!selectedValue || selectedValue?.length === 0)
                   }
                 >
-                  <Icon className="text-2xl" />
+                  <Icon
+                    alt="icon"
+                    className="w-6 h-6"
+                    src={headrerIcon?.Icon}
+                  />
                 </button>
               );
             })}
@@ -146,11 +150,7 @@ const Card: FC<CardProps> = ({
               ref={filterMenuEL}
               onClick={() => setOpenFilter((prev) => !prev)}
             >
-              <BsFilterCircleFill
-                className={`text-xl ${
-                  filteredData.length !== data.length ? "text-primary" : ""
-                }`}
-              />
+              <Icon alt="icon" className="w-6 h-6" src={"/icons/filter.svg"} />
             </button>
           )}
         </div>

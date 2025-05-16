@@ -31,6 +31,7 @@ export type TDialogContent = {
   schema?: ZodObject<any>;
   CustomComponent?: any;
   customContnet?: { [key in string]: any };
+  customConfig?: { buttonTitle?:string ,headerIcon?:string , headerIconColor?:string };
   actions?: TDialogActions;
   defaultValues?: any;
 };

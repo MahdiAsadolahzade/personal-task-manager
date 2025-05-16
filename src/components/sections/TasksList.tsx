@@ -24,12 +24,15 @@ const TasksList = ({
 
   const taskData = useMemo(() => {
     const parentTasks = data?.filter((item) => !item?.isInstance) || [];
-    const subCounts = data?.reduce((acc, item) => {
-      if (item.isInstance && item.originalTaskId) {
-        acc[item.originalTaskId] = (acc[item.originalTaskId] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>);
+    const subCounts = data?.reduce(
+      (acc, item) => {
+        if (item.isInstance && item.originalTaskId) {
+          acc[item.originalTaskId] = (acc[item.originalTaskId] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return parentTasks.map((parent) => ({
       ...parent,
@@ -85,11 +88,15 @@ const TasksList = ({
                 </div>
               )}
 
-              <div>{task.subCount > 0 && <p>{task.subCount} Subs</p>} </div>
+              <div>
+                {task.subCount > 0 && (
+                  <p className="animate-pulse text-muted"> Double Tap</p>
+                )}{" "}
+              </div>
             </div>
 
             {/* Status and type badges */}
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted">
+            <div className="flex items-center justify-between mt-4 pt-3 border-t border-muted ">
               <div className="flex items-center space-x-2">
                 {/* Status badge */}
                 <StatusBadge status={task.status} />

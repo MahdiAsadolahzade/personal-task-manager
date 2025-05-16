@@ -9,7 +9,7 @@ const AboutProject = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="max-w-2xl mx-auto p-6 md:p-8 rounded-xl bg-gradient-to-br from-base2 to-base3 shadow-lg"
+      className="max-w-2xl mx-auto p-6 md:p-8 rounded-xl bg-gradient-to-br from-base2 to-base3 shadow-lg max-h-[65vh] overflow-auto"
     >
       <div className="flex flex-col md:flex-row items-center gap-6">
         {/* Profile Image */}
@@ -42,7 +42,7 @@ const AboutProject = () => {
             transition={{ delay: 0.4 }}
             className="text-foreground/90"
           >
-            {"Hello! I'm"}
+            {"Hello! I'm "}
             <span className="font-semibold text-primary">
               Mahdi Asadolahzade
             </span>
