@@ -16,16 +16,23 @@
   "iconUrl": "https://personal-task-manager-ten.vercel.app/icons/icon-512x512.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
-    "path": "C:\\Users\\Mahdi\\Desktop\\My Projects\\personal-task-manager\\android.keystore",
+    "path": "C:\\Users\\Mahdi\\Desktop\\Programming\\personal-task-manager\\android.keystore",
     "alias": "android"
   },
-  "appVersionName": "2",
-  "appVersionCode": 2,
+  "appVersionName": "1",
+  "appVersionCode": 1,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://personal-task-manager-ten.vercel.app/manifest.json",
   "fallbackType": "customtabs",
-  "features": {},
+ "features": {
+  "cafebazaar": {
+    "packageId": "app.vercel.personal_task_manager_ten.twa",
+    "sha256CertFingerprints": [
+      "FF:52:6D:1D:C5:8E:EC:A2:D2:8B:73:94:BB:37:2A:C3:9B:EA:B0:BA:1C:9D:D0:CC:38:DE:F8:36:02:2C:D6:F9"
+    ]
+  }
+},
   "alphaDependencies": {
     "enabled": false
   },
@@ -39,5 +46,5 @@
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
   "protocolHandlers": [],
-  "appVersion": "2"
+  "appVersion": "1"
 }
