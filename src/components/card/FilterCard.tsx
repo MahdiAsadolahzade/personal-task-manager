@@ -19,6 +19,7 @@ const FilterCard: FC<FilterCardProps> = ({
 }) => {
   return (
     <div className="p-4 w-full max-h-64 overflow-auto  md:w-128 space-y-4">
+      <h2 className="text-primary">Filter</h2>
       {filterArray?.map((item, index) => (
         <item.Component
           name={item.name}

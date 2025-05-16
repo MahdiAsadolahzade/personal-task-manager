@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import { useDynamicForm } from "@/lib/dynamicUseForm";
 import { motion } from "framer-motion";
+import Icon from "../utils/Icon";
 
 export const Dialog = () => {
   const { isOpen, content, closeDialog } = useDialogStore();
@@ -22,15 +23,33 @@ export const Dialog = () => {
     unregister,
   } = useDynamicForm(content?.schema);
 
-  const currentIcon = dialogHeaderIcon[content?.kind || "Custom"];
+  const dialogLogic = {
+    saveButton: content?.kind !== "Info",
+    buttonTitle:
+      content?.kind === "Custom"
+        ? !!content.customConfig
+          ? content.customConfig.buttonTitle
+          : content.kind
+        : content?.kind,
+    headerIcon:
+      content?.kind === "Custom"
+        ? {
+            Icon: content?.customConfig?.headerIcon,
+            color: content?.customConfig?.headerIconColor,
+          }
+        : dialogHeaderIcon[content?.kind || "Custom"],
+  };
+
+  const currentIcon = dialogLogic?.headerIcon;
 
   const onSubmit = (data: any) => {
     const finalData =
       content?.kind === "Add"
         ? { ...data, id: uuid() }
-        : content?.kind === "Edit"
+        : content?.kind === "Edit" || content?.kind === "Custom"
         ? data
         : data?.id;
+
     content?.actions?.[content?.kind]?.(finalData);
 
     closeDialog();
@@ -50,17 +69,17 @@ export const Dialog = () => {
 
   if (!isOpen) return null;
 
-  const dialogLogic = {
-    saveButton: content?.kind !== "Info",
-  };
-
   return (
     <div className="fixed  inset-0 z-50 flex items-center justify-center bg-muted/80 ">
       <div className="bg-background rounded-lg p-6  shadow-lg  w-full md:w-2/3 lg:w-2/3  max-h-[90vh] h-fit ">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=" flex justify-between items-center">
             <div className="flex items-center justify-center space-x-1">
-              {<currentIcon.Icon className={`text-2xl ${currentIcon.color}`} />}
+              <Icon
+                alt="icon"
+                className={`w-6 h-6 ${currentIcon.color}`}
+                src={currentIcon?.Icon}
+              />
               <h2 className="text-xl font-semibold ">{content?.title}</h2>
             </div>
 
@@ -121,7 +140,7 @@ export const Dialog = () => {
 
             {dialogLogic.saveButton && (
               <button type="submit" className="btn btn-primary">
-                {content?.kind}
+                {dialogLogic?.buttonTitle}
               </button>
             )}
           </div>

@@ -1,39 +1,22 @@
 import { TDialogKind } from "@/types/dialog.type";
-import { IconType } from "react-icons";
 
-  import { IoIosAddCircle } from "react-icons/io";
-  import { RiEditCircleFill } from "react-icons/ri";
-  import { RiDeleteBin2Fill } from "react-icons/ri";
-  import { IoInformationCircle } from "react-icons/io5";
-  import { GiConfirmed } from "react-icons/gi";
-  import { SiCustomink } from "react-icons/si";
-
-export const CardHeaderIcon: Record<
-  TDialogKind,
-  { Icon: IconType; }
-> = {
+export const CardHeaderIcon: Record<TDialogKind, { Icon: string }> = {
   Add: {
-    Icon: IoIosAddCircle,
-  
+    Icon: "/icons/add.svg",
   },
   Edit: {
-    Icon: RiEditCircleFill,
-
+    Icon: "/icons/edit.svg",
   },
   Delete: {
-    Icon: RiDeleteBin2Fill,
-   
+    Icon: "/icons/delete.svg",
   },
   Info: {
-    Icon: IoInformationCircle,
-
+    Icon: "/icons/info.svg",
   },
   Confirm: {
-    Icon: GiConfirmed,
-  
+    Icon: "/icons/confirm.svg",
   },
   Custom: {
-    Icon: SiCustomink,
- 
+    Icon: "/icons/custom.svg",
   },
 };
