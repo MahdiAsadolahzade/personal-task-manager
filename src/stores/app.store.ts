@@ -5,6 +5,10 @@ export const useAppStore = createPersistedStore<AppStoreModel>(
   "app-store",
   (set) => ({
     theme: "dark",
+    version: "0.0.0",
+    setVersion(v) {
+      set({ version: v });
+    },
     setTheme: (theme) => set({ theme }),
     toggleTheme: () =>
       set((state) => ({

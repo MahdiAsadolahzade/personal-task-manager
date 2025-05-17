@@ -40,7 +40,7 @@ const TasksList = ({
     }));
   }, [data]);
 
-  console.log(taskData);
+
 
   return (
     <div className=" space-y-4 p-4 max-h-[60vh] overflow-auto">

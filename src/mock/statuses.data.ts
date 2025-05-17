@@ -34,7 +34,7 @@ export const statuses: TaskStatus[] = [
   {
     id: uuid(),
     name: "Unknown",
-    color: "#dce775",
+    color: "#b0bec5",
     icon: findIcon("9"),
   },
 

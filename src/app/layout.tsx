@@ -6,9 +6,7 @@ import Header from "@/components/layout/Header";
 import { useAppStore } from "@/stores/app.store";
 import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
-import { useCheckForAppUpdate } from "@/hooks/useCheckForAppUpdate";
-import { useEffect } from "react";
-
+import { useAppVersionControl } from "@/hooks/useAppVersionControl";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,22 +23,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   useScreenSizeDetector();
-  useCheckForAppUpdate();
+  useAppVersionControl();
 
   const { theme, isMobile } = useAppStore();
 
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      const preloadPages = ['/tasks', '/configuration', '/settings'];
-      preloadPages.forEach(path => fetch(path)); // These will get cached now
-    }
-  }, []);
-  
-  
-  
-  
 
   return (
     <html lang="en" data-theme={theme}>
