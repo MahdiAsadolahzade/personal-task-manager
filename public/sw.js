@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "ptm-cache-v-1.0.0"; 
+const CACHE_NAME = "ptm-cache-v-1.0.1"; 
 
 const URLS_TO_CACHE = [
   "/",
@@ -41,7 +41,12 @@ self.addEventListener("activate", (event) => {
 
 // Intercept fetch requests
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
+  if (
+    event.request.method !== "GET" ||
+    !event.request.url.startsWith("http")
+  ) {
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
@@ -58,6 +63,7 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
 
 // Optional: Handle notification click
 self.addEventListener("notificationclick", function (event) {
