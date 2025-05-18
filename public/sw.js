@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "ptm-cache-v-1.0.1"; 
+const CACHE_NAME = "ptm-cache-v-1.0.0"; 
 
 const URLS_TO_CACHE = [
   "/",
@@ -11,33 +11,31 @@ const URLS_TO_CACHE = [
 // On install — cache core files
 self.addEventListener("install", (event) => {
   console.log("[SW] Install event");
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(URLS_TO_CACHE);
     })
   );
+  self.skipWaiting(); // Immediately activate new SW
 });
 
-// On activate — clean old caches
 self.addEventListener("activate", (event) => {
   console.log("[SW] Activate event");
   event.waitUntil(
-    caches
-      .keys()
-      .then((cacheNames) =>
-        Promise.all(
-          cacheNames.map((cacheName) => {
-            if (cacheName !== CACHE_NAME) {
-              console.log("[SW] Deleting old cache:", cacheName);
-              return caches.delete(cacheName);
-            }
-          })
-        )
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log("[SW] Deleting old cache:", key);
+            return caches.delete(key);
+          }
+        })
       )
-      .then(() => self.clients.claim())
+    )
   );
+  self.clients.claim(); // Take control of open pages
 });
+
 
 // Intercept fetch requests
 self.addEventListener("fetch", (event) => {

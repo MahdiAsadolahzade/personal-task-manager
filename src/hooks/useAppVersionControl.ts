@@ -3,21 +3,21 @@
 import { useEffect } from "react";
 import { CURRENT_APP_VERSION } from "@/lib/config";
 import { useAppStore } from "@/stores/app.store";
+import { useDialogStore } from "@/stores/dialog.store";
+import UpdateNote from "@/components/dialog/UpdateNote";
 
 export const useAppVersionControl = () => {
   const { version, setVersion } = useAppStore();
+  const { openDialog } = useDialogStore();
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "development") return;
-    // Check & update store version
     if (version !== CURRENT_APP_VERSION) {
       console.log(
         `[App] Version mismatch: ${version} → ${CURRENT_APP_VERSION}`
       );
-      setVersion(CURRENT_APP_VERSION); // ✅ Always update version immediately
+      setVersion(CURRENT_APP_VERSION);
     }
 
-    // Handle SW updates
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/sw.js")
@@ -26,25 +26,18 @@ export const useAppVersionControl = () => {
 
           reg.onupdatefound = () => {
             const installingWorker = reg.installing;
+
             if (installingWorker) {
               installingWorker.onstatechange = () => {
                 if (installingWorker.state === "installed") {
                   if (navigator.serviceWorker.controller) {
                     console.log("[App] New content is available!");
 
-                    if (
-                      confirm("A new version is available. Reload to update?")
-                    ) {
-                      caches
-                        .keys()
-                        .then((keys) =>
-                          Promise.all(keys.map((key) => caches.delete(key)))
-                        )
-                        .then(() => {
-                          localStorage.clear(); // Optional
-                          window.location.reload(); // Version is already set above
-                        });
-                    }
+                    openDialog({
+                      kind: "Info",
+                      title: "Update Note",
+                      CustomComponent: UpdateNote,
+                    });
                   } else {
                     console.log("[App] Content cached for offline use");
                   }
