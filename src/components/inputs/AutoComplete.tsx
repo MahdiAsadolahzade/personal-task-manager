@@ -18,7 +18,6 @@ const AutoComplete: FC<AutoCompleteProps> = ({
   errors,
   multiSelect = false,
   suggestKey = "id",
-  register,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [selectedItems, setSelectedItems] = useState<AutoCompleteOption[]>([]);
