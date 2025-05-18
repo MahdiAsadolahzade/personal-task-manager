@@ -89,7 +89,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
         {label}
       </label>
       <Controller
-        name={`${name}-control`}
+        name={`${name}`}
         control={control}
         defaultValue={""}
         render={({ field: { onChange } }) => (
@@ -99,11 +99,11 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                 autoComplete="off"
                 placeholder="Type to search . . ."
                 id={inputUniqueID}
-                {...register(name, {
-                  setValueAs: (value) => {
-                    return value;
-                  },
-                })}
+                // {...register(name, {
+                //   setValueAs: (value) => {
+                //     return value;
+                //   },
+                // })}
                 type="text"
                 value={
                   selectedItems.length === 1
@@ -117,7 +117,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                 onChange={(e) => setInputValue(e.target.value)}
                 onFocus={() => setIsSuggestionsVisible(true)}
                 onBlur={() =>
-                  setTimeout(() => setIsSuggestionsVisible(false), 200)
+                  setTimeout(() => setIsSuggestionsVisible(false), 500)
                 }
                 className={`input ${fieldError && "input-error"}`}
                 readOnly={isReadOnly}
