@@ -3,12 +3,9 @@
 import { useEffect } from "react";
 import { CURRENT_APP_VERSION } from "@/lib/config";
 import { useAppStore } from "@/stores/app.store";
-import { useDialogStore } from "@/stores/dialog.store";
-import UpdateNote from "@/components/dialog/UpdateNote";
 
 export const useAppVersionControl = () => {
   const { version, setVersion } = useAppStore();
-  const { openDialog } = useDialogStore();
 
   useEffect(() => {
     if (version !== CURRENT_APP_VERSION) {
@@ -33,11 +30,7 @@ export const useAppVersionControl = () => {
                   if (navigator.serviceWorker.controller) {
                     console.log("[App] New content is available!");
 
-                    openDialog({
-                      kind: "Info",
-                      title: "Update Note",
-                      CustomComponent: UpdateNote,
-                    });
+         
                   } else {
                     console.log("[App] Content cached for offline use");
                   }

@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "ptm-cache-v-1.0.1"; 
+const CACHE_NAME = "ptm-cache-v-1.0.0"; 
 
 const URLS_TO_CACHE = [
   "/",
