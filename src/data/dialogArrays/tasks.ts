@@ -69,7 +69,6 @@ export const getTasksDialogArray = (): TFieldArray[] => {
       show: (watch: any) => {
         return !watch("isInstance") && watch("isRecurring");
       },
-   
     },
     {
       name: "description",

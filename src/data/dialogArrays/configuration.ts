@@ -34,7 +34,8 @@ export const getStatusesDialogsArray = (): TFieldArray[] => {
         name: icon.name ?? "",
         src: icon?.src,
       })),
-      suggestionKey: "src",
+          suggestionKey:'src'
+    
     },
   ];
 };
@@ -58,7 +59,8 @@ export const getTypesDialogsArray = (): TFieldArray[] => {
         name: icon.name ?? "",
         src: icon?.src,
       })),
-      suggestionKey: "src",
+      suggestionKey:'src'
+
     },
   ];
 };

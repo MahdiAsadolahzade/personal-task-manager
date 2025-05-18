@@ -28,6 +28,8 @@ const ConfigPage = () => {
   const [selectedType, setSelectedType] = useState<any>();
   const [selectedIcon, setSelectedIcon] = useState<any>();
 
+  
+
   const dialogConfig: TDialogConfig = useMemo(() => {
     return {
       status: {

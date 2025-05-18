@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+const RecurrenceRuleSchema = z.object({
+  interval: z.number().positive({ message: "Interval must be greater than 0" }),
+  frequency: z.enum(['1', '2', '3', '4'], {
+    errorMap: () => ({ message: "Please select a valid frequency" })
+  }),
+  // frequency:z.string(),
+  endDate: z.string().optional(),
+}).optional();
+
 export const TaskSchema = z.object({
   id: z.string().optional(),
   title: z
@@ -21,14 +30,7 @@ export const TaskSchema = z.object({
   isRecurring: z.boolean().optional(),
   originalTaskId: z.string().optional(),
   isInstance: z.boolean().optional(),
-  recurrenceRule: z
-    .object({
-      interval: z
-        .number()
-        .positive({ message: "interval must be greater than 0" })
-        .optional(),
-      frequency: z.string().optional(),
-      endDate: z.string().optional(),
-    })
-    .optional(),
+  recurrenceRule: RecurrenceRuleSchema,
+
 });
+
