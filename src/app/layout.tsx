@@ -33,11 +33,18 @@ export default function RootLayout({
   const { openDialog } = useDialogStore();
 
   useEffect(() => {
-    openDialog({
-      kind: "Info",
-      title: "Update Note",
-      CustomComponent: UpdateNote,
-    });
+    const LAST_SEEN_VERSION_KEY = "last_seen_app_version";
+    const lastSeenVersion = localStorage.getItem(LAST_SEEN_VERSION_KEY);
+  
+    if (version && version !== lastSeenVersion) {
+      openDialog({
+        kind: "Info",
+        title: "Update Note",
+        CustomComponent: UpdateNote,
+      });
+  
+      localStorage.setItem(LAST_SEEN_VERSION_KEY, version);
+    }
   }, [version]);
   
   return (
