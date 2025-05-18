@@ -1,10 +1,6 @@
-import { CURRENT_UPDATE_NOTES } from "@/constants/versions";
+import { CURRENT_UPDATE_NOTES } from "@/constants/version";
 import { motion } from "framer-motion";
 
-// CURRENT_UPDATE_NOTES: {
-//     version: string;
-//     notes: string[];
-// }
 
 const UpdateNote = () => {
     return (

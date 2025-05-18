@@ -1,11 +1,11 @@
 import { createPersistedStore } from "./createPersistedStore";
 import { TaskTypeStoreModel } from "@/models/task_type.model";
-import { types } from "@/mock/types.data";
+import { TYPES_DATA } from "@/mock/types.data";
 
 export const useTaskTypeStore = createPersistedStore<TaskTypeStoreModel>(
   "taskTypes-store",
   (set) => ({
-    types: types,
+    types: TYPES_DATA,
     addType: (type) => set((state) => ({ types: [type, ...state.types] })),
     deleteType: (id) =>
       set((state) => ({ types: state.types.filter((s) => s.id !== id) })),

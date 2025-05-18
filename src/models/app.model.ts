@@ -5,6 +5,9 @@ export interface AppStoreModel {
   setTheme: (theme: themeStatus) => void;
   toggleTheme: () => void;
 
+  version:string
+setVersion:(v:string)=>void
+
   isMobile: boolean;
   setIsMobile: (isMobile: boolean) => void;
   isDesktop: boolean;

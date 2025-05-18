@@ -11,15 +11,20 @@ import { TDialogKind } from "./dialog.type";
 export interface TextFieldProps {
   type?: HTMLInputTypeAttribute;
   label: string;
+  placeholder?:string
   register: UseFormRegister<any>;
+  getValues?: UseFormGetValues<any>;
   name: string;
+  errorMessage?: string;
   errors?: FieldErrors;
   variant?: "defult" | "description";
-  defaultValue?: string;
+  rangeConfiguration?: { min?: number; max?: number; step?: number };
+  defaultValue?:string
+
 }
 
 export interface AutoCompleteOption {
-  id: string;
+  id: string|number;
   name: string;
   src?: string;
 }

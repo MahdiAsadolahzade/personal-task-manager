@@ -1,4 +1,5 @@
-import { FC, useEffect } from "react";
+
+import { FC } from "react";
 import TextField from "../TextField";
 import AutoComplete from "../AutoComplete";
 import { Frequencies } from "@/mock/frequency.data";
@@ -11,7 +12,7 @@ interface RecurrenceRuleProps {
   errors: any;
   control: any;
   getValues: any;
-  unregister:any
+  unregister: any;
 }
 
 const RecurrenceRule: FC<RecurrenceRuleProps> = ({
@@ -21,8 +22,7 @@ const RecurrenceRule: FC<RecurrenceRuleProps> = ({
   errors,
   control,
   getValues,
-  unregister,
-  watch
+  watch,
 }) => {
   // You can watch isRecurring or other values if needed
   const intervalPath = `${name}.interval`;
@@ -32,15 +32,7 @@ const RecurrenceRule: FC<RecurrenceRuleProps> = ({
 
   const isRecurring = watch("isRecurring");
 
-  useEffect(() => {
-    if (isRecurring) {
-      setValue(intervalPath, getValues(intervalPath) ?? 1);
-      setValue(frequencyPath, getValues(frequencyPath) ?? "1");
-    } else {
-      unregister?.(intervalPath);
-      unregister?.(frequencyPath);
-    }
-  }, [isRecurring, intervalPath, frequencyPath, getValues, setValue, unregister]);
+
 
   if (!isRecurring) return null;
 
@@ -53,15 +45,18 @@ const RecurrenceRule: FC<RecurrenceRuleProps> = ({
         register={register}
         getValues={getValues}
         setValue={setValue}
+       
         suggestions={Frequencies}
         label="Frequency"
       />
       <TextField
         label="Interval"
         name={intervalPath}
+        getValues={getValues}
         register={register}
         errors={errors}
-        type="number"
+        type="range"
+        rangeConfiguration={{ min: 1, max: 7 }}
       />
       <TextField
         label="End Date"
@@ -69,8 +64,12 @@ const RecurrenceRule: FC<RecurrenceRuleProps> = ({
         register={register}
         errors={errors}
         type="date"
-        // defaultValue={new Date(new Date().getFullYear(), 11, 31).toISOString().split("T")[0]}
+        defaultValue={
+          new Date(new Date().getFullYear(), 11, 31).toISOString().split("T")[0]
+        }
       />
+
+
     </div>
   );
 };

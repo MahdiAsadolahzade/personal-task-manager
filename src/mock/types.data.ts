@@ -6,7 +6,7 @@ const findIcon = (id: string) => {
   const foundedIcon = IconItems?.find((icon) => icon.id === id)?.id;
   return foundedIcon;
 };
-export const types: TaskType[] = [
+export const TYPES_DATA: TaskType[] = [
   {
     id: uuid(),
     name: "Personal",

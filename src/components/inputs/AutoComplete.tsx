@@ -8,6 +8,7 @@ import { Controller, useWatch } from "react-hook-form";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import Icon from "../utils/Icon";
 import { shortenText } from "@/lib/utils/strings";
+import { getNestedError } from "@/lib/utils/fieldErrors";
 
 const AutoComplete: FC<AutoCompleteProps> = ({
   label,
@@ -17,6 +18,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
   errors,
   multiSelect = false,
   suggestKey = "id",
+  register,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [selectedItems, setSelectedItems] = useState<AutoCompleteOption[]>([]);
@@ -25,8 +27,8 @@ const AutoComplete: FC<AutoCompleteProps> = ({
   >([]);
   const [isSuggestionsVisible, setIsSuggestionsVisible] = useState(false);
   const inputUniqueID = useId();
-  const watchedValue = useWatch({ name, control });
-
+  const watchedValue = useWatch({ name, control, defaultValue: "" });
+  const fieldError = getNestedError(errors, name);
   useEffect(() => {
     setFilteredSuggestions(
       suggestions?.filter((suggestion) =>
@@ -41,6 +43,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
       setSelectedItems(selected);
     } else {
       const matchedSuggestion = suggestions.find((s) => s.id === watchedValue);
+
       setSelectedItems(matchedSuggestion ? [matchedSuggestion] : []);
     }
   }, [watchedValue, suggestions, multiSelect]);
@@ -74,8 +77,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
       setIsSuggestionsVisible(false);
     }
   };
-
-
+ 
 
   const isReadOnly =
     (multiSelect && selectedItems.length > 0) ||
@@ -87,8 +89,9 @@ const AutoComplete: FC<AutoCompleteProps> = ({
         {label}
       </label>
       <Controller
-        name={name}
+        name={`${name}-control`}
         control={control}
+        defaultValue={""}
         render={({ field: { onChange } }) => (
           <>
             <div className="relative">
@@ -96,22 +99,27 @@ const AutoComplete: FC<AutoCompleteProps> = ({
                 autoComplete="off"
                 placeholder="Type to search . . ."
                 id={inputUniqueID}
+                {...register(name, {
+                  setValueAs: (value) => {
+                    return value;
+                  },
+                })}
                 type="text"
                 value={
                   selectedItems.length === 1
                     ? shortenText(selectedItems[0].name, 40)
                     : selectedItems.length > 1
-                    ? `${selectedItems.length} item${
-                        selectedItems.length > 1 ? "s" : ""
-                      } selected`
-                    : inputValue
+                      ? `${selectedItems.length} item${
+                          selectedItems.length > 1 ? "s" : ""
+                        } selected`
+                      : inputValue
                 }
                 onChange={(e) => setInputValue(e.target.value)}
                 onFocus={() => setIsSuggestionsVisible(true)}
                 onBlur={() =>
-                  setTimeout(() => setIsSuggestionsVisible(false), 500)
+                  setTimeout(() => setIsSuggestionsVisible(false), 200)
                 }
-                className="input"
+                className={`input ${fieldError && "input-error"}`}
                 readOnly={isReadOnly}
               />
               <span
@@ -151,26 +159,9 @@ const AutoComplete: FC<AutoCompleteProps> = ({
               </ul>
             )}
 
-            {/* {selectedItems.length > 0 && (
-              <div className="selected-items mt-2 flex flex-wrap gap-2">
-                {selectedItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="selected-item inline-flex items-center bg-primary rounded-full px-3 py-1 text-sm font-medium relative"
-                  >
-                    <span>{item.name}</span>
-                    <RxCross2
-                      className="cursor-pointer text-xl absolute -top-1 -right-1 bg-error rounded-full p-1"
-                      onClick={() => handleDeselect(item, onChange)}
-                    />
-                  </div>
-                ))}
-              </div>
-            )} */}
-
-            {errors && errors[name] && (
+            {fieldError && (
               <p className="mt-1 text-sm text-error">
-                {errors[name]?.message as string}
+                {fieldError?.message as string}
               </p>
             )}
           </>
