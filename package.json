@@ -8,7 +8,7 @@
     "start": "next start -p4000",
     "lint": "next lint",
     "pwa": "next build && next start -p4000",
-    "apk-init": "bubblewrap init --manifest https://personal-task-manager-ten.vercel.app/manifest.json",
+    "apk-init": "bubblewrap init --manifest https://personal-task-manager.ir/manifest.json",
     "apk-build": "bubblewrap build"
   },
   "dependencies": {
