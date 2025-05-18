@@ -7,9 +7,6 @@ import { useAppStore } from "@/stores/app.store";
 import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
 import { useAppVersionControl } from "@/hooks/useAppVersionControl";
-import { useDialogStore } from "@/stores/dialog.store";
-import { useEffect } from "react";
-import UpdateNote from "@/components/dialog/UpdateNote";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,23 +26,10 @@ export default function RootLayout({
   useScreenSizeDetector();
   useAppVersionControl();
 
-  const { theme, isMobile, version } = useAppStore();
-  const { openDialog } = useDialogStore();
+  const { theme, isMobile } = useAppStore();
+ 
 
-  useEffect(() => {
-    const LAST_SEEN_VERSION_KEY = "last_seen_app_version";
-    const lastSeenVersion = localStorage.getItem(LAST_SEEN_VERSION_KEY);
-  
-    if (version && version !== lastSeenVersion) {
-      openDialog({
-        kind: "Info",
-        title: "Update Note",
-        CustomComponent: UpdateNote,
-      });
-  
-      localStorage.setItem(LAST_SEEN_VERSION_KEY, version);
-    }
-  }, [version]);
+
   
   return (
     <html lang="en" data-theme={theme}>
