@@ -49,7 +49,7 @@ export function createPersistedStore<
       const data = await indexedDBStorage.getItem<Combined & { appVersion?: string }>(name);
       if (data?.appVersion !== CURRENT_APP_VERSION) {
         console.warn(`[Store] Version mismatch for "${name}". Clearing old data.`);
-        // await indexedDBStorage.removeItem(name); // Clear old store
+        await indexedDBStorage.removeItem(name); // Clear old store
         return null; // Do not rehydrate
       }
       return data ? { state: data } : null;
