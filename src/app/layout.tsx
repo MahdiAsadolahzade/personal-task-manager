@@ -7,6 +7,8 @@ import { useAppStore } from "@/stores/app.store";
 import { Dialog } from "@/components/dialog/Dialog";
 import clsx from "clsx";
 import { useAppVersionControl } from "@/hooks/useAppVersionControl";
+import { useEffect } from "react";
+import { CURRENT_APP_VERSION } from "@/lib/config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +25,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+// In your layout or main component
+useEffect(() => {
+  if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+      console.log('SW registered with version:',registration, CURRENT_APP_VERSION);
+    });
+  }
+}, []);
+
+
   useScreenSizeDetector();
   useAppVersionControl();
 

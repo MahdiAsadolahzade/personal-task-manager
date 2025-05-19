@@ -1,16 +1,42 @@
 // hooks/useAppVersionControl.ts
 "use client";
 import { useEffect } from "react";
-
+import { CURRENT_APP_VERSION } from "@/lib/config";
 import { useDialogStore } from "@/stores/dialog.store";
 import UpdateNote from "@/components/dialog/UpdateNote";
+import { useAppStore } from "@/stores/app.store";
 
 export const useAppVersionControl = () => {
   const { openDialog } = useDialogStore();
+  const { version, setVersion } = useAppStore();
+
+  const handleUpdateClick = () => {
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+      .then(() => {
+        // Mark this version as shown before reloading
+        const shownUpdates = JSON.parse(localStorage.getItem('shownUpdates') || '{}');
+        shownUpdates[CURRENT_APP_VERSION] = true;
+        localStorage.setItem('shownUpdates', JSON.stringify(shownUpdates));
+        
+        setVersion(CURRENT_APP_VERSION);
+        window.location.reload();
+      });
+  };
 
   useEffect(() => {
-    // if (process.env.NODE_ENV === "development") return;
     if ("serviceWorker" in navigator) {
+      // Check if we've already shown this update
+      const shownUpdates = JSON.parse(localStorage.getItem('shownUpdates') || '{}');
+      const shouldShowUpdate = !shownUpdates[CURRENT_APP_VERSION];
+
+      // Check for version mismatch immediately
+      if (version !== CURRENT_APP_VERSION && shouldShowUpdate) {
+        openUpdateDialog();
+        return;
+      }
+
       navigator.serviceWorker
         .register("/sw.js")
         .then((reg) => {
@@ -18,54 +44,50 @@ export const useAppVersionControl = () => {
 
           reg.onupdatefound = () => {
             const installingWorker = reg.installing;
-
             if (installingWorker) {
               installingWorker.onstatechange = () => {
-                if (installingWorker.state === "installed") {
+                if (installingWorker.state === "installed" && shouldShowUpdate) {
                   if (navigator.serviceWorker.controller) {
-                    console.log("[App] New content is available!");
-
-                    openDialog({
-                      kind: "Info",
-                      title: "Update Note",
-                      CustomComponent: UpdateNote,
-                    });
-                  } else {
-                    console.log("[App] Content cached for offline use");
+                    openUpdateDialog();
                   }
                 }
               };
             }
           };
         })
-        .catch((err) => {
-          console.error("[App] SW registration failed:", err);
-        });
+        .catch(console.error);
 
-      // ✅ Listen to controller change (new SW takes control)
       navigator.serviceWorker.addEventListener("controllerchange", () => {
-        console.log("[App] Controller changed → New SW activated");
-
-        openDialog({
-          kind: "Info",
-          title: "Update Available",
-          CustomComponent: UpdateNote,
-        });
-
-        // Optionally: force reload
-        // window.location.reload();
+        if (shouldShowUpdate) {
+          openUpdateDialog();
+        }
       });
 
-      // ✅ Listen to messages from SW (like 'reload-app')
       navigator.serviceWorker.addEventListener("message", (event) => {
-        if (event.data === "reload-app") {
-          openDialog({
-            kind: "Info",
-            title: "New Update Available",
-            CustomComponent: UpdateNote,
-          });
+        if (event.data === "reload-app" && shouldShowUpdate) {
+          openUpdateDialog();
         }
       });
     }
-  }, []);
+
+    function openUpdateDialog() {
+      // Mark this version as shown
+      const shownUpdates = JSON.parse(localStorage.getItem('shownUpdates') || '{}');
+      shownUpdates[CURRENT_APP_VERSION] = true;
+      localStorage.setItem('shownUpdates', JSON.stringify(shownUpdates));
+
+      openDialog({
+        kind: "Custom",
+        title: "Update Note",
+        CustomComponent: UpdateNote,
+        customConfig: {
+          buttonTitle: "Refresh",
+          headerIcon: "/icons/update.svg",
+        },
+        actions: {
+          Custom: handleUpdateClick,
+        },
+      });
+    }
+  }, [version]);
 };
