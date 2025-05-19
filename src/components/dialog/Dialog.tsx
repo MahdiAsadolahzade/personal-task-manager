@@ -49,7 +49,6 @@ export const Dialog = () => {
         : content?.kind === "Edit" || content?.kind === "Custom"
           ? data
           : data?.id;
-    console.log(finalData);
 
     content?.actions?.[content?.kind]?.(finalData);
 
@@ -61,7 +60,6 @@ export const Dialog = () => {
       if (content?.kind === "Add") {
         reset({}, { keepValues: false, keepDirtyValues: false });
       } else {
-        console.log(content?.defaultValues);
         
         reset(content?.defaultValues || {}, { keepValues: false });
       }

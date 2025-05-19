@@ -16,19 +16,24 @@ export const useAppVersionControl = () => {
       .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
       .then(() => {
         // Mark this version as shown before reloading
-        const shownUpdates = JSON.parse(localStorage.getItem('shownUpdates') || '{}');
+        const shownUpdates = JSON.parse(
+          localStorage.getItem("shownUpdates") || "{}"
+        );
         shownUpdates[CURRENT_APP_VERSION] = true;
-        localStorage.setItem('shownUpdates', JSON.stringify(shownUpdates));
-        
+        localStorage.setItem("shownUpdates", JSON.stringify(shownUpdates));
+
         setVersion(CURRENT_APP_VERSION);
         window.location.reload();
       });
   };
 
   useEffect(() => {
+    if (process.env.NODE_ENV === "development") return;
     if ("serviceWorker" in navigator) {
       // Check if we've already shown this update
-      const shownUpdates = JSON.parse(localStorage.getItem('shownUpdates') || '{}');
+      const shownUpdates = JSON.parse(
+        localStorage.getItem("shownUpdates") || "{}"
+      );
       const shouldShowUpdate = !shownUpdates[CURRENT_APP_VERSION];
 
       // Check for version mismatch immediately
@@ -46,7 +51,10 @@ export const useAppVersionControl = () => {
             const installingWorker = reg.installing;
             if (installingWorker) {
               installingWorker.onstatechange = () => {
-                if (installingWorker.state === "installed" && shouldShowUpdate) {
+                if (
+                  installingWorker.state === "installed" &&
+                  shouldShowUpdate
+                ) {
                   if (navigator.serviceWorker.controller) {
                     openUpdateDialog();
                   }
@@ -72,9 +80,11 @@ export const useAppVersionControl = () => {
 
     function openUpdateDialog() {
       // Mark this version as shown
-      const shownUpdates = JSON.parse(localStorage.getItem('shownUpdates') || '{}');
+      const shownUpdates = JSON.parse(
+        localStorage.getItem("shownUpdates") || "{}"
+      );
       shownUpdates[CURRENT_APP_VERSION] = true;
-      localStorage.setItem('shownUpdates', JSON.stringify(shownUpdates));
+      localStorage.setItem("shownUpdates", JSON.stringify(shownUpdates));
 
       openDialog({
         kind: "Custom",

@@ -10,19 +10,13 @@ const TextField: FC<TextFieldProps> = ({
   errors,
   rangeConfiguration,
   defaultValue,
-  getValues
+  getValues,
 }) => {
   const inputUniqueID = useId();
-  const fieldError = getNestedError(errors, name);
-  const defualtRangeConfig = {
-    min: rangeConfiguration?.min ?? 0,
-    max: rangeConfiguration?.max ?? 100,
-    step: rangeConfiguration?.step ?? 1,
-  };
 
   // Optional: local state for range display
   const [rangeValue, setRangeValue] = useState<number | string>(
-    !!getValues ? getValues(name) : defualtRangeConfig?.min
+    !!getValues ? getValues(name) : rangeConfiguration?.min || 0
   );
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,22 +42,22 @@ const TextField: FC<TextFieldProps> = ({
                 return value === "" ? undefined : Number(value);
               if (type === "date") return value || undefined;
               return value;
-            }
+            },
           })}
           onChange={type === "range" ? handleRangeChange : undefined}
-          className={`input ${fieldError && "input-error"}`}
+          className={`input ${getNestedError(errors, name) && "input-error"}`}
           type={type}
           name={name}
-          min={defualtRangeConfig?.min}
-          max={defualtRangeConfig?.max}
-          step={defualtRangeConfig?.step}
+          min={rangeConfiguration?.min || 0}
+          max={rangeConfiguration?.max || 100}
+          step={rangeConfiguration?.step || 1}
           defaultValue={defaultValue}
         />
       </div>
 
-      {fieldError && (
+      {getNestedError(errors, name) && (
         <p className="mt-1 text-sm text-error">
-          {fieldError?.message as string}
+          {getNestedError(errors, name)?.message as string}
         </p>
       )}
     </div>
