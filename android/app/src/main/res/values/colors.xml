@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>         <!-- Your theme_color -->
+    <color name="colorPrimaryDark">#000000</color>     <!-- Darker variant if needed -->
+    <color name="colorAccent">#000000</color>          <!-- Accent / buttons -->
+    <color name="colorBackground">#ffffff</color>      <!-- Your background_color -->
+</resources>
