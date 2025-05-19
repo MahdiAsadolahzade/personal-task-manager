@@ -9,7 +9,7 @@ export const useAppVersionControl = () => {
   const { openDialog } = useDialogStore();
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "development") return;
+    // if (process.env.NODE_ENV === "development") return;
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/sw.js")

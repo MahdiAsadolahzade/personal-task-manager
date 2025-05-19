@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">personal-task-manager</string>
+    <string name="title_activity_main">personal-task-manager</string>
+    <string name="package_name">ir.personal.taskmanager</string>
+    <string name="custom_url_scheme">ir.personal.taskmanager</string>
+</resources>

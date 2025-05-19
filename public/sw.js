@@ -3,8 +3,12 @@ const CACHE_NAME = "ptm-cache-v-1.0.0";
 
 const URLS_TO_CACHE = [
   "/",
+  "/tasks",
+  "/configuration",
+  "/settings",
   "/manifest.json",
   "/icons/icon-192x192.png",
+  "/icons/*",
   // Add other critical assets and routes here
 ];
 
