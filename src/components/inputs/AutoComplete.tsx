@@ -90,7 +90,7 @@ const AutoComplete: FC<AutoCompleteProps> = ({
       <Controller
         name={`${name}`}
         control={control}
-        defaultValue={""}
+        // defaultValue={""}
         render={({ field: { onChange } }) => (
           <>
             <div className="relative">

@@ -55,8 +55,8 @@ const RecurrenceRule: FC<RecurrenceRuleProps> = ({
         getValues={getValues}
         register={register}
         errors={errors}
-        type="range"
-        rangeConfiguration={{ min: 1, max: 7 }}
+        type="number"
+   
       />
       <TextField
         label="End Date"
