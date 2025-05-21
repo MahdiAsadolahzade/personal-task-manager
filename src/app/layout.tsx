@@ -52,7 +52,7 @@ useEffect(() => {
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/icons/icon-192x192.png" />
-  
+        <meta name="google-site-verification" content="peSgulpn8wGaXFWXc8RBVRCs5KsFbu2qbDz3aRJbvhA" />
         <meta name="theme-color" content="#009688" />
         <meta
           name="viewport"
