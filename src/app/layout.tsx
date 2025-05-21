@@ -9,6 +9,8 @@ import clsx from "clsx";
 import { useAppVersionControl } from "@/hooks/useAppVersionControl";
 import { useEffect } from "react";
 import { CURRENT_APP_VERSION } from "@/lib/config";
+import { Analytics } from "@vercel/analytics/next";
+import { AllKeyWords } from "@/data/SEO/KeyWords";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,12 +52,14 @@ useEffect(() => {
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/icons/icon-192x192.png" />
+  
         <meta name="theme-color" content="#009688" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
         <meta name="description" content="A simple personal task manager" />
+        <meta name="keywords" content={AllKeyWords} />
         <title>Personal Task Manager</title>
       </head>
 
@@ -81,6 +85,7 @@ useEffect(() => {
           }}
         >
           {children}
+          <Analytics />
         </main>
 
         {/* Header for mobile at bottom */}
