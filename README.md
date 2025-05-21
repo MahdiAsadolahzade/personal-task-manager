@@ -58,6 +58,7 @@ npm run dev
 ```
 ## Project Tree
 
+```
 personal-task-manager,
 ├─ .gitignore,
 ├─ android,
