@@ -28,7 +28,6 @@ export const useAppVersionControl = () => {
   };
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "development") return;
     if ("serviceWorker" in navigator) {
       // Check if we've already shown this update
       const shownUpdates = JSON.parse(
