@@ -60,11 +60,8 @@ self.addEventListener("fetch", (event) => {
           });
         })
         .catch(() => {
-          // If this is a navigation request (HTML page), show offline fallback
-          if (event.request.mode === "navigate") {
-            return caches.match("/offline.html");
-          }
-          return cachedResponse;
+          // Fallback to cached or offline page
+          return cachedResponse || caches.match("/offline.html");
         });
 
       return cachedResponse || fetchPromise;
