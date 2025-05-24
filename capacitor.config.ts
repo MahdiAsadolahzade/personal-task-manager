@@ -5,7 +5,6 @@ const config: CapacitorConfig = {
   appName: 'Personal Task Manager',
   webDir: 'out',
   server: {
-    url: 'https://personal-task-manager-ten.vercel.app/',
     cleartext: true
   }
 };

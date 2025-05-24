@@ -9,7 +9,8 @@
     "lint": "next lint",
     "pwa": "next build && next start -p4000",
     "apk-init": "bubblewrap init --manifest https://personal-task-manager.ir/manifest.json",
-    "apk-build": "bubblewrap build"
+    "apk-build": "bubblewrap build",
+    "export":"next export"
   },
   "dependencies": {
     "@capacitor/android": "^7.2.0",
