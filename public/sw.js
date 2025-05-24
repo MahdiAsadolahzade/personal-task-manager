@@ -3,6 +3,7 @@ const CACHE_NAME = "ptm-cache-v-1.0.0";
 
 const URLS_TO_CACHE = [
   "/",
+  "/offline.html",
   "/tasks",
   "/configuration",
   "/settings",
@@ -58,12 +59,19 @@ self.addEventListener("fetch", (event) => {
             return networkResponse;
           });
         })
-        .catch(() => cachedResponse); // Fallback to cache if offline
+        .catch(() => {
+          // If this is a navigation request (HTML page), show offline fallback
+          if (event.request.mode === "navigate") {
+            return caches.match("/offline.html");
+          }
+          return cachedResponse;
+        });
 
       return cachedResponse || fetchPromise;
     })
   );
 });
+
 
 
 // Optional: Handle notification click
